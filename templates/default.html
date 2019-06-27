@@ -1,0 +1,14 @@
+<html>
+<head>
+    {% include './layout/header.html' %}
+</head>
+<body class="fed-min-width">
+    <!-- 页面顶端菜单 & 手机端底部菜单开始 -->
+    {% include './layout/nav.html' %}
+    <!-- 页面顶端菜单 & 手机端底部菜单结束 -->
+    {% block body %}{% endblock %}
+    <!-- footer -->
+    {% include './layout/footer.html' %}
+    {% block js %}{% endblock %}
+</body>
+</html>
