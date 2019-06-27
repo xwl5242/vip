@@ -115,15 +115,15 @@
                     {% for new in news%}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
                             <a class="fed-list-pics fed-lazy fed-part-2by3" href=""
-                               style="display: block; background-image: url({{new['tv_img']}});">
+                               style="display: block; background-image: url({{new.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">7.0</span>
-                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至{{new['update_time']|string|truncate(13,end='')}}</span>
+                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至{{new.update_time|string|truncate(13,end='')}}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/voddetail/104909.html">{{new['tv_name']}}}</a>
+                               href="/voddetail/104909.html">{{new.tv_name}}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-                                何炅,仝卓,胡一天
+                                {{ new.tv_actors }}
                             </span>
                         </li>
                     {% endfor %}
