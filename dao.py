@@ -81,6 +81,14 @@ class DB:
         return cursor.fetchall()
 
     @staticmethod
+    def query_tv_like_hot(tv_type_item):
+        sql = f"select tv_id,tv_img,tv_name,tv_actors,tv_area,tv_year,update_time " \
+            f"from t_tv where tv_type = '{tv_type_item}' order by update_time desc limit 20"
+        cursor = DB.db.cursor()
+        cursor.execute(sql)
+        return cursor.fetchall()
+
+    @staticmethod
     def query_tv_detail(tv_id):
         """
         查询tv详情

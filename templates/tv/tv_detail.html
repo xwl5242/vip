@@ -37,7 +37,7 @@
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">分类：</span>
-                                <a href="/t-type/{{ tv_detail.tv_type }}" target="_blank">{{ tv_detail.tv_type }}</a>
+                                <a href="/tv/more/i={{ tv_detail.tv_type|b64encode }}" target="_blank">{{ tv_detail.tv_type }}</a>
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">地区：</span>
@@ -59,68 +59,51 @@
                     </dd>
                     <dd class="fed-deta-button fed-col-xs7 fed-col-sm8 fed-part-rows">
                         <a class="fed-deta-play fed-rims-info fed-btns-info fed-btns-green fed-col-xs4"
-                           href="/t-play/{{ tv_detail.tv_id }}">立即播放</a>
-{#                        <a class="fed-deta-down fed-rims-info fed-btns-info fed-btns-green fed-col-xs4"#}
-{#                           href="">下载</a>#}
+                           href="/t-play/{{ tv_detail.tv_id|b64encode }}/url={{ tv_detail.urls[0]|str_split('$')|get_list(1)|b64encode }}">立即播放</a>
                     </dd>
                 </dl>
 
             </div>
-            <div class="fed-hide-xs fed-col-sm4 fed-col-md3">
-                <div class="fed-side-code fed-text-right fed-padding">
-                    <p class="fed-side-text fed-text-muted fed-padding">扫描二维码手机看大片</p>
-                    <img class="fed-side-image fed-hide"
-                         src="/upload/site/20190527-1/22cbebc25787e92874d49a6ca96bfa89.png" alt="当前网页二维码">
-                </div>
-            </div>
+{#            <div class="fed-hide-xs fed-col-sm4 fed-col-md3">#}
+{#                <div class="fed-side-code fed-text-right fed-padding">#}
+{#                    <p class="fed-side-text fed-text-muted fed-padding">扫描二维码手机看大片</p>#}
+{#                    <img class="fed-side-image fed-hide" src="" alt="当前网页二维码">#}
+{#                </div>#}
+{#            </div>#}
         </div>
-        <div class="fed-tabs-info  fed-rage-foot fed-part-rows fed-part-layout fed-back-whits fed-play-data"
-             data-name="请输入搜索词：WWW" data-nums="" data-show="">
+        <div class="fed-tabs-info  fed-rage-foot fed-part-rows fed-part-layout fed-back-whits fed-play-data">
             <ul class="fed-list-head fed-part-rows fed-padding">
-                <li class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v fed-text-green" href="javascript:;">
+                <li id="tv_list" class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v fed-text-green" href="javascript:;">
                     播放列表
                 </li>
-                <li class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">剧情简介</li>
-                <li class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">发表评论</li>
-                <li class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">下载列表</li>
-                <li class="fed-part-tips fed-padding"><a class="fed-tabs-errs fed-event fed-more" href="javascript:;"
-                                                         data-href="/gbook/report.html">报错</a></li>
+                <li id="tv_intro" class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">剧情简介</li>
+                <li class="fed-part-tips fed-padding">
+                    <a class="fed-tabs-errs fed-event fed-more" href="javascript:;">报错</a>
+                </li>
             </ul>
             <div class="fed-tabs-boxs">
                 <div class="fed-tabs-item fed-drop-info fed-visible">
-{#                    <div class="fed-drop-boxs fed-drop-tops fed-matp-v">#}
-{#                        <ul class="fed-part-rows">#}
-{#                            <li class="fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">#}
-{#                                <a class="fed-btns-info fed-rims-info fed-part-eone fed-back-green"#}
-{#                                   href="/vodplay/82948-6-1.html">播放源➀</a>#}
-{#                            </li>#}
-{#                            <li class="fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">#}
-{#                                <a class="fed-btns-info fed-rims-info fed-part-eone"#}
-{#                                   href="/vodplay/82948-5-1.html">播放源➁</a>#}
-{#                            </li>#}
-{#                            <li class="fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">#}
-{#                                <a class="fed-btns-info fed-rims-info fed-part-eone"#}
-{#                                   href="/vodplay/82948-1-1.html">播放源➂</a>#}
-{#                            </li>#}
-{#                            <li class="fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">#}
-{#                                <a class="fed-btns-info fed-rims-info fed-part-eone"#}
-{#                                   href="/vodplay/82948-2-1.html">播放源➃</a>#}
-{#                            </li>#}
-{#                        </ul>#}
-{#                    </div>#}
                     <div class="fed-drop-boxs fed-drop-btms fed-matp-v">
                         <div class="fed-play-item fed-drop-item fed-visible">
                             <ul class="fed-drop-head fed-padding fed-part-rows">
                                 <li class="fed-padding fed-col-xs4 fed-part-eone fed-font-xvi">播放集数</li>
                                 <li class="fed-padding fed-col-xs8 fed-part-eone fed-font-xvi fed-text-right">
-                                    <a class="fed-drop-sort fed-back-green" href="javascript:;">视频排序：正序</a>
+                                    <a class="fed-drop-sort fed-back-green" style="cursor: pointer;" id="sx_switch">视频排序：正序</a>
                                 </li>
                             </ul>
-                            <ul class="fed-part-rows">
+                            <ul id="zx_url" class="fed-part-rows">
                                 {% for t_u in tv_detail.urls %}
                                     <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                         <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                           href="/t-play/url={{ t_u|str_split('$')|get_list(1)|b64encode }}">{{ t_u|str_split('$')|get_list(0) }}</a>
+                                           href="/t-play/{{ tv_detail.tv_id|b64encode }}/url={{ t_u|str_split('$')|get_list(1)|b64encode }}">{{ t_u|str_split('$')|get_list(0) }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <ul id="dx_url" class="fed-part-rows fed-hidden">
+                                {% for t_u in tv_detail.urls|reverse %}
+                                    <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
+                                        <a class="fed-btns-info fed-rims-info fed-part-eone"
+                                           href="/t-play/{{ tv_detail.tv_id|b64encode }}/{{ tv_detail.tv_id }}/url={{ t_u|str_split('$')|get_list(1)|b64encode }}">{{ t_u|str_split('$')|get_list(0) }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -129,86 +112,8 @@
                 </div>
                 <div class="fed-tabs-item fed-hidden">
                     <p class="fed-padding fed-part-both fed-text-muted">
-                        该剧是一部奇幻电视剧，讲述没有选择成为妻子或母亲的当今女性的真实生活和成功故事，将描写门户网站业界激烈的竞争故事
-                        林秀晶饰演裴多美一角，她是在门户网站工作的30代后半段的上班族，非常好胜，为了成功失去了很多东西，渐渐对自己的人生产生了怀疑。
-                        张基龙将在剧中饰演朴模建，他是制作游戏音乐的“密林Sound”公司代表，同时也是天才作曲家。 李多喜饰演车贤，她是一直停留在业界第2名的门户网站的公关本部长。
-                        全慧珍饰演宋佳京，她是女主裴多美工作的门户网站的理事。 </p>
-                </div>
-                <div class="fed-tabs-item fed-hidden">
-                    <div class="fed-comm-info" data-id="82948" data-mid="1">
-                        <form class="fed-comm-fort fed-comm-form" id="fed-comm-form" data-role="0" autocomplete="off"
-                              onkeydown="if(event.keyCode==13){return false}">
-                            <input type="hidden" name="comment_pid" value="0">
-                            <ul class="fed-part-rows">
-                                <li class="fed-padding fed-col-xs12"><textarea
-                                        class="fed-form-info fed-rims-info fed-form-area fed-comm-text fed-event"
-                                        name="comment_content" cols="40" rows="4" placeholder="输入留言内容"></textarea></li>
-                                <li class="fed-padding fed-col-xs12 fed-col-md4">
-                                    <p class="fed-form-info fed-rims-info fed-text-muted">提示：<span
-                                            class="fed-comm-tips">还可以输入255字</span></p>
-                                </li>
-                                <li class="fed-padding fed-col-xs6 fed-col-md4"><input
-                                        class="fed-form-info fed-rims-info fed-comm-veri" type="tel" name="verify"
-                                        placeholder="验证码"></li>
-                                <li class="fed-padding fed-col-xs3 fed-col-md2"><img class="fed-rims-info fed-comm-code"
-                                                                                     height="40"
-                                                                                     src="/index.php/verify/index.html"
-                                                                                     data-role="/index.php/verify/index.html"
-                                                                                     title="看不清楚? 换一张！"
-                                                                                     onclick="this.src=this.src+'?v=1561601615'">
-                                </li>
-                                <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-form-info fed-rims-info fed-btns-info fed-btns-green fed-comm-submit"
-                                       href="javascript:;">发表</a>
-                                </li>
-                            </ul>
-                        </form>
-                        <ul class="fed-comm-list">
-                            <li class="fed-text-center fed-padding fed-margin">还没有人评论哎！</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="fed-tabs-item fed-drop-info fed-hidden">
-                    <div class="fed-drop-boxs fed-drop-tops fed-matp-v">
-                        <ul class="fed-part-rows">
-                            <li class="fed-down-btns fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
-                                <a class="fed-btns-info fed-rims-info fed-part-eone fed-back-green" href="javascript:;">免费下载</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="fed-drop-boxs fed-drop-btms fed-matp-v">
-                        <div class="fed-down-item fed-drop-item fed-visible">
-                            <ul class="fed-drop-head fed-padding fed-part-rows">
-                                <li class="fed-padding fed-col-xs4 fed-part-eone fed-font-xvi">下载集数</li>
-                                <li class="fed-padding fed-col-xs8 fed-part-eone fed-font-xvi fed-text-right">
-                                    <a class="fed-drop-sort" href="javascript:;">视频排序：正序</a>
-                                </li>
-                            </ul>
-                            <ul class="fed-part-rows">
-                                <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone" href="/voddown/82948-1-1.html">第01集</a>
-                                </li>
-                                <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone" href="/voddown/82948-1-2.html">第02集</a>
-                                </li>
-                                <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone" href="/voddown/82948-1-3.html">第03集</a>
-                                </li>
-                                <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone" href="/voddown/82948-1-4.html">第04集</a>
-                                </li>
-                                <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone" href="/voddown/82948-1-5.html">第05集</a>
-                                </li>
-                                <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone" href="/voddown/82948-1-6.html">第06集</a>
-                                </li>
-                                <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone" href="/voddown/82948-1-7.html">第07集</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                        {{ tv_detail.tv_intro }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -216,89 +121,30 @@
             <div class="fed-list-head fed-part-rows fed-padding">
                 <h2 class="fed-font-xvi">相关热播</h2>
                 <ul class="fed-part-tips fed-padding">
-                    <li><a class="fed-more" href="/vodtype/rihanju.html">更多</a></li>
+                    <li><a class="fed-more" href="/tv/more/i-{{ tv_detail.tv_type|b64encode }}">更多</a></li>
                 </ul>
             </div>
             <ul class="fed-list-info fed-part-rows">
-                <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                    <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/68396.html"
-                       data-original="https://img.pic-imges.com/pic/upload/vod/2019-02/15496043093.jpg"
-                       style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2019-02/15496043093.jpg&quot;);">
-                        <span class="fed-list-play fed-hide-xs"></span>
-                        <span class="fed-list-score fed-font-xii fed-back-green">5.0</span>
-                        <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">完结</span>
-                    </a>
-                    <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                       href="/voddetail/68396.html">棋盘上的阿尔发～约定的将棋～</a>
-                    <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-玉木宏,比嘉爱未,上地雄辅,野野澄花,安井顺平,堀井新太</span>
-                </li>
-                <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                    <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/67167.html"
-                       data-original="https://img.tupian-zuida.com/pic/upload/vod/2018-04-15/201804151523802050.jpg"
-                       style="display: block; background-image: url(&quot;https://img.tupian-zuida.com/pic/upload/vod/2018-04-15/201804151523802050.jpg&quot;);">
-                        <span class="fed-list-play fed-hide-xs"></span>
-                        <span class="fed-list-score fed-font-xii fed-back-green">9.0</span>
-                        <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">8集全</span>
-                    </a>
-                    <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                       href="/voddetail/67167.html">管家西园寺的名推理</a>
-                    <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-,上川隆也,,八千草薰,佐藤二朗,</span>
-                </li>
-                <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                    <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/66622.html"
-                       data-original="https://img.pic-imges.com/pic/upload/vod/2019-03/15513705810.jpg"
-                       style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2019-03/15513705810.jpg&quot;);">
-                        <span class="fed-list-play fed-hide-xs"></span>
-                        <span class="fed-list-score fed-font-xii fed-back-green">1.0</span>
-                        <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">完结</span>
-                    </a>
-                    <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                       href="/voddetail/66622.html">暗之齿轮</a>
-                    <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-瑛太,绪形直人,大地康雄,中村苍</span>
-                </li>
-                <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                    <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/66615.html"
-                       data-original="http://pic.tudou1238.com/upload/vod/2019-03-03/155160087019.jpg">
-                        <span class="fed-list-play fed-hide-xs"></span>
-                        <span class="fed-list-score fed-font-xii fed-back-green">4.0</span>
-                        <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">连载1</span>
-                    </a>
-                    <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                       href="/voddetail/66615.html">靛蓝色的心情/靛蓝的追忆</a>
-                    <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-竹财辉之助,吉田宗洋,Munehiro,Yoshida,猪塚健太</span>
-                </li>
-                <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2 fed-hide-sm fed-show-md-block">
-                    <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/66598.html"
-                       data-original="http://pic.tudou1238.com/upload/vod/2019-02-25/15510863389.jpg">
-                        <span class="fed-list-play fed-hide-xs"></span>
-                        <span class="fed-list-score fed-font-xii fed-back-green">4.0</span>
-                        <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">连载6</span>
-                    </a>
-                    <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                       href="/voddetail/66598.html">小吉的妻子/小吉の女房</a>
-                    <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-泽口靖子,古田新太,铃木福,升毅</span>
-                </li>
-                <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2 fed-hide-sm fed-show-md-block">
-                    <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/66582.html"
-                       data-original="http://pic.tudou1238.com/upload/vod/2019-02-24/15509405015.jpg">
-                        <span class="fed-list-play fed-hide-xs"></span>
-                        <span class="fed-list-score fed-font-xii fed-back-green">10.0</span>
-                        <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">连载3</span>
-                    </a>
-                    <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                       href="/voddetail/66582.html">一页的恋爱/一页之恋</a>
-                    <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-桥本环奈,板垣瑞生,滨田龙臣,古川雄辉</span>
-                </li>
+                {% for lh in like_hots %}
+                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2
+                       {% if loop.index==5 or loop.index==6 %} fed-hide-sm fed-show-md-block{% endif %}">
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ lh.tv_id }}" style="display: block; background-image: url({{lh.tv_img}});">
+                            <span class="fed-list-play fed-hide-xs"></span>
+                            <span class="fed-list-score fed-font-xii fed-back-green">{{ lh.tv_area }}</span>
+                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ lh.update_time|string|truncate(13,end='') }}</span>
+                        </a>
+                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
+                           href="/t-d/{{ lh.tv_id }}">{{ lh.tv_name }}</a>
+                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
+                            {{ lh.tv_intro }}
+                        </span>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
     </div>
 </div>
 {% endblock %}
 {% block js %}
+    <script src="../../static/js/common.js"></script>
 {% endblock %}

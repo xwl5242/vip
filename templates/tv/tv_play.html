@@ -7,34 +7,17 @@
                     <style type="text/css">@media (max-width: 47.9375rem) {
                         .fed-play-player {
                             padding-top: 56.25% !important
-                        }
+                        }fed-play-iframe
                     }</style>
                     <div class="fed-play-loader fed-part-full" style="display: none;"><span
                             class="fed-part-core fed-font-xvi fed-text-white fed-text-center">正在加载，请稍后...</span></div>
                     <iframe id="fed-play-iframe" class="fed-play-iframe fed-part-full" frameborder="0" scrolling="no"
-                            allowfullscreen="true" data-lock="0" data-pass="1" data-auto="1" data-seek="0" data-code="1"
-                            data-trys="0" data-advs="0" data-link="" data-time="5" data-chat="0" data-word="MBn6ZW/5Z+O"
-                            data-stat="1" data-pars="https://391491.com/jx/?url="
-                            data-play="DDcaHR0cHM6Ly90dWRvdS5jb20tbC10dWRvdS5jb20vMjAxOTA2MjgvMjAxMTdfMTZhYTBjNzcvaW5kZXgubTN1OA=="
-                            data-next=""
-                            src="https://391491.com/jx/?url=https://tudou.com-l-tudou.com/20190628/20117_16aa0c77/index.m3u8"></iframe>
-                    <div class="fed-play-confirm fed-back-black fed-play-pays fed-play-box fed-back-whits fed-event fed-hidden">
-                        <div class="fed-part-core">
-                            <h2 class="fed-text-center fed-font-xvi">权限验证通过</h2>
-                            <p class="fed-text-center">提示：购买VIP会员组，享受超级权限，谢谢支持。</p>
-                            <div class="fed-text-center">
-                                <a class="fed-btns-info fed-rims-info fed-visible fed-padding fed-margin"
-                                   href="/user/reg.html">用户注册</a>
-                                <a class="fed-btns-info fed-rims-info fed-visible fed-padding fed-margin fed-back-green fed-navs-login"
-                                   href="javascript:;">立即登录</a>
-                            </div>
-                        </div>
-                    </div>
+                            allowfullscreen="true" src="{{ cur_tv_url }}"></iframe>
                 </div>
                 <div class="fed-play-title fed-part-rows">
                     <ul class="fed-play-boxs fed-padding fed-part-rows fed-col-xs12 fed-col-md6">
                         <li class="fed-padding fed-col-xs5">
-                            <span class="fed-play-text fed-visible fed-font-xvi fed-part-eone">暗夜新娘第一季第01集</span>
+                            <span class="fed-play-text fed-visible fed-font-xvi fed-part-eone">{{ tv_detail.tv_name }}</span>
                         </li>
                         <li class="fed-padding fed-col-xs4"><input
                                 class="fed-form-info fed-rims-info fed-rage-input fed-event" data-user="0"
@@ -72,68 +55,41 @@
                     </ul>
                 </div>
             </div>
-            <div class="fed-tabs-info  fed-rage-foot fed-part-rows fed-part-layout fed-back-whits fed-play-data"
-                 data-name="暗夜新娘第一季" data-nums="第01集" data-show="播放源➀">
+            <div class="fed-tabs-info  fed-rage-foot fed-part-rows fed-part-layout fed-back-whits fed-play-data">
                 <ul class="fed-list-head fed-part-rows fed-padding">
-                    <li class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v fed-text-green" href="javascript:;">
+                    <li id="tv_list" class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v fed-text-green" href="javascript:;">
                         播放列表
                     </li>
-                    <li class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">剧情简介</li>
-                    <li class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">发表评论</li>
-                    <li class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">下载列表</li>
-                    <li class="fed-part-tips fed-padding"><a class="fed-tabs-errs fed-event fed-more"
-                                                             href="javascript:;" data-href="/gbook/report.html">报错</a>
+                    <li  id="tv_intro" class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">剧情简介</li>
+                    <li class="fed-part-tips fed-padding">
+                        <a class="fed-tabs-errs fed-event fed-more" href="javascript:;">报错</a>
                     </li>
                 </ul>
                 <div class="fed-tabs-boxs">
                     <div class="fed-tabs-item fed-drop-info fed-visible">
-                        <div class="fed-drop-boxs fed-drop-tops fed-matp-v">
-                            <ul class="fed-part-rows">
-                                <li class="fed-play-btns fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone fed-back-green"
-                                       href="javascript:;">播放源➀</a>
-                                </li>
-                                <li class="fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                       href="/vodplay/105891-1-1.html">播放源➁</a>
-                                </li>
-                            </ul>
-                        </div>
                         <div class="fed-drop-boxs fed-drop-btms fed-matp-v">
                             <div class="fed-play-item fed-drop-item fed-visible">
                                 <ul class="fed-drop-head fed-padding fed-part-rows">
                                     <li class="fed-padding fed-col-xs4 fed-part-eone fed-font-xvi">播放集数</li>
                                     <li class="fed-padding fed-col-xs8 fed-part-eone fed-font-xvi fed-text-right">
-                                        <a class="fed-drop-sort fed-back-green" href="javascript:;">视频排序：正序</a>
+                                        <a id="sx_switch" class="fed-drop-sort fed-back-green" href="javascript:;">视频排序：正序</a>
                                     </li>
                                 </ul>
-                                <ul class="fed-part-rows">
-                                    <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
-                                        <a class="fed-btns-info fed-rims-info fed-part-eone fed-btns-green"
-                                           href="/vodplay/105891-2-1.html">第01集</a>
-                                    </li>
+                                <ul id="zx" class="fed-part-rows">
+                                    {% for t_u in tv_detail.urls %}
                                     <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                         <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                           href="/vodplay/105891-2-2.html">第02集</a>
+                                           href="/t-play/url={{ t_u|str_split('$')|get_list(1)|b64encode }}">{{ t_u|str_split('$')|get_list(0) }}</a>
                                     </li>
+                                    {% endfor %}
                                 </ul>
-                            </div>
-                            <div class="fed-play-item fed-drop-item fed-hidden">
-                                <ul class="fed-drop-head fed-padding fed-part-rows">
-                                    <li class="fed-padding fed-col-xs4 fed-part-eone fed-font-xvi">播放集数</li>
-                                    <li class="fed-padding fed-col-xs8 fed-part-eone fed-font-xvi fed-text-right">
-                                        <a class="fed-drop-sort fed-back-green" href="javascript:;">视频排序：正序</a>
-                                    </li>
-                                </ul>
-                                <ul class="fed-part-rows">
+                                <ul id="dx" class="fed-part-rows fed-hidden">
+                                    {% for t_u in tv_detail.urls|reverse %}
                                     <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                         <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                           href="/vodplay/105891-1-1.html">第01集</a>
+                                           href="/t-play/url={{ t_u|str_split('$')|get_list(1)|b64encode }}">{{ t_u|str_split('$')|get_list(0) }}</a>
                                     </li>
-                                    <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
-                                        <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                           href="/vodplay/105891-1-2.html">第02集</a>
-                                    </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -142,369 +98,92 @@
                         <div class="fed-col-xs12 fed-col-sm8 fed-col-md9">
                             <dl class="fed-deta-info fed-margin fed-part-rows fed-part-over">
                                 <dt class="fed-deta-images fed-list-info fed-col-xs3">
-                                    <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105891.html"
-                                       data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15616895670.jpg"
-                                       style="background-image: url(https://img.pic-imges.com/pic/upload/vod/2019-06/15616895670.jpg);">
+                                    <a class="fed-list-pics fed-lazy fed-part-2by3" href="#"
+                                       style="background-image: url({{ tv_detail.tv_img }});">
                                         <span class="fed-list-play fed-hide-xs"></span>
-                                        <span class="fed-list-score fed-font-xii fed-back-green">2.0</span>
-                                        <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至2集</span>
+                                        <span class="fed-list-score fed-font-xii fed-back-green">{{ tv_detail.tv_type }}</span>
+                                        <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
+                                            {{ tv_detail.update_time|string|truncate(13,end='') }}
+                                        </span>
                                     </a>
                                 </dt>
                                 <dd class="fed-deta-content fed-col-xs7 fed-col-sm8 fed-col-md10">
-                                    <h1 class="fed-part-eone fed-font-xvi"><a href="/voddetail/105891.html">暗夜新娘第一季</a>
+                                    <h1 class="fed-part-eone fed-font-xvi"><a href="#">{{ tv_detail.tv_name }}</a>
                                     </h1>
                                     <ul class="fed-part-rows">
-                                        <li class="fed-col-xs12 fed-col-md6 fed-part-eone"><span class="fed-text-muted">主演：</span>未知
+                                        <li class="fed-col-xs12 fed-col-md6 fed-part-eone"><span class="fed-text-muted">主演：</span>
+                                            {% for ta in tv_detail.tv_actors|str_split %}
+                                                <a href="/t-actors/{{ ta }}" target="_blank">{{ ta }}</a>
+                                            {% endfor %}
                                         </li>
-                                        <li class="fed-col-xs12 fed-col-md6 fed-part-eone"><span class="fed-text-muted">导演：</span>未知
+                                        <li class="fed-col-xs12 fed-col-md6 fed-part-eone"><span class="fed-text-muted">导演：</span>
+                                            {% for td in tv_detail.tv_director|str_split %}
+                                                <a href="/t-director/{{ td }}" target="_blank">{{ td }}</a>&nbsp;
+                                            {% endfor %}
                                         </li>
                                         <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">分类：</span><a
-                                                href="/vodtype/dongman.html" target="_blank">动漫</a></li>
+                                                href="/tv/more/i={{ tv_detail.tv_type|b64encode }}" target="_blank">{{ tv_detail.tv_type }}</a></li>
                                         <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">地区：</span><a
-                                                href="/vodsearch/area/%E5%A4%A7%E9%99%86.html" target="_blank">大陆</a>&nbsp;
+                                                href="/t-area/{{ tv_detail.tv_area }}" target="_blank">{{ tv_detail.tv_area }}</a>&nbsp;
                                         </li>
                                         <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">年份：</span><a
-                                                href="/vodsearch/year/2019.html" target="_blank">2019</a>&nbsp;
+                                                href="/t-year/{{ tv_detail.tv_year }}" target="_blank">{{ tv_detail.tv_year }}</a>&nbsp;
                                         </li>
-                                        <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">更新：</span>06.28
+                                        <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">更新：</span>
+                                            {{ tv_detail.update_time|string|truncate(13,end='') }}
                                         </li>
                                         <li class="fed-col-xs12 fed-hide fed-show-md-block">
                                             <div class="fed-part-esan">
-                                                <span class="fed-text-muted">简介：</span>茫茫人海之中，隐藏着以血为食的孤独生物——吸血鬼他们不老不死，能力强大，唯有被他们选中且深爱的新娘能带给他们死亡。
-                                                21世纪的现代社会，尚婉婉在见客户的途中被意外冲出的豪车撞了，昏迷时隐约听见有个声音在喊自己新娘。在医院睁开眼，竟然有个大帅哥要强吻自己，误会解除才知道对方是医生，刚才不过是要做检查。
+                                                <span class="fed-text-muted">简介：</span>
+                                                {{ tv_detail.tv_intro }}
                                             </div>
                                         </li>
                                     </ul>
                                 </dd>
-                                <dd class="fed-deta-button fed-col-xs7 fed-col-sm8 fed-part-rows">
-                                    <a class="fed-deta-play fed-rims-info fed-btns-info fed-btns-green fed-col-xs4"
-                                       href="/voddetail/105891.html">查看详情</a>
-                                    <a class="fed-deta-down fed-rims-info fed-btns-info fed-btns-green fed-col-xs4"
-                                       href="/voddown/105891-1-1.html">下载</a>
-                                </dd>
                             </dl>
 
                         </div>
-                        <div class="fed-hide-xs fed-col-sm4 fed-col-md3">
-                            <div class="fed-side-code fed-text-right fed-padding">
-                                <p class="fed-side-text fed-text-muted fed-padding">扫描二维码手机看大片</p>
-                                <img class="fed-side-image fed-hide"
-                                     src="/upload/site/20190527-1/22cbebc25787e92874d49a6ca96bfa89.png" alt="当前网页二维码">
-                                <img src="data:image/png;base64,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">
-                            </div>
-                        </div>
+{#                        <div class="fed-hide-xs fed-col-sm4 fed-col-md3">#}
+{#                            <div class="fed-side-code fed-text-right fed-padding">#}
+{#                                <p class="fed-side-text fed-text-muted fed-padding">扫描二维码手机看大片</p>#}
+{#                                <img class="fed-side-image fed-hide" src="" alt="当前网页二维码">#}
+{#                                <img src="data:image/png;base64,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">#}
+{#                            </div>#}
+{#                        </div>#}
                         <p class="fed-padding fed-part-both fed-text-muted">
-                            茫茫人海之中，隐藏着以血为食的孤独生物——吸血鬼他们不老不死，能力强大，唯有被他们选中且深爱的新娘能带给他们死亡。
-                            21世纪的现代社会，尚婉婉在见客户的途中被意外冲出的豪车撞了，昏迷时隐约听见有个声音在喊自己新娘。在医院睁开眼，竟然有个大帅哥要强吻自己，误会解除才知道对方是医生，刚才不过是要做检查。放下心的她却不知向以轩其实是隐藏在人群中的吸血鬼，认出了她是自己前世的准新娘，已将她视为自己的所有物…… </p>
-                    </div>
-                    <div class="fed-tabs-item fed-hidden">
-                        <div class="fed-comm-info" data-id="105891" data-mid="1">
-                            <form class="fed-comm-fort fed-comm-form" id="fed-comm-form" data-role="0"
-                                  autocomplete="off" onkeydown="if(event.keyCode==13){return false}">
-                                <input type="hidden" name="comment_pid" value="0">
-                                <ul class="fed-part-rows">
-                                    <li class="fed-padding fed-col-xs12"><textarea
-                                            class="fed-form-info fed-rims-info fed-form-area fed-comm-text fed-event"
-                                            name="comment_content" cols="40" rows="4" placeholder="输入留言内容"></textarea>
-                                    </li>
-                                    <li class="fed-padding fed-col-xs12 fed-col-md4">
-                                        <p class="fed-form-info fed-rims-info fed-text-muted">提示：<span
-                                                class="fed-comm-tips">还可以输入255字</span></p>
-                                    </li>
-                                    <li class="fed-padding fed-col-xs6 fed-col-md4"><input
-                                            class="fed-form-info fed-rims-info fed-comm-veri" type="tel" name="verify"
-                                            placeholder="验证码"></li>
-                                    <li class="fed-padding fed-col-xs3 fed-col-md2"><img
-                                            class="fed-rims-info fed-comm-code" height="40"
-                                            src="/index.php/verify/index.html" data-role="/index.php/verify/index.html"
-                                            title="看不清楚? 换一张！" onclick="this.src=this.src+'?v=1561696539'"></li>
-                                    <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                        <a class="fed-form-info fed-rims-info fed-btns-info fed-btns-green fed-comm-submit"
-                                           href="javascript:;">发表</a>
-                                    </li>
-                                </ul>
-                            </form>
-                            <ul class="fed-comm-list">
-                                <li class="fed-text-center fed-padding fed-margin">还没有人评论哎！</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="fed-tabs-item fed-drop-info fed-hidden">
-                        <div class="fed-drop-boxs fed-drop-tops fed-matp-v">
-                            <ul class="fed-part-rows">
-                                <li class="fed-down-btns fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone fed-back-green"
-                                       href="javascript:;">免费下载</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="fed-drop-boxs fed-drop-btms fed-matp-v">
-                            <div class="fed-down-item fed-drop-item fed-visible">
-                                <ul class="fed-drop-head fed-padding fed-part-rows">
-                                    <li class="fed-padding fed-col-xs4 fed-part-eone fed-font-xvi">下载集数</li>
-                                    <li class="fed-padding fed-col-xs8 fed-part-eone fed-font-xvi fed-text-right">
-                                        <a class="fed-drop-sort" href="javascript:;">视频排序：正序</a>
-                                    </li>
-                                </ul>
-                                <ul class="fed-part-rows">
-                                    <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                        <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                           href="/voddown/105891-1-1.html">第01集</a>
-                                    </li>
-                                    <li class="fed-padding fed-col-xs3 fed-col-md2">
-                                        <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                           href="/voddown/105891-1-2.html">第02集</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                            {{ tv_detail.tv_intro }}
+                        </p>
                     </div>
                 </div>
-            </div>
-            <div class="fed-part-layout fed-back-whits">
-                <div class="fed-list-head fed-part-rows fed-padding">
-                    <h2 class="fed-font-xvi">相关明星</h2>
-                    <ul class="fed-part-tips fed-padding">
-                        <li><a class="fed-more" href="/actor.html">更多</a></li>
-                    </ul>
-                </div>
-                <ul class="fed-list-info fed-part-rows">
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-25.html"
-                           data-original="//imgwx3.2345.com/dypcimg/star/img/c/0/16/photo_192x262.jpg?1477534221"
-                           style="display: block; background-image: url(&quot;//imgwx3.2345.com/dypcimg/star/img/c/0/16/photo_192x262.jpg?1477534221&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">299浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-25.html">杨幂</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-26.html"
-                           data-original="//imgwx3.2345.com/dypcimg/star/img/f/0/335/photo_192x262.jpg?1509947665"
-                           style="display: block; background-image: url(&quot;//imgwx3.2345.com/dypcimg/star/img/f/0/335/photo_192x262.jpg?1509947665&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">179浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-26.html">杨紫</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-27.html"
-                           data-original="//imgwx3.2345.com/dypcimg/star/img/a/8/24330/photo_192x262.jpg?1509946884"
-                           style="display: block; background-image: url(&quot;//imgwx3.2345.com/dypcimg/star/img/a/8/24330/photo_192x262.jpg?1509946884&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">843浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-27.html">关晓彤</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-28.html"
-                           data-original="//imgwx5.2345.com/dianyingimg/star/img/3/8/26242/photo_192x262.jpg?1442471602"
-                           style="display: block; background-image: url(&quot;//imgwx5.2345.com/dianyingimg/star/img/3/8/26242/photo_192x262.jpg?1442471602&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">57浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-28.html">鹿晗</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-29.html"
-                           data-original="//imgwx3.2345.com/dypcimg/star/img/d/0/1806/photo_192x262.jpg?1505374685"
-                           style="display: block; background-image: url(&quot;//imgwx3.2345.com/dypcimg/star/img/d/0/1806/photo_192x262.jpg?1505374685&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">587浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-29.html">罗晋</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-30.html"
-                           data-original="//imgwx5.2345.com/dianyingimg/star/img/3/0/23/photo_192x262.jpg"
-                           style="display: block; background-image: url(&quot;//imgwx5.2345.com/dianyingimg/star/img/3/0/23/photo_192x262.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">430浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-30.html">范冰冰</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-31.html"
-                           data-original="//imgwx2.2345.com/dypcimg/star/img/f/0/76/photo_192x262.jpg?1509954497"
-                           style="display: block; background-image: url(&quot;//imgwx2.2345.com/dypcimg/star/img/f/0/76/photo_192x262.jpg?1509954497&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">49浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-31.html">何炅</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-32.html"
-                           data-original="//imgwx4.2345.com/dianyingimg/star/img/c/0/50/photo_192x262.jpg"
-                           style="display: block; background-image: url(&quot;//imgwx4.2345.com/dianyingimg/star/img/c/0/50/photo_192x262.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">925浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-32.html">唐嫣</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-33.html"
-                           data-original="//imgwx2.2345.com/dianyingimg/star/img/6/0/275/photo_192x262.jpg"
-                           style="display: block; background-image: url(&quot;//imgwx2.2345.com/dianyingimg/star/img/6/0/275/photo_192x262.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">414浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-33.html">王宝强</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-34.html"
-                           data-original="//imgwx5.2345.com/dianyingimg/star/img/7/4/12595/photo_192x262.jpg"
-                           style="display: block; background-image: url(&quot;//imgwx5.2345.com/dianyingimg/star/img/7/4/12595/photo_192x262.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">250浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-34.html">徐海乔</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-35.html"
-                           data-original="//imgwx3.2345.com/dianyingimg/star/img/4/0/417/photo_192x262.jpg"
-                           style="display: block; background-image: url(&quot;//imgwx3.2345.com/dianyingimg/star/img/4/0/417/photo_192x262.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">365浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-35.html">聂远</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/actordetail-36.html"
-                           data-original="//imgwx3.2345.com/dianyingimg/star/img/8/0/1586/photo_192x262.jpg"
-                           style="display: block; background-image: url(&quot;//imgwx3.2345.com/dianyingimg/star/img/8/0/1586/photo_192x262.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">149浏览</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/actordetail-36.html">杨烁</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-内地</span>
-                    </li>
-                </ul>
             </div>
             <div class="fed-part-layout fed-back-whits">
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">相关热播</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li><a class="fed-more" href="/vodtype/dongman.html">更多</a></li>
+                        <li><a class="fed-more" href="/tv/more/i-{{ tv_detail.tv_type|b64encode }}">更多</a></li>
                     </ul>
                 </div>
                 <ul class="fed-list-info fed-part-rows">
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/74988.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-04/15550830461.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2019-04/15550830461.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">10.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/74988.html">盗梦特攻队</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-伊万·卡马拉斯,加布里瑞拉·哈默里,ZalánMakranczi</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/72274.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2018-03/201803261522064264.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2018-03/201803261522064264.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">10.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD高清</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/72274.html">萌兄蠢弟之大明星奇遇记</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-[db:演员]</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/72143.html"
-                           data-original="https://img.tupian-zuida.com/pic/upload/vod/2019-04-03/201904031554270792.png"
-                           style="display: block; background-image: url(&quot;https://img.tupian-zuida.com/pic/upload/vod/2019-04-03/201904031554270792.png&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">3.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">BD高清</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/72143.html">飞机总动员2：火线救援</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-美国动漫</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/71760.html"
-                           data-original="https://img.tupian-zuida.com/pic/upload/vod/2018-03-12/201803121520836436.png"
-                           style="display: block; background-image: url(&quot;https://img.tupian-zuida.com/pic/upload/vod/2018-03-12/201803121520836436.png&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">5.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">BD高清</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/71760.html">哭泣的石头</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-[db:演员]</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2 fed-hide-sm fed-show-md-block">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/71261.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2018-03/15221528029.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2018-03/15221528029.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">10.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD高清</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/71261.html">千姬变2之帝女幽魂</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-钟一宪,陈丽玲,</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2 fed-hide-sm fed-show-md-block">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/71200.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2018-09/15370805280.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2018-09/15370805280.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">2.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/71200.html">恋曲之无爱不欢</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-陈希郡,邓琳,崔龙阳,张冬玲,</span>
-                    </li>
+                    {% for lh in like_hots %}
+                        <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2
+                           {% if loop.index==5 or loop.index==6 %} fed-hide-sm fed-show-md-block{% endif %}">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ lh.tv_id }}" style="display: block; background-image: url({{lh.tv_img}});">
+                                <span class="fed-list-play fed-hide-xs"></span>
+                                <span class="fed-list-score fed-font-xii fed-back-green">{{ lh.tv_area }}</span>
+                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ lh.update_time|string|truncate(13,end='') }}</span>
+                            </a>
+                            <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
+                               href="/t-d/{{ lh.tv_id }}">{{ lh.tv_name }}</a>
+                            <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
+                                {{ lh.tv_intro }}
+                            </span>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block js %}
+    <script src="../../static/js/common.js"></script>
 {% endblock %}

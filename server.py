@@ -39,6 +39,13 @@ def tv_more_2_html(tv_type):
     return render_template(html, today=today, total=total, tv_more=tv_more)
 
 
+@app.route('/tv/more/i-<tv_item>')
+def tv_more_item(tv_item):
+    tv_item = str(base64.b64decode(str(tv_item).encode('utf-8')), 'utf-8')
+    print(tv_item)
+    return render_template('tv/tv_item.html')
+
+
 @app.route('/t-d/<tv_id>')
 def tv_detail_2_html(tv_id):
     """
@@ -46,7 +53,12 @@ def tv_detail_2_html(tv_id):
     :param tv_id:
     :return:
     """
-    return render_template('tv/tv_detail.html', tv_detail=DB.query_tv_detail(tv_id))
+    tv_id = str(base64.b64decode(str(tv_id).encode('utf-8')), 'utf-8')
+    detail = DB.query_tv_detail(tv_id)
+    like_hot = DB.query_tv_like_hot(detail.get('tv_type'))
+    # random select 6 item
+    random.shuffle(like_hot)
+    return render_template('tv/tv_detail.html', tv_detail=detail, like_hots=like_hot[0:6])
 
 
 @app.route('/t-t/<tv_type>-<tv_index>')
@@ -60,10 +72,14 @@ def tv_type_2_html(tv_type, tv_index):
     return render_template('tv/tv_item.html', tvs=DB.query_tv_type_item(tv_type, tv_index))
 
 
-@app.route('/t-play/url=<url>')
-def tv_play__2_html(url):
+@app.route('/t-play/<tv_id>/url=<url>')
+def tv_play__2_html(tv_id, url):
     url = str(base64.b64decode(str(url).encode('utf-8')), 'utf-8')
-    return render_template('tv/tv_play.html')
+    tv_id = str(base64.b64decode(str(tv_id).encode('utf-8')), 'utf-8')
+    detail = DB.query_tv_detail(tv_id)
+    like_host = DB.query_tv_like_hot(detail.get('tv_type'))
+    random.shuffle(like_host)
+    return render_template('tv/tv_play.html', cur_tv_url=url, tv_detail=detail, like_hosts=like_host[0:6])
 
 
 def split_strings(s, sep=','):

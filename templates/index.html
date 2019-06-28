@@ -114,14 +114,14 @@
                 <ul class="fed-list-info fed-part-rows">
                     {% for new in news%}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ new.tv_id }}"
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ new.tv_id|b64encode }}"
                                style="display: block; background-image: url({{new.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ new.tv_type }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至{{new.update_time|string|truncate(13,end='')}}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/t-d/{{ new.tv_id }}">{{new.tv_name}}</a>
+                               href="/t-d/{{ new.tv_id|b64encode }}">{{new.tv_name}}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ new.tv_actors }}
                             </span>
@@ -221,13 +221,13 @@
                         {% for mv in mvs%}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ mv.tv_id }}" style="display: block; background-image: url({{mv.tv_img}});">
+                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ mv.tv_id|b64encode }}" style="display: block; background-image: url({{mv.tv_img}});">
                                     <span class="fed-list-play fed-hide-xs"></span>
                                     <span class="fed-list-score fed-font-xii fed-back-green">{{ mv.tv_type }}</span>
                                     <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ mv.tv_lang }}</span>
                                 </a>
                                 <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                                   href="/t-d/{{ mv.tv_id }}">{{ mv.tv_name }}</a>
+                                   href="/t-d/{{ mv.tv_id|b64encode }}">{{ mv.tv_name }}</a>
                                 <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                     {{ mv.intro }}
                                 </span>
@@ -364,13 +364,13 @@
                         {% for dsj in dsjs %}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                                 {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dsj.tv_id }}" style="display: block; background-image: url({{dsj.tv_img}});">
+                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dsj.tv_id|b64encode }}" style="display: block; background-image: url({{dsj.tv_img}});">
                                     <span class="fed-list-play fed-hide-xs"></span>
                                     <span class="fed-list-score fed-font-xii fed-back-green">{{ dsj.tv_area }}</span>
                                     <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新{{ dsj.update_time|string|truncate(13,end='') }}</span>
                                 </a>
                                 <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                                   href="/t-d/{{ dsj.tv_id }}">{{ dsj.tv_name }}</a>
+                                   href="/t-d/{{ dsj.tv_id|b64encode }}">{{ dsj.tv_name }}</a>
                                 <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                     {{ dsj.tv_actors }}
                                 </span>
@@ -496,13 +496,13 @@
                         {% for zy in zys %}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ zy.tv_id }}" style="display: block; background-image: url({{zy.tv_img}});">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ zy.tv_id|b64encode }}" style="display: block; background-image: url({{zy.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ zy.tv_area }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至{{ zy.update_time|string|truncate(13,end='') }}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/t-d/{{ zy.tv_id }}">{{ zy.tv_name }}</a>
+                               href="/t-d/{{ zy.tv_id|b64encode }}">{{ zy.tv_name }}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ zy.actors }}
                             </span>
@@ -660,13 +660,13 @@
                         {% for dm in dms %}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dm.tv_id }}" style="display: block; background-image: url({{dm.tv_img}});">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dm.tv_id|b64encode }}" style="display: block; background-image: url({{dm.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ dm.tv_area }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新到{{ dm.update_time|string|truncate(13,end='') }}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/t-d/{{ dm.tv_id }}">{{ dm.tv_name }}</a>
+                               href="/t-d/{{ dm.tv_id|b64encode }}">{{ dm.tv_name }}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ dm.tv_actors }}
                             </span>
