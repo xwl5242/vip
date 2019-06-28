@@ -135,7 +135,7 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">电影</h2>
                     <ul class="fed-part-tips fed-padding">
-                        {% for mt in mv_type %}
+                        {% for mt in mv_kv_type %}
                             <li class="fed-hide-xs"><a href="/t-t/mv-{{ mt[0] }}">{{ mt[1] }}</a> /</li>
                         {% endfor %}
                         <li><a class="fed-more" href="/tv/more/mv">更多</a></li>
@@ -240,7 +240,7 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">连续剧</h2>
                     <ul class="fed-part-tips fed-padding">
-                        {% for dsjt in dsj_type %}
+                        {% for dsjt in dsj_kv_type %}
                             <li class="fed-hide-xs"><a href="/t-t/dsj-{{ dsjt[0] }}">{{ dsjt[1] }}</a> /</li>
                         {% endfor %}
                         <li><a class="fed-more" href="/tv/more/dsj">更多</a></li>
@@ -363,18 +363,18 @@
                     <ul class="fed-list-info fed-part-rows">
                         {% for dsj in dsjs %}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
-                            {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dsj.tv_id }}" style="display: block; background-image: url({{dsj.tv_img}});">
-                                <span class="fed-list-play fed-hide-xs"></span>
-                                <span class="fed-list-score fed-font-xii fed-back-green">{{ dsj.tv_area }}</span>
-                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新{{ dsj.update_time|string|truncate(13,end='') }}</span>
-                            </a>
-                            <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/t-d/{{ dsj.tv_id }}">{{ dsj.tv_name }}</a>
-                            <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-                                {{ dsj.tv_actors }}
-                            </span>
-                        </li>
+                                {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
+                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dsj.tv_id }}" style="display: block; background-image: url({{dsj.tv_img}});">
+                                    <span class="fed-list-play fed-hide-xs"></span>
+                                    <span class="fed-list-score fed-font-xii fed-back-green">{{ dsj.tv_area }}</span>
+                                    <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新{{ dsj.update_time|string|truncate(13,end='') }}</span>
+                                </a>
+                                <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
+                                   href="/t-d/{{ dsj.tv_id }}">{{ dsj.tv_name }}</a>
+                                <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
+                                    {{ dsj.tv_actors }}
+                                </span>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -383,7 +383,7 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">综艺</h2>
                     <ul class="fed-part-tips fed-padding">
-                        {% for zyt in zy_type %}
+                        {% for zyt in zy_kv_type %}
                             <li class="fed-hide-xs"><a href="/t-t/zy-{{ zyt[0] }}">{{ zyt[1] }}</a> /</li>
                         {% endfor %}
                         <li><a class="fed-more" href="/tv/more/zy">更多</a></li>
@@ -515,7 +515,7 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">动漫</h2>
                     <ul class="fed-part-tips fed-padding">
-                        {% for dmt in dm_type %}
+                        {% for dmt in dm_kv_type %}
                             <li class="fed-hide-xs"><a href="/t-t/dm-{{ dmt[0] }}">{{ dmt[1] }}</a> /</li>
                         {% endfor %}
                         <li><a class="fed-more" href="/tv/more/dm">更多</a></li>

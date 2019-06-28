@@ -1,25 +1,25 @@
 # -*- coding:utf-8 -*-
+import json
 import pymysql
-import configparser
 
 
 class Config:
     """
     全局配置类
     """
-    # 读取全局配置文件config.ini
-    cf = configparser.ConfigParser()
-    cf.read('config.ini', encoding='utf-8')
-    # 视频类型section
-    MV = [mv for mv in cf.get('tv_type', 'mv').split(',')]
-    DM = [dm for dm in cf.get('tv_type', 'dm').split(',')]
-    ZY = [zy for zy in cf.get('tv_type', 'zy').split(',')]
-    DSJ = [dsj for dsj in cf.get('tv_type', 'dsj').split(',')]
-    MV_TYPE = [(mv.split(':')[0], mv.split(':')[1]) for mv in cf.get('tv_type', 'mv_type').split(',')]
-    DM_TYPE = [(dm.split(':')[0], dm.split(':')[1]) for dm in cf.get('tv_type', 'dm_type').split(',')]
-    ZY_TYPE = [(zy.split(':')[0], zy.split(':')[1]) for zy in cf.get('tv_type', 'zy_type').split(',')]
-    DSJ_TYPE = [(dsj.split(':')[0], dsj.split(':')[1]) for dsj in cf.get('tv_type', 'dsj_type').split(',')]
-    TYPES = {'mv': MV_TYPE, 'dm': DM_TYPE, 'zy': ZY_TYPE, 'dsj': DSJ_TYPE}
+    TV_TYPE_KV_DICT = {}
+    MV, DM, ZY, DSJ = 'mv', 'dm', 'zy', 'dsj'
+
+    with open('config.json', 'r', encoding='utf-8') as f:
+        TV_TYPE_KV_DICT = json.loads(f.read())['tv_types']
+
+    @classmethod
+    def item_value_list(cls, t):
+        return [dict(tt).get('value') for tt in dict(cls.TV_TYPE_KV_DICT).get(t)]
+
+    @classmethod
+    def item_list(cls, t):
+        return [(dict(tt).get('key'), dict(tt).get('value')) for tt in dict(cls.TV_TYPE_KV_DICT).get(t)]
 
 
 class DB:
@@ -31,13 +31,18 @@ class DB:
                          charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 
     @staticmethod
-    def query_index_today_total_update():
+    def query_today_total_update(tv_type):
         """
         首页今日更新和总视频数量
+        :param tv_type: None:所有，not None:当前类型的影片更新情况
         :return:
         """
-        today_sql = "select count(1) total from t_tv where date_format(update_time,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d') "
-        total_sql = "select count(1) total from t_tv"
+        tv_type = Config.item_value_list(tv_type) if tv_type else None
+        types = "','".join(tv_type) if tv_type else None
+        where_str = f" and  tv_type in ('{types}')" if tv_type else ''
+        today_sql = f"select count(1) total from t_tv where 1=1 {where_str} and " \
+                    f"date_format(update_time,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d') "
+        total_sql = f"select count(1) total from t_tv where 1=1 {where_str}"
         cursor = DB.db.cursor()
         cursor.execute(today_sql)
         today = cursor.fetchone()
@@ -60,13 +65,13 @@ class DB:
         return cursor.fetchall()
 
     @staticmethod
-    def query_index_mvs(config_tv_type):
+    def query_index_mvs(tv_type):
         """
         首页各种类视频
-        :param config_tv_type:
+        :param tv_type:
         :return:
         """
-        where_str = "','".join(config_tv_type)
+        where_str = "','".join(Config.item_value_list(tv_type))
         sql = f"select id, tv_id, tv_name, tv_img, tv_actors, tv_type, tv_area, update_time " \
             f"from t_tv where tv_type in('{where_str}') order by update_time desc limit 8"
         cursor = DB.db.cursor()
@@ -75,6 +80,11 @@ class DB:
 
     @staticmethod
     def query_tv_detail(tv_id):
+        """
+        查询tv详情
+        :param tv_id:
+        :return:
+        """
         d_sql = f"select tv.tv_id, tv_img, tv_name, tv_actors, tv_director, tv_type, tv_area, tv_lang, " \
                 f"tv_year, tv_intro, tv_remark, update_time from t_tv tv where tv.tv_id='{tv_id}'"
         u_sql = f"select tv_url from t_tv_urls where tv_id='{tv_id}'"
@@ -89,6 +99,49 @@ class DB:
         return detail
 
     @staticmethod
+    def query_tv_more(tv_type):
+        """
+        首页每项视频的更多
+        :param tv_type:
+        :return:
+        """
+        result = {}
+        cursor = DB.db.cursor()
+        for tty in Config.item_value_list(tv_type):
+            sql = f"select tv_id,tv_img,tv_name,tv_actors,tv_area,tv_year,update_time " \
+                  f"from t_tv where tv_type='{tty}' order by update_time desc limit 12"
+            cursor.execute(sql)
+            result[tty] = cursor.fetchall()
+        result['tv_types'] = Config.item_list(tv_type)
+        where_str = "','".join(Config.item_value_list(tv_type))
+        area_sql = f"select group_concat(distinct tv_area) areas from t_tv where tv_type in('{where_str}')"
+        cursor.execute(area_sql)
+        tv_areas = cursor.fetchone()['areas']
+        tv_areas = [aa for aa in str(tv_areas).split(',') if '其' not in aa]
+        result['tv_areas'] = tv_areas
+        return result
+
+    @staticmethod
+    def query_tv_type_item(tv_type, tv_item):
+        """
+        查询大类下的子类tv
+        :param tv_type: 大类  电影 电视剧 综艺 动漫
+        :param tv_item: 小类  动作片  喜剧片    ...
+        :return:
+        """
+        result = []
+        tv_type = [(k, v) for (k, v) in Config.item_list(tv_type) if int(k) == int(tv_item)]
+        tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
+        if tv_type:
+            sql = f"select tv_id,tv_img,tv_name,tv_actors,tv_area," \
+                  f"tv_year,update_time from t_tv where tv_type='{tv_type}'"
+            print(sql)
+            cursor = DB.db.cursor()
+            cursor.execute(sql)
+            result = cursor.fetchall()
+        return result
+
+    @staticmethod
     def query_friend_urls():
         """
         首页友情链接
@@ -101,6 +154,7 @@ class DB:
 
 
 if __name__ == '__main__':
-    print(Config.MV)
+    print(Config.item_list('mv'))
+    print(Config.item_value_list('mv'))
 
 
