@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import base64
+import random
 from flask import Flask, render_template, jsonify
 from dao import DB, Config
 # name, static resource path, templates resource path
@@ -21,7 +22,7 @@ def index():
                            zys=DB.query_index_mvs(Config.ZY), mv_kv_type=Config.item_list(Config.MV),
                            dm_kv_type=Config.item_list(Config.DM), zy_kv_type=Config.item_list(Config.ZY),
                            dsj_kv_type=Config.item_list(Config.DSJ), fus=DB.query_friend_urls(), today=today,
-                           total=total)
+                           total=total, theme_style=Config.THEME_STYLES[random.randint(0, 7)])
 
 
 @app.route('/tv/more/<tv_type>')

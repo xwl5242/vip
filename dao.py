@@ -7,11 +7,13 @@ class Config:
     """
     全局配置类
     """
-    TV_TYPE_KV_DICT = {}
+    JSON_DICT = {}
     MV, DM, ZY, DSJ = 'mv', 'dm', 'zy', 'dsj'
 
     with open('config.json', 'r', encoding='utf-8') as f:
-        TV_TYPE_KV_DICT = json.loads(f.read())['tv_types']
+        JSON_DICT = json.loads(f.read())
+    TV_TYPE_KV_DICT = JSON_DICT['tv_types']
+    THEME_STYLES = list(JSON_DICT['theme_styles'])
 
     @classmethod
     def item_value_list(cls, t):

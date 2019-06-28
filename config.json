@@ -80,5 +80,6 @@
         "value": "日本剧"
       }
     ]
-  }
+  },
+  "theme_styles":["black", "gules", "glass", "colou", "green", "blues", "pinks","golds"]
 }
