@@ -105,23 +105,23 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">最近更新</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li>今日更新&nbsp;<span class="fed-text-green">149</span>&nbsp;部&nbsp;&nbsp;共&nbsp;<span
-                                class="fed-text-green">37860&nbsp;</span>部
+                        <li>今日更新&nbsp;<span class="fed-text-green">{{ today }}</span>&nbsp;部&nbsp;&nbsp;共&nbsp;<span
+                                class="fed-text-green">{{ total }}&nbsp;</span>部
                         </li>
-                        <li><a class="fed-more" href="/label/news.html">更多</a></li>
+                        <li><a class="fed-more" href="/tv/more/all">更多</a></li>
                     </ul>
                 </div>
                 <ul class="fed-list-info fed-part-rows">
                     {% for new in news%}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href=""
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ new.tv_id }}"
                                style="display: block; background-image: url({{new.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ new.tv_type }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至{{new.update_time|string|truncate(13,end='')}}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/voddetail/104909.html">{{new.tv_name}}</a>
+                               href="/t-d/{{ new.tv_id }}">{{new.tv_name}}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ new.tv_actors }}
                             </span>
@@ -135,14 +135,10 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">电影</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li class="fed-hide-xs"><a href="/vodtype/dongzuopian.html">动作片</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/xijupian.html">喜剧片</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/aiqingpian.html">爱情片</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/kehuanpian.html">科幻片</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/kongbupian.html">恐怖片</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/juqingpian.html">剧情片</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/zhanzhengpian.html">战争片</a> /</li>
-                        <li><a class="fed-more" href="/vodtype/dianying.html">更多</a></li>
+                        {% for mt in mv_type %}
+                            <li class="fed-hide-xs"><a href="/t-t/mv-{{ mt[0] }}">{{ mt[1] }}</a> /</li>
+                        {% endfor %}
+                        <li><a class="fed-more" href="/tv/more/mv">更多</a></li>
                     </ul>
                 </div>
                 <div class="fed-padding fed-col-sx12 fed-col-md5">
@@ -225,13 +221,13 @@
                         {% for mv in mvs%}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="" style="display: block; background-image: url({{mv.tv_img}});">
+                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ mv.tv_id }}" style="display: block; background-image: url({{mv.tv_img}});">
                                     <span class="fed-list-play fed-hide-xs"></span>
                                     <span class="fed-list-score fed-font-xii fed-back-green">{{ mv.tv_type }}</span>
                                     <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ mv.tv_lang }}</span>
                                 </a>
                                 <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                                   href="/voddetail/105825.html">{{ mv.tv_name }}</a>
+                                   href="/t-d/{{ mv.tv_id }}">{{ mv.tv_name }}</a>
                                 <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                     {{ mv.intro }}
                                 </span>
@@ -244,11 +240,10 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">连续剧</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li class="fed-hide-xs"><a href="/vodtype/guochanju.html">国产剧</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/gangtaiju.html">港台剧</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/rihanju.html">日韩剧</a> /</li>
-                        <li class="fed-hide-xs"><a href="/vodtype/oumeiju.html">欧美剧</a> /</li>
-                        <li><a class="fed-more" href="/vodtype/lianxuju.html">更多</a></li>
+                        {% for dsjt in dsj_type %}
+                            <li class="fed-hide-xs"><a href="/t-t/dsj-{{ dsjt[0] }}">{{ dsjt[1] }}</a> /</li>
+                        {% endfor %}
+                        <li><a class="fed-more" href="/tv/more/dsj">更多</a></li>
                     </ul>
                 </div>
                 <div class="fed-padding fed-col-sx12 fed-col-md5">
@@ -369,13 +364,13 @@
                         {% for dsj in dsjs %}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="" style="display: block; background-image: url({{dsj.tv_img}});">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dsj.tv_id }}" style="display: block; background-image: url({{dsj.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ dsj.tv_area }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新{{ dsj.update_time|string|truncate(13,end='') }}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/voddetail/82948.html">{{ dsj.tv_name }}</a>
+                               href="/t-d/{{ dsj.tv_id }}">{{ dsj.tv_name }}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ dsj.tv_actors }}
                             </span>
@@ -388,7 +383,10 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">综艺</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li><a class="fed-more" href="/vodtype/zongyi.html">更多</a></li>
+                        {% for zyt in zy_type %}
+                            <li class="fed-hide-xs"><a href="/t-t/zy-{{ zyt[0] }}">{{ zyt[1] }}</a> /</li>
+                        {% endfor %}
+                        <li><a class="fed-more" href="/tv/more/zy">更多</a></li>
                     </ul>
                 </div>
                 <div class="fed-padding fed-col-sx12 fed-col-md5">
@@ -498,13 +496,13 @@
                         {% for zy in zys %}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="" style="display: block; background-image: url({{zy.tv_img}});">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ zy.tv_id }}" style="display: block; background-image: url({{zy.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ zy.tv_area }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至{{ zy.update_time|string|truncate(13,end='') }}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="">{{ zy.tv_name }}</a>
+                               href="/t-d/{{ zy.tv_id }}">{{ zy.tv_name }}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ zy.actors }}
                             </span>
@@ -517,7 +515,10 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">动漫</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li><a class="fed-more" href="/vodtype/dongman.html">更多</a></li>
+                        {% for dmt in dm_type %}
+                            <li class="fed-hide-xs"><a href="/t-t/dm-{{ dmt[0] }}">{{ dmt[1] }}</a> /</li>
+                        {% endfor %}
+                        <li><a class="fed-more" href="/tv/more/dm">更多</a></li>
                     </ul>
                 </div>
                 <div class="fed-padding fed-col-sx12 fed-col-md5">
@@ -659,13 +660,13 @@
                         {% for dm in dms %}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="" style="display: block; background-image: url({{dm.tv_img}});">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dm.tv_id }}" style="display: block; background-image: url({{dm.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ dm.tv_area }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新到{{ dm.update_time|string|truncate(13,end='') }}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/voddetail/105784.html">{{ dm.tv_name }}</a>
+                               href="/t-d/{{ dm.tv_id }}">{{ dm.tv_name }}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ dm.tv_actors }}
                             </span>
@@ -679,32 +680,16 @@
             <div class="fed-part-layout fed-back-whits">
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">友情链接</h2>
-                    <ul class="fed-part-tips fed-padding">
-                        <li><a class="fed-more" href="/gbook.html">申请</a></li>
-                    </ul>
+{#                    <ul class="fed-part-tips fed-padding">#}
+{#                        <li><a class="fed-more" href="/gbook.html">申请</a></li>#}
+{#                    </ul>#}
                 </div>
                 <ul class="fed-part-rows">
-                    <li class="fed-width-x fed-padding fed-col-xs3 fed-col-sm2">
-                        <a class="fed-part-eone fed-text-line" href="http://www.vvist.cn/" target="_blank">电影包工头</a>
-                    </li>
-                    <li class="fed-width-x fed-padding fed-col-xs3 fed-col-sm2">
-                        <a class="fed-part-eone fed-text-line" href="http://dianhuiju.cn" target="_blank">辉煌电影资讯网</a>
-                    </li>
-                    <li class="fed-width-x fed-padding fed-col-xs3 fed-col-sm2">
-                        <a class="fed-part-eone fed-text-line" href="https://www.86yt.cn" target="_blank">8090影视</a>
-                    </li>
-                    <li class="fed-width-x fed-padding fed-col-xs3 fed-col-sm2">
-                        <a class="fed-part-eone fed-text-line" href="https://www.qxd18.com" target="_blank">七星灯电影网</a>
-                    </li>
-                    <li class="fed-width-x fed-padding fed-col-xs3 fed-col-sm2">
-                        <a class="fed-part-eone fed-text-line" href="http://ggten.com/" target="_blank">蝈蝈VIP</a>
-                    </li>
-                    <li class="fed-width-x fed-padding fed-col-xs3 fed-col-sm2">
-                        <a class="fed-part-eone fed-text-line" href="https://www.panjiew.cn" target="_blank">潘杰资源网</a>
-                    </li>
-                    <li class="fed-width-x fed-padding fed-col-xs3 fed-col-sm2">
-                        <a class="fed-part-eone fed-text-line" href="https://www.vswhy.com" target="_blank">微商学院</a>
-                    </li>
+                    {% for fu in fus %}
+                        <li class="fed-width-x fed-padding fed-col-xs3 fed-col-sm2">
+                            <a class="fed-part-eone fed-text-line" href="{{ fu.f_url }}" target="_blank">{{ fu.f_title }}</a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
             <!-- 友情链接结束 -->
