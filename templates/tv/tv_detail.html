@@ -103,7 +103,7 @@
                                 {% for t_u in tv_detail.urls|reverse %}
                                     <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                         <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                           href="/t-play/{{ tv_detail.tv_id|b64encode }}/{{ tv_detail.tv_id }}/url={{ t_u|str_split('$')|get_list(1)|b64encode }}">{{ t_u|str_split('$')|get_list(0) }}</a>
+                                           href="/t-play/{{ tv_detail.tv_id|b64encode }}/url={{ t_u|str_split('$')|get_list(1)|b64encode }}">{{ t_u|str_split('$')|get_list(0) }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>

@@ -92,9 +92,9 @@
             <div class="fed-part-layout fed-back-whits">
                 <div class="fed-padding">
                     <p>
-                        <span style="color: rgb(192, 0, 0); font-size: 20px;">活动：</span>
-                        <a href="https://391491.com/artdetail-164.html" target="_blank">
-                            <span style="font-size: 18px;">庆祝2019高考结果出炉注册送VIP</span>
+                        <span style="color: rgb(192, 0, 0); font-size: 20px;">公告：</span>
+                        <a href="" target="_blank">
+                            <span style="font-size: 18px;">全网最全且完全免费观看</span>
                         </a>
                     </p>
                 </div>
@@ -166,52 +166,29 @@
                            href="javascript:;"></a>
                     </div>
                     <div class="fed-list-info fed-list-rank fed-part-rows fed-hide-xs fed-hide-sm fed-show-md-block">
-                        <h2 class="fed-list-head fed-part-rows fed-font-xvi">本周热门<a class="fed-part-tips fed-font-xiv"
-                                                                                    href="/label/rank.html">更多</a></h2>
+                        <h2 class="fed-list-head fed-part-rows fed-font-xvi">本周热门
+{#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
+                        </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/76500.html"
-                               data-original="https://img.tupian-zuida.com/pic/upload/vod/2019-04-02/201904021554182674.jpg">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ mv_top[0].tv_vo.tv_id }}"
+                               style="display: block; background-image: url({{mv_top[0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
-                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">BD高清</span>
+                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
+                                    {{ mv_top[0].tv_vo.update_time|string|truncate(13,end='') }}
+                                </span>
                             </a>
                         </div>
                         <div class="fed-col-md8">
                             <ul class="fed-part-rows">
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/76500.html"><span
-                                            class="fed-part-nums fed-part-num1">1</span>男奴时代2<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
+                                {% for ttop in mv_top %}
+                                    <li class="fed-part-eone
+                                    {% if loop.index==6 %}fed-hide-md fed-show-lg-block{% endif %}">
+                                    <a href="/t-d/{{ ttop.tv_vo.tv_id }}">
+                                        <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
+                                        {{ ttop.tv_vo.tv_name }}
+                                        <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span></a>
                                 </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/76477.html"><span
-                                            class="fed-part-nums fed-part-num2">2</span>莫莉快跑<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/76398.html"><span
-                                            class="fed-part-nums fed-part-num3">3</span>恒山月光<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/73666.html"><span
-                                            class="fed-part-nums fed-part-num4">4</span>青蛙公主<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/73656.html"><span
-                                            class="fed-part-nums fed-part-num5">5</span>光影造梦师<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/73655.html"><span
-                                            class="fed-part-nums fed-part-num6">6</span>狗狗心事<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone fed-hide-md fed-show-lg-block">
-                                    <a href="/voddetail/73646.html"><span
-                                            class="fed-part-nums fed-part-num7">7</span>破门<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -313,48 +290,29 @@
                            href="javascript:;"></a>
                     </div>
                     <div class="fed-list-info fed-list-rank fed-part-rows fed-hide-xs fed-hide-sm fed-show-md-block">
-                        <h2 class="fed-list-head fed-part-rows fed-font-xvi">本周热门<a class="fed-part-tips fed-font-xiv"
-                                                                                    href="/label/rank.html">更多</a></h2>
+                        <h2 class="fed-list-head fed-part-rows fed-font-xvi">本周热门
+{#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
+                        </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/71138.html"
-                               data-original="https://img.pic-imges.com/pic/upload/vod/2018-06/201806041528089943.jpg">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dsj_top[0].tv_vo.tv_id }}"
+                               style="display: block; background-image: url({{dsj_top[0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
-                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">完结</span>
+                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
+                                    {{ dsj_top[0].tv_vo.update_time|string|truncate(13,end='') }}
+                                </span>
                             </a>
                         </div>
                         <div class="fed-col-md8">
                             <ul class="fed-part-rows">
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/71138.html"><span
-                                            class="fed-part-nums fed-part-num1">1</span>花千骨<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
+                                {% for ttop in dsj_top %}
+                                    <li class="fed-part-eone
+                                    {% if loop.index==6 %}fed-hide-md fed-show-lg-block{% endif %}">
+                                    <a href="/t-d/{{ ttop.tv_vo.tv_id }}">
+                                        <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
+                                        {{ ttop.tv_vo.tv_name }}
+                                        <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span></a>
                                 </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/70038.html"><span class="fed-part-nums fed-part-num2">2</span>知否知否应是绿肥红瘦DVD版<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/68941.html"><span
-                                            class="fed-part-nums fed-part-num3">3</span>胭脂<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/68396.html"><span class="fed-part-nums fed-part-num4">4</span>棋盘上的阿尔发～约定的将棋～<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/67529.html"><span class="fed-part-nums fed-part-num5">5</span>寻找前世之旅<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/67371.html"><span class="fed-part-nums fed-part-num6">6</span>吸血鬼日记
-                                        第一季<span class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone fed-hide-md fed-show-lg-block">
-                                    <a href="/voddetail/67263.html"><span
-                                            class="fed-part-nums fed-part-num7">7</span>拥抱幸福<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -446,47 +404,29 @@
                            href="javascript:;"></a>
                     </div>
                     <div class="fed-list-info fed-list-rank fed-part-rows fed-hide-xs fed-hide-sm fed-show-md-block">
-                        <h2 class="fed-list-head fed-part-rows fed-font-xvi">本周热门<a class="fed-part-tips fed-font-xiv"
-                                                                                    href="/label/rank.html">更多</a></h2>
+                        <h2 class="fed-list-head fed-part-rows fed-font-xvi">本周热门
+{#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
+                        </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/71438.html"
-                               data-original="https://img.tupian-zuida.com/pic/upload/vod/2019-05-07/201905071557206683.jpg">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ zy_top[0].tv_vo.tv_id }}"
+                               style="display: block; background-image: url({{zy_top[0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
-                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">BD高清</span>
+                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
+                                    {{ zy_top[0].tv_vo.update_time|string|truncate(13,end='') }}
+                                </span>
                             </a>
                         </div>
                         <div class="fed-col-md8">
                             <ul class="fed-part-rows">
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/71438.html"><span
-                                            class="fed-part-nums fed-part-num1">1</span>严肃的月光<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/71249.html"><span
-                                            class="fed-part-nums fed-part-num2">2</span>少数派力量<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/66734.html"><span class="fed-part-nums fed-part-num3">3</span>Show!
-                                        音乐中心<span class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/66722.html"><span class="fed-part-nums fed-part-num4">4</span>詹姆士出走料理<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/66578.html"><span class="fed-part-nums fed-part-num5">5</span>2019年中央电视台元宵晚会<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/66577.html"><span class="fed-part-nums fed-part-num6">6</span>2019湖南卫视元宵晚会<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone fed-hide-md fed-show-lg-block">
-                                    <a href="/voddetail/66554.html"><span class="fed-part-nums fed-part-num7">7</span>妈妈咪呀第六季<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
+                                {% for ttop in zy_top %}
+                                    <li class="fed-part-eone
+                                        {% if loop.index==6 %}fed-hide-md fed-show-lg-block{% endif %}">
+                                        <a href="/t-d/{{ ttop.tv_vo.tv_id }}">
+                                            <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
+                                            {{ ttop.tv_vo.tv_name }}
+                                            <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span></a>
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -608,49 +548,29 @@
                            href="javascript:;"></a>
                     </div>
                     <div class="fed-list-info fed-list-rank fed-part-rows fed-hide-xs fed-hide-sm fed-show-md-block">
-                        <h2 class="fed-list-head fed-part-rows fed-font-xvi">本周热门<a class="fed-part-tips fed-font-xiv"
-                                                                                    href="/label/rank.html">更多</a></h2>
+                        <h2 class="fed-list-head fed-part-rows fed-font-xvi">本周热门
+{#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
+                        </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/74988.html"
-                               data-original="https://img.pic-imges.com/pic/upload/vod/2019-04/15550830461.jpg">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dm_top[0].tv_vo.tv_id }}"
+                               style="display: block; background-image: url({{dm_top[0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
-                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
+                                <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
+                                    {{ dm_top[0].tv_vo.update_time|string|truncate(13,end='') }}
+                                </span>
                             </a>
                         </div>
                         <div class="fed-col-md8">
                             <ul class="fed-part-rows">
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/74988.html"><span
-                                            class="fed-part-nums fed-part-num1">1</span>盗梦特攻队<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/72274.html"><span class="fed-part-nums fed-part-num2">2</span>萌兄蠢弟之大明星奇遇记<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/72250.html"><span
-                                            class="fed-part-nums fed-part-num3">3</span>麦兜响当当<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/72193.html"><span class="fed-part-nums fed-part-num4">4</span>快乐的大脚2<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/72173.html"><span
-                                            class="fed-part-nums fed-part-num5">5</span>冰川时代3<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone">
-                                    <a href="/voddetail/72143.html"><span class="fed-part-nums fed-part-num6">6</span>飞机总动员2：火线救援<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
-                                <li class="fed-part-eone fed-hide-md fed-show-lg-block">
-                                    <a href="/voddetail/72113.html"><span
-                                            class="fed-part-nums fed-part-num7">7</span>珠峰清道夫<span
-                                            class="fed-part-tips fed-text-green">16777215</span></a>
-                                </li>
+                                {% for ttop in dm_top %}
+                                    <li class="fed-part-eone
+                                        {% if loop.index==6 %}fed-hide-md fed-show-lg-block{% endif %}">
+                                        <a href="/t-d/{{ ttop.tv_vo.tv_id }}">
+                                            <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
+                                                {{ ttop.tv_vo.tv_name }}
+                                            <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span></a>
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>

@@ -265,13 +265,13 @@ Eduardo,Noriega,Najwa,Nimri</span>
                 <ul class="fed-list-info fed-part-rows">
                     {% for tv in tv_more[tty[1]] %}
                     <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ tv.tv_id }}" style="display: block; background-image: url({{tv.tv_img}});">
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ tv.tv_id|b64encode }}" style="display: block; background-image: url({{tv.tv_img}});">
                             <span class="fed-list-play fed-hide-xs"></span>
                             <span class="fed-list-score fed-font-xii fed-back-green">{{ tv.tv_area }}</span>
                             <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ tv.tv_year }}</span>
                         </a>
                         <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/t-d/{{ tv.tv_id }}">{{ tv.tv_name }}</a>
+                           href="/t-d/{{ tv.tv_id|b64encode }}">{{ tv.tv_name }}</a>
                         <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                             {{ tv.tv_actors }}
                         </span>

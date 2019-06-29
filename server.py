@@ -1,7 +1,10 @@
 # -*- coding:utf-8 -*-
+import json
 import base64
 import random
-from flask import Flask, render_template, request
+from jobs import MyJobs as j
+from flask_apscheduler import APScheduler
+from flask import Flask, render_template, request, redirect, url_for
 from dao import DB, Config
 
 # name, static resource path, templates resource path
@@ -16,18 +19,17 @@ def index():
     网站首页
     :return:
     """
-    # 今日更新和总视频数量
-    today, total = DB.query_today_total_update(None)
     # news:最新视频,mvs:电影,dsjs:电视剧,dms:动漫,zys:综艺,today:今日更新,total:总视频,
     # mv_kv_type:电影类型,dm_kv_type:动漫类型,zy_kv_type:综艺类型,dsj_kv_type:电视剧类型,fus:友情链接
-    return render_template('index.html', news=DB.query_index_news(), mvs=DB.query_index_mvs(Config.MV),
-                           dsjs=DB.query_index_mvs(Config.DSJ), dms=DB.query_index_mvs(Config.DM),
-                           zys=DB.query_index_mvs(Config.ZY), mv_kv_type=Config.item_list(Config.MV),
-                           dm_kv_type=Config.item_list(Config.DM), zy_kv_type=Config.item_list(Config.ZY),
-                           dsj_kv_type=Config.item_list(Config.DSJ), fus=DB.query_friend_urls(), today=today,
-                           total=total)
-                           # theme_style=Config.THEME_STYLES[random.randint(0, 7)]
-    #                            # )
+    return render_template('index.html',
+                           news=json.loads(j.r.get('news')), mvs=json.loads(j.r.get('mvs')),
+                           dsjs=json.loads(j.r.get('dsjs')), dms=json.loads(j.r.get('dms')),
+                           zys=json.loads(j.r.get('zys')), mv_top=json.loads(j.r.get('mv_top')),
+                           dsj_top=json.loads(j.r.get('dsj_top')), zy_top=json.loads(j.r.get('zy_top')),
+                           dm_top=json.loads(j.r.get('dm_top')), today=json.loads(j.r.get('today')),
+                           total=json.loads(j.r.get('total')), fus=DB.query_friend_urls(),
+                           mv_kv_type=Config.item_list(Config.MV), dm_kv_type=Config.item_list(Config.DM),
+                           zy_kv_type=Config.item_list(Config.ZY), dsj_kv_type=Config.item_list(Config.DSJ))
 
 
 @app.route('/tv/more/<tv_type>')
@@ -52,7 +54,14 @@ def tv_more_item_2_html(tv_item):
     :return:
     """
     tv_item = str(base64.b64decode(str(tv_item).encode('utf-8')), 'utf-8')
-    return render_template('tv/tv_item.html')
+    tv_item_k, tv_type = '', ''
+    for kvs in Config.TV_TYPE_KV_DICT:
+        for kkvv in Config.TV_TYPE_KV_DICT[kvs]:
+            if kkvv['value'] == tv_item:
+                tv_type = kvs
+                tv_item_k = kkvv['key']
+                break
+    return redirect(f'/t-t/{tv_type}-{tv_item_k}')
 
 
 @app.route('/t-d/<tv_id>')
@@ -86,7 +95,6 @@ def tv_type_2_html(tv_type, tv_index):
 
 @app.route('/tv/choose')
 def tv_choose_2_html():
-
     return render_template('tv/tv_with_choose.html', page_vo={'page_no': 1, 'total': 1})
 
 
@@ -136,5 +144,9 @@ if __name__ == '__main__':
     app.add_template_filter(get_list, 'get_list')
     app.add_template_filter(get_sub_list, 'get_sub_list')
     app.add_template_filter(b64encode, 'b64encode')
-    app.run(port=80, debug=True)
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()
+    scheduler.add_job(id='app_index_job', func=j.app_index_job, trigger='interval', seconds=17*60)
+    app.run(host='0.0.0.0', port=80, debug=True)
 

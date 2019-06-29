@@ -55,6 +55,23 @@ class DB:
         return today, total
 
     @staticmethod
+    def query_index_tops(tv_type):
+        result = []
+        cursor = DB.db.cursor()
+        top_sql = f"select tv_name,tv_top from t_tv_top where tv_type='{tv_type}'"
+        cursor.execute(top_sql)
+        tops = cursor.fetchall()
+        if tops and len(tops) > 0:
+            for t in tops:
+                sql = "select id, tv_id, tv_name, tv_img, tv_actors, tv_type, tv_area, update_time " \
+                      "from t_tv where tv_name like '%%%s%%' order by update_time desc" % t['tv_name']
+                cursor.execute(sql)
+                tvs = cursor.fetchall()
+                if tvs and len(tvs) > 0:
+                    result.append({"tv_vo": tvs[0], "tv_top": int(t['tv_top'])})
+        return result
+
+    @staticmethod
     def query_index_news():
         """
         首页最新视频

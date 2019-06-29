@@ -1,8 +1,8 @@
 <div class="fed-goto-info">
-    <a class="fed-goto-share fed-visible fed-text-center fed-back-whits fed-icon-font fed-icon-fenxiang"
-       href="javascript:;"></a>
-    <a class="fed-goto-color fed-visible fed-text-center fed-back-whits fed-icon-font fed-icon-fengge fed-event"
-       href="javascript:;"></a>
+{#    <a class="fed-goto-share fed-visible fed-text-center fed-back-whits fed-icon-font fed-icon-fenxiang"#}
+{#       href="javascript:;"></a>#}
+{#    <a class="fed-goto-color fed-visible fed-text-center fed-back-whits fed-icon-font fed-icon-fengge fed-event"#}
+{#       href="javascript:;"></a>#}
     <a class="fed-goto-toper fed-hidden fed-text-center fed-back-whits fed-icon-font fed-icon-top"
        href="javascript:;"></a>
 </div>
@@ -12,3 +12,40 @@
         <p class="fed-text-center fed-text-black"></p>
     </div>
 </div>
+<script>
+    $(function(){
+        //页面右侧滚动到页面顶部相关
+        window.onscroll= function(){
+            //变量t是滚动条滚动时，距离顶部的距离
+            let t = document.documentElement.scrollTop||document.body.scrollTop;
+            if(t>=400){
+                $(".fed-goto-toper").removeClass('fed-hidden').addClass('fed-visible')
+            }else{
+                $(".fed-goto-toper").removeClass('fed-visible').addClass('fed-hidden')
+            }
+        }
+        $('.fed-goto-toper').click(function(){
+            $('html,body').animate({scrollTop: '0px'}, 800);
+        });
+        //导航栏，导航相关
+        $('.fed-menu-info>li:last>a').click(function(){
+            if($('.fed-pops-navbar').hasClass('fed-hidden')){
+                $('.fed-pops-navbar').removeClass('fed-hidden').addClass('fed-visible')
+            }else{
+                $('.fed-pops-navbar').removeClass('fed-visible').addClass('fed-hidden')
+            }
+        });
+        $('.fed-main-info').click(function(){
+            $('.fed-pops-navbar').removeClass('fed-visible').addClass('fed-hidden')
+            $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden')
+        });
+        //搜索框，搜索相关
+        $('.fed-navs-search input').click(function(){
+            if($('.fed-pops-search').hasClass('fed-hidden')){
+                $('.fed-pops-search').removeClass('fed-hidden').addClass('fed-visible')
+            }else{
+                $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden')
+            }
+        });
+    });
+</script>
