@@ -1,9 +1,12 @@
 # -*- coding:utf-8 -*-
 import base64
 import random
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, request
 from dao import DB, Config
+
 # name, static resource path, templates resource path
+# 整体项目中tv_type为视频的大类（如mv:电影，dm:动漫...）,
+# tv_item为视频大类下的具体小类（如动作片，微电影，国产剧...）
 app = Flask("yo_vip_tv", static_folder="static", template_folder="templates")
 
 
@@ -16,19 +19,21 @@ def index():
     # 今日更新和总视频数量
     today, total = DB.query_today_total_update(None)
     # news:最新视频,mvs:电影,dsjs:电视剧,dms:动漫,zys:综艺,today:今日更新,total:总视频,
-    # mv_type:电影类型,dm_type:动漫类型,zy_type:综艺类型,dsj_type:电视剧类型,fus:友情链接
+    # mv_kv_type:电影类型,dm_kv_type:动漫类型,zy_kv_type:综艺类型,dsj_kv_type:电视剧类型,fus:友情链接
     return render_template('index.html', news=DB.query_index_news(), mvs=DB.query_index_mvs(Config.MV),
                            dsjs=DB.query_index_mvs(Config.DSJ), dms=DB.query_index_mvs(Config.DM),
                            zys=DB.query_index_mvs(Config.ZY), mv_kv_type=Config.item_list(Config.MV),
                            dm_kv_type=Config.item_list(Config.DM), zy_kv_type=Config.item_list(Config.ZY),
                            dsj_kv_type=Config.item_list(Config.DSJ), fus=DB.query_friend_urls(), today=today,
-                           total=total, theme_style=Config.THEME_STYLES[random.randint(0, 7)])
+                           total=total)
+                           # theme_style=Config.THEME_STYLES[random.randint(0, 7)]
+    #                            # )
 
 
 @app.route('/tv/more/<tv_type>')
 def tv_more_2_html(tv_type):
     """
-    tv视频更多页
+    首页tv视频更多页
     :param tv_type:
     :return:
     """
@@ -40,9 +45,13 @@ def tv_more_2_html(tv_type):
 
 
 @app.route('/tv/more/i-<tv_item>')
-def tv_more_item(tv_item):
+def tv_more_item_2_html(tv_item):
+    """
+    每个小类的更多链接
+    :param tv_item:
+    :return:
+    """
     tv_item = str(base64.b64decode(str(tv_item).encode('utf-8')), 'utf-8')
-    print(tv_item)
     return render_template('tv/tv_item.html')
 
 
@@ -50,7 +59,7 @@ def tv_more_item(tv_item):
 def tv_detail_2_html(tv_id):
     """
     tv视频详情页
-    :param tv_id:
+    :param tv_id: 视频的id
     :return:
     """
     tv_id = str(base64.b64decode(str(tv_id).encode('utf-8')), 'utf-8')
@@ -64,16 +73,31 @@ def tv_detail_2_html(tv_id):
 @app.route('/t-t/<tv_type>-<tv_index>')
 def tv_type_2_html(tv_type, tv_index):
     """
-    tv视频某一类详情页
-    :param tv_type:
-    :param tv_index:
+    tv视频小类的详情页
+    :param tv_type: 视频的大类，如mv：电影，dm：动漫
+    :param tv_index: 视频的小类，如动作片，国产剧，微电影
     :return:
     """
-    return render_template('tv/tv_item.html', tvs=DB.query_tv_type_item(tv_type, tv_index))
+    page_no = request.args.get('p')
+    page_no = int(page_no) if page_no else 1
+    return render_template('tv/tv_item.html',
+                           page_vo=DB.query_tv_type_item_page(tv_type, tv_index, page_no))
+
+
+@app.route('/tv/choose')
+def tv_choose_2_html():
+
+    return render_template('tv/tv_with_choose.html', page_vo={'page_no': 1, 'total': 1})
 
 
 @app.route('/t-play/<tv_id>/url=<url>')
-def tv_play__2_html(tv_id, url):
+def tv_play_2_html(tv_id, url):
+    """
+    视频播放页面，url：视频的地址，detail：视频页面的详情，like_host:热门推荐
+    :param tv_id: 播放视频的id
+    :param url: 播放视频的url
+    :return:
+    """
     url = str(base64.b64decode(str(url).encode('utf-8')), 'utf-8')
     tv_id = str(base64.b64decode(str(tv_id).encode('utf-8')), 'utf-8')
     detail = DB.query_tv_detail(tv_id)
@@ -106,6 +130,7 @@ def b64encode(s):
 
 if __name__ == '__main__':
     # DEBUG RUN
+    # 添加自定义过滤器
     app.add_template_filter(split_strings, 'str_split')
     app.add_template_filter(tv_is_mv, 'tv_is_mv')
     app.add_template_filter(get_list, 'get_list')

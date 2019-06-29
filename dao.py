@@ -82,6 +82,11 @@ class DB:
 
     @staticmethod
     def query_tv_like_hot(tv_type_item):
+        """
+        相关热播，就是同小类型的视频的最新更新的前20个中随机抽取6个
+        :param tv_type_item: 视频的小类
+        :return:
+        """
         sql = f"select tv_id,tv_img,tv_name,tv_actors,tv_area,tv_year,update_time " \
             f"from t_tv where tv_type = '{tv_type_item}' order by update_time desc limit 20"
         cursor = DB.db.cursor()
@@ -92,7 +97,7 @@ class DB:
     def query_tv_detail(tv_id):
         """
         查询tv详情
-        :param tv_id:
+        :param tv_id: 视频的id
         :return:
         """
         d_sql = f"select tv.tv_id, tv_img, tv_name, tv_actors, tv_director, tv_type, tv_area, tv_lang, " \
@@ -111,8 +116,8 @@ class DB:
     @staticmethod
     def query_tv_more(tv_type):
         """
-        首页每项视频的更多
-        :param tv_type:
+        首页每项视频的更多功能
+        :param tv_type: 视频的大类
         :return:
         """
         result = {}
@@ -132,23 +137,27 @@ class DB:
         return result
 
     @staticmethod
-    def query_tv_type_item(tv_type, tv_item):
+    def query_tv_type_item_page(tv_type, tv_item, page_no):
         """
         查询大类下的子类tv
         :param tv_type: 大类  电影 电视剧 综艺 动漫
         :param tv_item: 小类  动作片  喜剧片    ...
         :return:
         """
-        result = []
+        result = {}
         tv_type = [(k, v) for (k, v) in Config.item_list(tv_type) if int(k) == int(tv_item)]
         tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
         if tv_type:
             sql = f"select tv_id,tv_img,tv_name,tv_actors,tv_area," \
-                  f"tv_year,update_time from t_tv where tv_type='{tv_type}'"
-            print(sql)
+                  f"tv_year,update_time from t_tv where tv_type='{tv_type}' " \
+                  f"order by update_time desc limit {(page_no-1)*30},{page_no*30}"
             cursor = DB.db.cursor()
             cursor.execute(sql)
-            result = cursor.fetchall()
+            result['rows'] = cursor.fetchall()
+            count_sql = f"select count(1) total from t_tv where tv_type='{tv_type}'"
+            cursor.execute(count_sql)
+            result['total'] = cursor.fetchone()['total']
+            result['page_no'] = page_no
         return result
 
     @staticmethod

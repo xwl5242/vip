@@ -2,96 +2,47 @@
 {% block body %}
     <div class="fed-main-info fed-min-width">
         <div class="fed-part-case">
-            <title>最近更新 - 免费影院</title>
+            <title>优视频-真正的免费在线视频</title>
             <div class="fed-part-layout fed-back-whits">
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">最近更新</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li><a class="fed-more" href="/vodshow/dianying-----------.html">筛选</a></li>
+                        <li><a class="fed-more" href="/tv/choose">筛选</a></li>
                     </ul>
                 </div>
                 <ul class="fed-list-info fed-part-rows">
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105890.html"
-                           data-original="http://www.605zy.cc/upload/vod/2019-03/15525836533.jpg"
-                           style="display: block; background-image: url(&quot;http://www.605zy.cc/upload/vod/2019-03/15525836533.jpg&quot;);">
+                    {% for tv in page_vo.rows %}
+                        <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ tv.tv_id }}"
+                           style="display: block; background-image: url({{ tv.tv_img }});">
                             <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">4.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">第43集</span>
+                            <span class="fed-list-score fed-font-xii fed-back-green">{{ tv.tv_area }}</span>
+                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
+                                {{ tv.update_time|string|truncate(13,end='') }}
+                            </span>
                         </a>
                         <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105890.html">战旗(战火青春)</a>
+                           href="/t-d/{{ tv.tv_id }}">{{ tv.tv_name }}</a>
                         <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-王雷,王媛可,蒋毅,张曦文,山崎敬一,侯祥,刘科</span>
+                            {{ tv.tv_intro }}
+                        </span>
                     </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105889.html"
-                           data-original="https://img.pic-imges.com/pic/">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">9.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105889.html">爱，别，夏威夷</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-綾乃彩,田村健太郎,鲇川桃果,加藤葵,亀田梨紗</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/82434.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-05/15585506151.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2019-05/15585506151.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">5.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至24集</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/82434.html">丹，唯一的爱</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-申惠善,金明洙,李东健</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105888.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15616600201.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2019-06/15616600201.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">1.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105888.html">丹尼尔·索萨：没教养</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-Daniel,Sosa</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105887.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15616540540.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2019-06/15616540540.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">1.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至2集</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105887.html">绝路逢生</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-杨烁,董维嘉,刘至翰,高峰,张译木,刘腾远,大庆,李思博,大庆,宗晓军,周明汕,崔可法,王志刚,云飞,王梓桐,沈冲,张成武,鞠泓宇,刘勇,藤宇飞,周波,孙苍,冯玉玺,周钢,谢宁,刘学,赵红霞,韩全海</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105886.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15616471550.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2019-06/15616471550.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">10.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105886.html">校墓处</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-徐天佑,张致恒,傅颖,李蕙敏,陈美诗,麦子豪</span>
-                    </li>
+                    {% endfor %}
                 </ul>
+                <div class="fed-page-info fed-text-center" data-page-no="{{ page_vo.page_no }}" data-count="{{ page_vo.total }}"></div>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block js %}
+    <script src="../../static/js/pagination.js"></script>
+    <script>
+    $(function(){
+        $('.fed-page-info').pagination(function(pageNo){
+            let to_url = window.location.href;
+            to_url = to_url.split('?')[0]+'?p='+pageNo;
+            window.location.href = to_url;
+        });
+    })
+    </script>
 {% endblock %}
