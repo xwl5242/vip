@@ -145,20 +145,20 @@
                     <div class="fed-swip-container fed-part-rows swiper-container-horizontal">
                         <ul class="fed-swip-wrapper fed-font-size"
                             style="transform: translate3d(-910px, 0px, 0px); transition-duration: 0ms;">
-                            <li class="fed-swip-slide swiper-slide-duplicate" data-swiper-slide-index="3"
-                                style="width: 455px;">
-                                {% for ttop in mv_top %}
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/t-d/{{ ttop.tv_vo.tv_id|b64encode }}" style="background-image: url({{ ttop.tv_vo.tv_img }});">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ ttop.tv_vo.tv_name }}</span>
-                                        <span class="fed-part-eone fed-font-xii">
-                                            {{ ttop.tv_vo.update_time|string|truncate(13,end='') }}
-                                        </span>
-                                    </div>
-                                </a>
-                                {% endfor %}
-                            </li>
+                            {% for ttop in mv_top %}
+                                <li class="fed-swip-slide swiper-slide-duplicate" data-swiper-slide-index="3"
+                                    style="width: 455px;">
+                                    <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
+                                       href="/t-d/{{ ttop.tv_vo.tv_id|b64encode }}" style="background-image: url({{ ttop.tv_vo.tv_img }});">
+                                        <div class="fed-swip-title fed-text-white fed-part-eone">
+                                            <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ ttop.tv_vo.tv_name }}</span>
+                                            <span class="fed-part-eone fed-font-xii">
+                                                {{ ttop.tv_vo.update_time|string|truncate(13,end='') }}
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
                         </ul>
                         <div class="fed-swip-pagin fed-font-size fed-text-right swiper-pagination-clickable swiper-pagination-bullets">
                             <span class="fed-swip-bullet"></span><span class="fed-swip-bullet fed-swip-this"></span><span
@@ -209,7 +209,7 @@
                                 <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
                                    href="/t-d/{{ mv.tv_id|b64encode }}">{{ mv.tv_name }}</a>
                                 <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-                                    {{ mv.intro }}
+                                    {{ mv.tv_actors }}
                                 </span>
                             </li>
                         {%endfor%}
@@ -230,59 +230,21 @@
                     <div class="fed-swip-container fed-part-rows swiper-container-horizontal">
                         <ul class="fed-swip-wrapper fed-font-size"
                             style="transform: translate3d(-910px, 0px, 0px); transition-duration: 0ms;">
-                            <li class="fed-swip-slide swiper-slide-duplicate swiper-slide-duplicate-next"
-                                data-swiper-slide-index="2" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/75446.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/db5a3a8699c54a8eb8b7534dcbf05716.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">我只喜欢你</span>
-                                        <span class="fed-part-eone fed-font-xii">完结</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-prev" data-swiper-slide-index="0" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/82376.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/fb43e62f11ba433d859dbd5ef0a3691f.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">白发</span>
-                                        <span class="fed-part-eone fed-font-xii">完结</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-active" data-swiper-slide-index="1"
-                                style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/75730.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/1e8b9dac432049e9a569e8e284d85b15.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">筑梦情缘</span>
-                                        <span class="fed-part-eone fed-font-xii">完结</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-next" data-swiper-slide-index="2" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/75446.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/db5a3a8699c54a8eb8b7534dcbf05716.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">我只喜欢你</span>
-                                        <span class="fed-part-eone fed-font-xii">完结</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-duplicate swiper-slide-duplicate-prev"
-                                data-swiper-slide-index="0" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/82376.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/fb43e62f11ba433d859dbd5ef0a3691f.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">白发</span>
-                                        <span class="fed-part-eone fed-font-xii">完结</span>
-                                    </div>
-                                </a>
-                            </li>
+                            {% for dstop in dsj_top %}
+                                <li class="fed-swip-slide swiper-slide-duplicate swiper-slide-duplicate-next"
+                                    style="width: 455px;">
+                                    <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
+                                       href="/t-d/{{ dstop.tv_vo.tv_id|b64encode }}"
+                                       style="background-image: url({{ dstop.tv_vo.tv_img }});">
+                                        <div class="fed-swip-title fed-text-white fed-part-eone">
+                                            <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ dstop.tv_vo.tv_name }}</span>
+                                            <span class="fed-part-eone fed-font-xii">
+                                                {{ dstop.tv_vo.update_time|string|truncate(13,end='') }}
+                                            </span>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
                         </ul>
                         <div class="fed-swip-pagin fed-font-size fed-text-right swiper-pagination-clickable swiper-pagination-bullets">
                             <span class="fed-swip-bullet"></span><span class="fed-swip-bullet fed-swip-this"></span><span
@@ -354,50 +316,21 @@
                     <div class="fed-swip-container fed-part-rows swiper-container-horizontal">
                         <ul class="fed-swip-wrapper fed-font-size"
                             style="transform: translate3d(-910px, 0px, 0px); transition-duration: 0ms;">
+                            {% for zyt in zy_top %}
                             <li class="fed-swip-slide swiper-slide-duplicate swiper-slide-duplicate-active"
-                                data-swiper-slide-index="1" style="width: 455px;">
+                                 style="width: 455px;">
                                 <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/76510.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/6921351deb9747c1bf6334c435c1801e.jpg&quot;);">
+                                   href="/t-d/{{ zyt.tv_vo.tv_id|b64encode }}"
+                                   style="background-image: url({{ zyt.tv_vo.tv_img }});">
                                     <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">笑傲江湖第四季</span>
-                                        <span class="fed-part-eone fed-font-xii">20190608期</span>
+                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ zyt.tv_vo.tv_name }}</span>
+                                        <span class="fed-part-eone fed-font-xii">
+                                            {{ zyt.tv_vo.update_time|string|truncate(13,end='') }}
+                                        </span>
                                     </div>
                                 </a>
                             </li>
-                            <li class="fed-swip-slide swiper-slide-prev swiper-slide-duplicate-next"
-                                data-swiper-slide-index="0" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/80888.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/c9f79ed955344a9b89723f4ab1aa6e1c.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">非诚勿扰[2019]</span>
-                                        <span class="fed-part-eone fed-font-xii">20190622期</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-active" data-swiper-slide-index="1"
-                                style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/76510.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/6921351deb9747c1bf6334c435c1801e.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">笑傲江湖第四季</span>
-                                        <span class="fed-part-eone fed-font-xii">20190608期</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-duplicate swiper-slide-next swiper-slide-duplicate-prev"
-                                data-swiper-slide-index="0" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/80888.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/c9f79ed955344a9b89723f4ab1aa6e1c.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">非诚勿扰[2019]</span>
-                                        <span class="fed-part-eone fed-font-xii">20190622期</span>
-                                    </div>
-                                </a>
-                            </li>
+                            {% endfor %}
                         </ul>
                         <div class="fed-swip-pagin fed-font-size fed-text-right swiper-pagination-clickable swiper-pagination-bullets">
                             <span class="fed-swip-bullet"></span><span class="fed-swip-bullet fed-swip-this"></span></div>
@@ -447,7 +380,7 @@
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
                                href="/t-d/{{ zy.tv_id|b64encode }}">{{ zy.tv_name }}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-                                {{ zy.actors }}
+                                {{ zy.tv_actors }}
                             </span>
                         </li>
                         {% endfor %}
@@ -468,78 +401,20 @@
                     <div class="swiper-container fed-part-rows swiper-container-horizontal">
                         <ul class="fed-swip-wrapper fed-font-size"
                             style="transform: translate3d(-910px, 0px, 0px); transition-duration: 0ms;">
-                            <li class="fed-swip-slide swiper-slide-duplicate" data-swiper-slide-index="4"
-                                style="width: 455px;">
+                            {% for dmt in dm_top %}
+                            <li class="fed-swip-slide swiper-slide-duplicate" style="width: 455px;">
                                 <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/81601.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/e24b4d88c1ff421fa89f52e4110a8abc.jpg&quot;);">
+                                   href="/t-d/{{ dmt.tv_vo.tv_id|b64encode }}"
+                                   style="background-image: url({{ dmt.tv_vo.tv_img }});">
                                     <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">系统逼我做皇后</span>
-                                        <span class="fed-part-eone fed-font-xii">更新至14集</span>
+                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ dmt.tv_vo.tv_name }}</span>
+                                        <span class="fed-part-eone fed-font-xii">
+                                            {{ dmt.tv_vo.update_time|string|truncate(13,end='') }}
+                                        </span>
                                     </div>
                                 </a>
                             </li>
-                            <li class="fed-swip-slide swiper-slide-prev" data-swiper-slide-index="0" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/82686.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/2ca6292a1dff43b8b2e944bdd8380b06.jpg?x-oss-process=image/resize,w_800/interlace,1/quality,Q_80/sharpen,100&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">没出息的阴阳师一家</span>
-                                        <span class="fed-part-eone fed-font-xii">更新至9集</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-active" data-swiper-slide-index="1"
-                                style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/77089.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/7648ab151c724381837c722820719d36.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">名侦探柯南</span>
-                                        <span class="fed-part-eone fed-font-xii">更新至第958集</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-next" data-swiper-slide-index="2" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/66217.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/00249e63431f4dbcb519cb2bacb0cbbc.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">霹雳魔封</span>
-                                        <span class="fed-part-eone fed-font-xii">更新至54集</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide" data-swiper-slide-index="3" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy" href="/voddetail/80638.html"
-                                   data-background="https://liangcang-material.alicdn.com/prod/upload/2346be72157e4040b564e5f4e5e29ff7.jpg?x-oss-process=image/resize,w_800/interlace,1/quality,Q_80/sharpen,100">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">画江湖之不良人3</span>
-                                        <span class="fed-part-eone fed-font-xii">更新至第24集</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide" data-swiper-slide-index="4" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/81601.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/e24b4d88c1ff421fa89f52e4110a8abc.jpg&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">系统逼我做皇后</span>
-                                        <span class="fed-part-eone fed-font-xii">更新至14集</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="fed-swip-slide swiper-slide-duplicate swiper-slide-duplicate-prev"
-                                data-swiper-slide-index="0" style="width: 455px;">
-                                <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                   href="/voddetail/82686.html"
-                                   style="background-image: url(&quot;https://liangcang-material.alicdn.com/prod/upload/2ca6292a1dff43b8b2e944bdd8380b06.jpg?x-oss-process=image/resize,w_800/interlace,1/quality,Q_80/sharpen,100&quot;);">
-                                    <div class="fed-swip-title fed-text-white fed-part-eone">
-                                        <span class="fed-part-eone fed-font-xviii fed-swip-head">没出息的阴阳师一家</span>
-                                        <span class="fed-part-eone fed-font-xii">更新至9集</span>
-                                    </div>
-                                </a>
-                            </li>
+                            {% endfor %}
                         </ul>
                         <div class="fed-swip-pagin fed-font-size fed-text-right swiper-pagination-clickable swiper-pagination-bullets">
                             <span class="fed-swip-bullet"></span><span class="fed-swip-bullet fed-swip-this"></span><span
@@ -622,36 +497,13 @@
 {% block js %}
     <script>
     $(function(){
-        layer.open({
-          type: 1 //Page层类型
-          ,area: ['500px', '300px']
-          ,title: '你好，layer。'
-          ,shade: 0.6 //遮罩透明度
-          ,maxmin: true //允许全屏最小化
-          ,anim: 1 //0-6的动画形式，-1不开启
-          ,content: '<div style="padding:50px;">这是一个非常普通的页面层，传入了自定义的html</div>'
-        });
-
-        let mySwiper = new Swiper('.fed-swip-container', {
-        direction: 'vertical', // 垂直切换选项
-        loop: true, // 循环模式选项
-
-        // 如果需要分页器
-        pagination: {
-          el: '.swiper-pagination',
-        },
-
-        // 如果需要前进后退按钮
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-
-        // 如果需要滚动条
-        scrollbar: {
-          el: '.swiper-scrollbar',
-        },
-      })
+        var mySwiper = new Swiper('.fed-swip-container', {
+            wrapperClass: 'fed-swip-wrapper',
+            slideClass: 'fed-swip-slide',
+            slideNextClass: 'fed-swip-next',
+            slidePrevClass: 'fed-swip-prev',
+            autoplay: true,//可选选项，自动滑动
+        })
     })
     </script>
 {% endblock %}

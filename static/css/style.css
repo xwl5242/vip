@@ -179,6 +179,7 @@ table td, table th { position: relative; padding: .3125rem .9375rem; min-height:
 .fed-col-lg11 { width: 91.66666667% }
 .fed-col-lg12 { width: 100% }
 }
+.fed-navs-record { cursor: pointer; }
 .fed-margin { margin: .3125rem }
 .fed-margin-x { margin: .625rem 0 }
 .fed-margin-o { margin: 0!important }

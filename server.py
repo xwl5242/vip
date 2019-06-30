@@ -167,6 +167,7 @@ def b64encode(s):
 
 if __name__ == '__main__':
     # DEBUG RUN
+    j.app_index_job()
     # 添加自定义过滤器
     app.add_template_filter(split_strings, 'str_split')
     app.add_template_filter(tv_is_mv, 'tv_is_mv')

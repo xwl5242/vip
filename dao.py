@@ -10,7 +10,7 @@ class Config:
     """
     JSON_DICT = {}
     MV, DM, ZY, DSJ = 'mv', 'dm', 'zy', 'dsj'
-
+    IMG_WEB = 'http://img.yoviptv.com/'
     with open('config.json', 'r', encoding='utf-8') as f:
         JSON_DICT = json.loads(f.read())
     TV_TYPE_KV_DICT = JSON_DICT['tv_types']
@@ -74,8 +74,9 @@ class DB:
         tops = cursor.fetchall()
         if tops and len(tops) > 0:
             for t in tops:
-                sql = "select id, tv_id, tv_name, tv_img, tv_actors, tv_type, tv_area, update_time " \
-                      "from t_tv where tv_name like '%%%s%%' order by update_time desc" % t['tv_name']
+                sql = f"select id, tv_id, tv_name, concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img, " \
+                      f"tv_actors, tv_type, tv_area, update_time " \
+                      f"from t_tv where tv_name like '%%%s%%' order by update_time desc" % t['tv_name']
                 cursor.execute(sql)
                 tvs = cursor.fetchall()
                 if tvs and len(tvs) > 0:
@@ -89,8 +90,8 @@ class DB:
         首页最新视频
         :return:
         """
-        sql = "select id, tv_id, tv_name, tv_img, tv_actors, tv_type, update_time " \
-              "from t_tv order by update_time desc limit 0,12"
+        sql = f"select id, tv_id, tv_name, concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img, " \
+              f"tv_actors, tv_type, update_time from t_tv order by update_time desc limit 0,12"
         cursor.execute(sql)
         return cursor.fetchall()
 
@@ -104,7 +105,8 @@ class DB:
         :return:
         """
         where_str = "','".join(Config.item_value_list(tv_type))
-        sql = f"select id, tv_id, tv_name, tv_img, tv_actors, tv_type, tv_area, update_time " \
+        sql = f"select id, tv_id, tv_name, concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img," \
+            f" tv_actors, tv_type, tv_area, update_time " \
             f"from t_tv where tv_type in('{where_str}') order by update_time desc limit 8"
         cursor.execute(sql)
         return cursor.fetchall()
@@ -118,7 +120,8 @@ class DB:
         :param tv_type_item: 视频的小类
         :return:
         """
-        sql = f"select tv_id,tv_img,tv_name,tv_actors,tv_area,tv_year,update_time " \
+        sql = f"select tv_id,concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img," \
+            f"tv_name,tv_actors,tv_area,tv_year,update_time " \
             f"from t_tv where tv_type = '{tv_type_item}' order by update_time desc limit 20"
         cursor.execute(sql)
         return cursor.fetchall()
@@ -132,7 +135,8 @@ class DB:
         :param tv_id: 视频的id
         :return:
         """
-        d_sql = f"select tv.tv_id, tv_img, tv_name, tv_actors, tv_director, tv_type, tv_area, tv_lang, " \
+        d_sql = f"select tv.tv_id, concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img, " \
+                f"tv_name, tv_actors, tv_director, tv_type, tv_area, tv_lang, " \
                 f"tv_year, tv_intro, tv_remark, update_time from t_tv tv where tv.tv_id='{tv_id}'"
         u_sql = f"select tv_url from t_tv_urls where tv_id='{tv_id}'"
         cursor.execute(d_sql)
@@ -147,8 +151,9 @@ class DB:
     @staticmethod
     @app_db
     def query_tv_more_by_name(cursor, tv_name):
-        sql = "select tv_id,tv_img,tv_name,tv_actors,tv_area, tv_year,update_time " \
-              "from t_tv where tv_name like '%%%s%%' order by update_time desc " % tv_name
+        sql = "select tv_id,concat(%s,tv_id,'.jpg') tv_img," \
+              "tv_name,tv_actors,tv_area, tv_year,update_time " \
+              "from t_tv where tv_name like '%%%s%%' order by update_time desc " % Config.IMG_WEB, tv_name
         cursor.execute(sql)
         return cursor.fetchall()
 
@@ -163,7 +168,8 @@ class DB:
         """
         result = {}
         for tty in Config.item_value_list(tv_type):
-            sql = f"select tv_id,tv_img,tv_name,tv_actors,tv_area,tv_year,update_time " \
+            sql = f"select tv_id,concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img," \
+                f"tv_name,tv_actors,tv_area,tv_year,update_time " \
                   f"from t_tv where tv_type='{tty}' order by update_time desc limit 12"
             cursor.execute(sql)
             result[tty] = cursor.fetchall()
@@ -189,7 +195,8 @@ class DB:
         items, total = [], 0
 
         if where_str:
-            sql = f"select tv_id,tv_img,tv_name,tv_actors,tv_area," \
+            sql = f"select tv_id,concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img," \
+                  f"tv_name,tv_actors,tv_area," \
                   f"tv_year,update_time from t_tv where 1=1 {where_str}" \
                   f"order by update_time desc limit {(page_no-1)*30},{page_no*30}"
             cursor.execute(sql)
@@ -213,6 +220,6 @@ class DB:
 
 
 if __name__ == '__main__':
-    t, u = DB.query_today_total_update('mv')
-    print(t, u)
+    DB.query_index_tops()
+
 

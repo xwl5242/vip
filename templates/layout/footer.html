@@ -44,7 +44,7 @@
                 $('.fed-pops-navbar').removeClass('fed-visible').addClass('fed-hidden')
             }
         });
-        $('.fed-main-info').click(function(){
+        $('body > div:eq(1)').click(function(){
             $('.fed-pops-navbar').removeClass('fed-visible').addClass('fed-hidden');
             $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden');
         });
@@ -69,6 +69,12 @@
             if(k){
                window.location.href = '/t-t/k='+ k;
             }
-        })
+        });
+        $('.fed-navs-record').click(function(){
+            layer.open({
+                title: '免责声明',
+                content: $('#declare_content').html()
+            });
+        });
     });
 </script>
