@@ -93,8 +93,8 @@
                 <div class="fed-padding">
                     <p>
                         <span style="color: rgb(192, 0, 0); font-size: 20px;">公告：</span>
-                        <a href="" target="_blank">
-                            <span style="font-size: 18px;">全网最全且完全免费观看</span>
+                        <a href="http://www.yoviptv.com" target="_blank">
+                            <span style="font-size: 18px;">本站提供各类视频（含vip视频）且免费观看。另有vip解析功能，点击此公告或导航中的'VIP解析'前往...</span>
                         </a>
                     </p>
                 </div>
@@ -105,10 +105,10 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">最近更新</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li>今日更新&nbsp;<span class="fed-text-green">{{ today }}</span>&nbsp;部&nbsp;&nbsp;共&nbsp;<span
-                                class="fed-text-green">{{ total }}&nbsp;</span>部
+                        <li>今日更新&nbsp;<span class="fed-text-green">{{ today_ }}</span>&nbsp;部&nbsp;&nbsp;共&nbsp;<span
+                                class="fed-text-green">{{ total_ }}&nbsp;</span>部
                         </li>
-                        <li><a class="fed-more" href="/tv/more/all">更多</a></li>
+                        <li><a class="fed-more" href="/t-t/a">更多</a></li>
                     </ul>
                 </div>
                 <ul class="fed-list-info fed-part-rows">
@@ -173,7 +173,7 @@
 {#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
                         </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ mv_top[0].tv_vo.tv_id }}"
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ mv_top[0].tv_vo.tv_id|b64encode }}"
                                style="display: block; background-image: url({{mv_top[0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
@@ -186,7 +186,7 @@
                                 {% for ttop in mv_top %}
                                     <li class="fed-part-eone
                                     {% if loop.index==6 %}fed-hide-md fed-show-lg-block{% endif %}">
-                                    <a href="/t-d/{{ ttop.tv_vo.tv_id }}">
+                                    <a href="/t-d/{{ ttop.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
                                         {{ ttop.tv_vo.tv_name }}
                                         <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span></a>
@@ -297,7 +297,7 @@
 {#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
                         </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dsj_top[0].tv_vo.tv_id }}"
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dsj_top[0].tv_vo.tv_id|b64encode }}"
                                style="display: block; background-image: url({{dsj_top[0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
@@ -310,7 +310,7 @@
                                 {% for ttop in dsj_top %}
                                     <li class="fed-part-eone
                                     {% if loop.index==6 %}fed-hide-md fed-show-lg-block{% endif %}">
-                                    <a href="/t-d/{{ ttop.tv_vo.tv_id }}">
+                                    <a href="/t-d/{{ ttop.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
                                         {{ ttop.tv_vo.tv_name }}
                                         <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span></a>
@@ -411,7 +411,7 @@
 {#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
                         </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ zy_top[0].tv_vo.tv_id }}"
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ zy_top[0].tv_vo.tv_id|b64encode }}"
                                style="display: block; background-image: url({{zy_top[0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
@@ -424,7 +424,7 @@
                                 {% for ttop in zy_top %}
                                     <li class="fed-part-eone
                                         {% if loop.index==6 %}fed-hide-md fed-show-lg-block{% endif %}">
-                                        <a href="/t-d/{{ ttop.tv_vo.tv_id }}">
+                                        <a href="/t-d/{{ ttop.tv_vo.tv_id|b64encode }}">
                                             <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
                                             {{ ttop.tv_vo.tv_name }}
                                             <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span></a>
@@ -555,7 +555,7 @@
 {#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
                         </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dm_top[0].tv_vo.tv_id }}"
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ dm_top[0].tv_vo.tv_id|b64encode }}"
                                style="display: block; background-image: url({{dm_top[0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
@@ -568,7 +568,7 @@
                                 {% for ttop in dm_top %}
                                     <li class="fed-part-eone
                                         {% if loop.index==6 %}fed-hide-md fed-show-lg-block{% endif %}">
-                                        <a href="/t-d/{{ ttop.tv_vo.tv_id }}">
+                                        <a href="/t-d/{{ ttop.tv_vo.tv_id|b64encode }}">
                                             <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
                                                 {{ ttop.tv_vo.tv_name }}
                                             <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span></a>
@@ -622,6 +622,16 @@
 {% block js %}
     <script>
     $(function(){
+        layer.open({
+          type: 1 //Page层类型
+          ,area: ['500px', '300px']
+          ,title: '你好，layer。'
+          ,shade: 0.6 //遮罩透明度
+          ,maxmin: true //允许全屏最小化
+          ,anim: 1 //0-6的动画形式，-1不开启
+          ,content: '<div style="padding:50px;">这是一个非常普通的页面层，传入了自定义的html</div>'
+        });
+
         let mySwiper = new Swiper('.fed-swip-container', {
         direction: 'vertical', // 垂直切换选项
         loop: true, // 循环模式选项

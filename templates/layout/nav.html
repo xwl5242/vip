@@ -3,27 +3,27 @@
         <div class="fed-navs-info">
             <ul class="fed-menu-info">
                 <li class="fed-pull-left">
-                    <a class="fed-menu-logo fed-show-kind" href="#">
+                    <a class="fed-menu-logo fed-show-kind" href="/">
                         <img width="96" height="40" alt="" src="../../static/img/logo.png">
                     </a>
                 </li>
-                <li class="fed-pull-left">
-                    <a class="fed-menu-title fed-show-kind fed-font-xvi fed-text-green fed-hide fed-show-md-block"
+                <li id="nav_li_1" class="fed-pull-left">
+                    <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-md-block"
                        href="/">首页</a>
                 </li>
-                <li class="fed-pull-left">
+                <li id="nav_li_2" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-md-block"
                        href="/tv/more/mv">电影</a>
                 </li>
-                <li class="fed-pull-left">
+                <li id="nav_li_3" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
                        href="/tv/more/dsj">连续剧</a>
                 </li>
-                <li class="fed-pull-left">
+                <li id="nav_li_4" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
                        href="/tv/more/zy">综艺</a>
                 </li>
-                <li class="fed-pull-left">
+                <li id="nav_li_5" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
                        href="/tv/more/dm">动漫</a>
                 </li>
@@ -42,14 +42,14 @@
                         </a>
                     </div>
                     <input class="fed-navs-input fed-back-ashen fed-event" type="search" placeholder="请输入关键字">
-                    <a class="fed-navs-submit fed-back-ashen"><i class="fed-icon-font fed-icon-sousuo"></i></a>
+                    <a id="index_ser_btn" class="fed-navs-submit fed-back-ashen"><i class="fed-icon-font fed-icon-sousuo"></i></a>
                 </form>
             </div>
             <div class="fed-navs-right">
                 <a class="fed-navs-route fed-text-black fed-event fed-hidden fed-hide-sm" href="javascript:;"></a>
                 <a class="fed-navs-button fed-text-black fed-event fed-hide-sm fed-icon-font fed-icon-sousuo"
                    href="javascript:;"></a>
-                <a class="fed-navs-record fed-text-black fed-event fed-hide-xs fed-show-sm-block" href="javascript:layer.msg('免责声明');">
+                <a class="fed-navs-record fed-text-black fed-event fed-hide-xs fed-show-sm-block">
                     免责声明
                 </a>
                 <a class="fed-navs-record fed-text-black fed-event fed-hide-sm fed-icon-font fed-icon-ziliao"
@@ -61,19 +61,19 @@
             <a class="fed-pops-btns fed-back-whits fed-text-black fed-text-center fed-event fed-hide-sm fed-icon-font fed-icon-fenlei"
                href="javascript:;"></a>
             <ul class="fed-pops-list fed-font-size fed-back-whits fed-part-rows">
-                <li class="fed-col-sm2 fed-this">
+                <li class="p-id-nav_li_1 fed-col-sm2" data-p-id="nav_li_1">
                     <a class="fed-part-eone" href="/">首页</a>
                 </li>
-                <li class="fed-col-sm2">
+                <li class="p-id-nav_li_2 fed-col-sm2" data-p-id="nav_li_2">
                     <a class="fed-part-eone" href="/tv/more/mv">电影</a>
                 </li>
-                <li class="fed-col-sm2">
+                <li class="p-id-nav_li_3 fed-col-sm2" data-p-id="nav_li_3">
                     <a class="fed-part-eone" href="/tv/more/dsj">连续剧</a>
                 </li>
-                <li class="fed-col-sm2">
+                <li class="p-id-nav_li_4 fed-col-sm2" data-p-id="nav_li_4">
                     <a class="fed-part-eone" href="/tv/more/zy">综艺</a>
                 </li>
-                <li class="fed-col-sm2">
+                <li class="p-id-nav_li_5 fed-col-sm2" data-p-id="nav_li_5">
                     <a class="fed-part-eone" href="/tv/more/dm">动漫</a>
                 </li>
             </ul>
@@ -87,7 +87,7 @@
                         <ul class="fed-pops-list fed-back-whits fed-part-rows">
                             {% for mt in mv_top|get_sub_list(0, 3) %}
                                 <li class="fed-col-xs6">
-                                    <a class="fed-event fed-part-eone" href="">
+                                    <a class="fed-event fed-part-eone" href="/t-d/{{ mt.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
                                         <span class="fed-name">{{ mt.tv_vo.tv_name }}</span>
                                     </a>
@@ -95,7 +95,7 @@
                             {% endfor %}
                             {% for dst in dsj_top|get_sub_list(0, 2) %}
                                 <li class="fed-col-xs6">
-                                    <a class="fed-event fed-part-eone" href="">
+                                    <a class="fed-event fed-part-eone" href="/t-d/{{ dst.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 3 }}">{{ loop.index + 3 }}</span>
                                         <span class="fed-name">{{ dst.tv_vo.tv_name }}</span>
                                     </a>
@@ -103,7 +103,7 @@
                             {% endfor %}
                             {% for zt in zy_top|get_sub_list(0, 3) %}
                                 <li class="fed-col-xs6">
-                                    <a class="fed-event fed-part-eone" href="">
+                                    <a class="fed-event fed-part-eone" href="/t-d/{{ zt.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 5 }}">{{ loop.index + 5 }}</span>
                                         <span class="fed-name">{{ zt.tv_vo.tv_name }}</span>
                                     </a>
@@ -111,7 +111,7 @@
                             {% endfor %}
                             {% for dt in dm_top|get_sub_list(0, 2) %}
                                 <li class="fed-col-xs6">
-                                    <a class="fed-event fed-part-eone" href="">
+                                    <a class="fed-event fed-part-eone" href="/t-d/{{ dt.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 8 }}">{{ loop.index + 8 }}</span>
                                         <span class="fed-name">{{ dt.tv_vo.tv_name }}</span>
                                     </a>

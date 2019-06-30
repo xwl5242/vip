@@ -1,4 +1,7 @@
 $.fn.pagination = function pagination(fn){
+    if($(this).attr('data-to-page') == 'False'){
+        return false;
+    }
     if(!fn||typeof fn!="function"){
         return false;
     }

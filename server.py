@@ -13,23 +13,29 @@ from dao import DB, Config
 app = Flask("yo_vip_tv", static_folder="static", template_folder="templates")
 
 
+def b64_str_decode(b):
+    return str(base64.b64decode(str(b).encode('utf-8')), 'utf-8')
+
+
+def render_template_(html, to_page=False, **kwargs):
+    return render_template(html, mv_top=json.loads(j.r.get('mv_top')), dsj_top=json.loads(j.r.get('dsj_top')),
+                           zy_top=json.loads(j.r.get('zy_top')),  dm_top=json.loads(j.r.get('dm_top')), to_page=to_page,
+                           mv_kv_type=Config.item_list(Config.MV), dm_kv_type=Config.item_list(Config.DM),
+                           zy_kv_type=Config.item_list(Config.ZY), dsj_kv_type=Config.item_list(Config.DSJ), **kwargs)
+
+
 @app.route('/')
 def index():
     """
     网站首页
     :return:
     """
-    # news:最新视频,mvs:电影,dsjs:电视剧,dms:动漫,zys:综艺,today:今日更新,total:总视频,
+    # news:最新视频,mvs:电影,dsjs:电视剧,dms:动漫,zys:综艺,today_:今日更新,total_:总视频,
     # mv_kv_type:电影类型,dm_kv_type:动漫类型,zy_kv_type:综艺类型,dsj_kv_type:电视剧类型,fus:友情链接
-    return render_template('index.html',
-                           news=json.loads(j.r.get('news')), mvs=json.loads(j.r.get('mvs')),
-                           dsjs=json.loads(j.r.get('dsjs')), dms=json.loads(j.r.get('dms')),
-                           zys=json.loads(j.r.get('zys')), mv_top=json.loads(j.r.get('mv_top')),
-                           dsj_top=json.loads(j.r.get('dsj_top')), zy_top=json.loads(j.r.get('zy_top')),
-                           dm_top=json.loads(j.r.get('dm_top')), today=json.loads(j.r.get('today')),
-                           total=json.loads(j.r.get('total')), fus=DB.query_friend_urls(),
-                           mv_kv_type=Config.item_list(Config.MV), dm_kv_type=Config.item_list(Config.DM),
-                           zy_kv_type=Config.item_list(Config.ZY), dsj_kv_type=Config.item_list(Config.DSJ))
+    return render_template_('index.html', news=json.loads(j.r.get('news')), mvs=json.loads(j.r.get('mvs')),
+                            dsjs=json.loads(j.r.get('dsjs')), dms=json.loads(j.r.get('dms')),
+                            zys=json.loads(j.r.get('zys')),  today_=json.loads(j.r.get('today')),
+                            total_=json.loads(j.r.get('total')), fus=DB.query_friend_urls())
 
 
 @app.route('/tv/more/<tv_type>')
@@ -39,15 +45,37 @@ def tv_more_2_html(tv_type):
     :param tv_type:
     :return:
     """
-    html = 'tv/tv_news.html' if tv_type == 'all' else 'tv/tv_more.html'
     today, total = DB.query_today_total_update(tv_type)
     tv_more = DB.query_tv_more(tv_type)
     tv_more['cur_type'] = tv_type
-    return render_template(html, today=today, total=total, tv_more=tv_more)
+    return render_template_('tv/tv_more.html', today=today, total=total, tv_more=tv_more)
 
 
-@app.route('/tv/more/i-<tv_item>')
-def tv_more_item_2_html(tv_item):
+@app.route('/t-d/<tv_id>')
+def tv_detail_2_html(tv_id):
+    """
+    tv视频详情页
+    :param tv_id: 视频的id
+    :return:
+    """
+    tv_id = str(base64.b64decode(str(tv_id).encode('utf-8')), 'utf-8')
+    detail = DB.query_tv_detail(tv_id)
+    like_hot = DB.query_tv_like_hot(detail.get('tv_type'))
+    # random select 6 item
+    random.shuffle(like_hot)
+    return render_template_('tv/tv_detail.html', tv_detail=detail, like_hots=like_hot[0:6])
+
+
+@app.route('/t-t/a')
+def tv_type_all():
+    page_no = request.args.get('p')
+    page_no = int(page_no) if page_no else 1
+    items, total = DB.query_tv_page(' and 1=1 ', page_no)
+    return render_template_('tv/tv_item.html', to_page=True, items=items, total=total, page_no=page_no)
+
+
+@app.route('/t-t/i=<tv_item>')
+def tv_type_item_2_html(tv_item):
     """
     每个小类的更多链接
     :param tv_item:
@@ -64,38 +92,39 @@ def tv_more_item_2_html(tv_item):
     return redirect(f'/t-t/{tv_type}-{tv_item_k}')
 
 
-@app.route('/t-d/<tv_id>')
-def tv_detail_2_html(tv_id):
+@app.route('/t-t/k=<tv_name>')
+def tv_type_4_name_2_html(tv_name):
     """
-    tv视频详情页
-    :param tv_id: 视频的id
+    根据电影名称搜索，目前用于首页的搜索功能
+    :param tv_name: 电影名称
     :return:
     """
-    tv_id = str(base64.b64decode(str(tv_id).encode('utf-8')), 'utf-8')
-    detail = DB.query_tv_detail(tv_id)
-    like_hot = DB.query_tv_like_hot(detail.get('tv_type'))
-    # random select 6 item
-    random.shuffle(like_hot)
-    return render_template('tv/tv_detail.html', tv_detail=detail, like_hots=like_hot[0:6])
+    items = DB.query_tv_more_by_name(tv_name)
+    return render_template('tv/tv_item.html', items=items)
 
 
-@app.route('/t-t/<tv_type>-<tv_index>')
-def tv_type_2_html(tv_type, tv_index):
+@app.route('/t-t/<tv_type>-<tv_item>')
+def tv_type_2_html(tv_type, tv_item):
     """
     tv视频小类的详情页
     :param tv_type: 视频的大类，如mv：电影，dm：动漫
-    :param tv_index: 视频的小类，如动作片，国产剧，微电影
+    :param tv_item: 视频的小类，如动作片，国产剧，微电影
     :return:
     """
+    # 获取分页信息中的页码
     page_no = request.args.get('p')
     page_no = int(page_no) if page_no else 1
-    return render_template('tv/tv_item.html',
-                           page_vo=DB.query_tv_type_item_page(tv_type, tv_index, page_no))
+    # 获取具体的数据库中视频的分类
+    tv_type = [(k, v) for (k, v) in Config.item_list(tv_type) if int(k) == int(tv_item)]
+    tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
+    # 查询分页数据
+    items, total = DB.query_tv_page(f" and tv_type = '{tv_type}'", page_no)
+    return render_template_('tv/tv_item.html', to_page=True, items=items, total=total, page_no=page_no)
 
 
 @app.route('/tv/choose')
 def tv_choose_2_html():
-    return render_template('tv/tv_with_choose.html', page_vo={'page_no': 1, 'total': 1})
+    return render_template_('tv/tv_with_choose.html', to_page=True, page_vo={'page_no': 1, 'total': 1})
 
 
 @app.route('/t-play/<tv_id>/url=<url>')
@@ -111,7 +140,7 @@ def tv_play_2_html(tv_id, url):
     detail = DB.query_tv_detail(tv_id)
     like_host = DB.query_tv_like_hot(detail.get('tv_type'))
     random.shuffle(like_host)
-    return render_template('tv/tv_play.html', cur_tv_url=url, tv_detail=detail, like_hosts=like_host[0:6])
+    return render_template_('tv/tv_play.html', cur_tv_url=url, tv_detail=detail, like_hots=like_host[0:6])
 
 
 def split_strings(s, sep=','):

@@ -14,6 +14,15 @@
 </div>
 <script>
     $(function(){
+        //设置页面顶端的导航选中状态
+        let h = window.location.href.split('//')[1].replace('/', '')
+        if(h == window.location.host){
+            localStorage.setItem('selected_nav_id', 'nav_li_1')
+        }
+        let sel_nav_id = localStorage.getItem('selected_nav_id');
+        sel_nav_id =  (sel_nav_id&&sel_nav_id!='undefined')?sel_nav_id:'nav_li_1'
+        $('#'+sel_nav_id).find('a').removeClass('fed-text-green').addClass('fed-text-green')
+        $('.p-id-'+sel_nav_id).removeClass('fed-this').addClass('fed-this')
         //页面右侧滚动到页面顶部相关
         window.onscroll= function(){
             //变量t是滚动条滚动时，距离顶部的距离
@@ -36,16 +45,30 @@
             }
         });
         $('.fed-main-info').click(function(){
-            $('.fed-pops-navbar').removeClass('fed-visible').addClass('fed-hidden')
-            $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden')
+            $('.fed-pops-navbar').removeClass('fed-visible').addClass('fed-hidden');
+            $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden');
         });
         //搜索框，搜索相关
         $('.fed-navs-search input').click(function(){
             if($('.fed-pops-search').hasClass('fed-hidden')){
-                $('.fed-pops-search').removeClass('fed-hidden').addClass('fed-visible')
+                $('.fed-pops-search').removeClass('fed-hidden').addClass('fed-visible');
             }else{
-                $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden')
+                $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden');
             }
         });
+        //设置导航被选中样式相关
+        $('.fed-menu-info > li').click(function(){
+            localStorage.setItem('selected_nav_id', $(this).attr('id'));
+        });
+        $('.fed-pops-navbar li').click(function(){
+            localStorage.setItem('selected_nav_id', $(this).attr('data-p-id'));
+        })
+        //搜索功能
+        $('#index_ser_btn').click(function(){
+            let k = $(this).siblings('input').val();
+            if(k){
+               window.location.href = '/t-t/k='+ k;
+            }
+        })
     });
 </script>

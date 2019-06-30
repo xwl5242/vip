@@ -35,7 +35,6 @@ class MyJobs:
         dm_top = json.dumps(DB.query_index_tops(Config.DM)[0:6], ensure_ascii=False, cls=DateEncoder)
         # 今日更新和总视频数量
         today, total = DB.query_today_total_update(None)
-        print(f'{time.time()-s}')
         cls.r.set('news', news)
         cls.r.set('mvs', mvs)
         cls.r.set('dsjs', dsjs)
@@ -48,8 +47,8 @@ class MyJobs:
         cls.r.set('today', today)
         cls.r.set('total', total)
         del news, mvs, dsjs, dms, zys, mv_top, dsj_top, zy_top, dm_top
+        print(f'{time.time() - s}')
 
 
 if __name__ == '__main__':
     MyJobs.app_index_job()
-    print(MyJobs.r.get('news'))
