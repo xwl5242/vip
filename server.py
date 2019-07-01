@@ -184,7 +184,7 @@ def tv_play_html(tv_id, url):
 
 if __name__ == '__main__':
     # DEBUG RUN
-    # j.app_index_job()
+    j.app_index_job()
     # 添加自定义过滤器
     app.add_template_filter(au.split_strings, 'str_split')
     app.add_template_filter(au.tv_is_mv, 'tv_is_mv')
@@ -195,5 +195,5 @@ if __name__ == '__main__':
     scheduler.init_app(app)
     scheduler.start()
     scheduler.add_job(id='app_index_job', func=j.app_index_job, trigger='interval', seconds=17*60)
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=False)
 
