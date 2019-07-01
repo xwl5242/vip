@@ -89,7 +89,7 @@
                 <dl class="fed-col-sx12 fed-col-sm6 fed-col-md4">
                     <dt>地区</dt>
                     {% for aa in tv_more.tv_areas %}
-                        <dd><a href="/t-area/{{ aa }}">{{ aa }}</a></dd>
+                        <dd><a href="/t-t/area={{ aa|b64encode }}">{{ aa }}</a></dd>
                     {% endfor %}
                     <dd><a href="/t-area/other">其他</a></dd>
                 </dl>
@@ -98,8 +98,8 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">最近更新</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li>今日更新&nbsp;<span class="fed-text-green">17</span>&nbsp;部&nbsp;&nbsp;共&nbsp;<span
-                                class="fed-text-green">21526&nbsp;</span>部
+                        <li>今日更新&nbsp;<span class="fed-text-green">{{ _today }}</span>&nbsp;部&nbsp;&nbsp;共&nbsp;<span
+                                class="fed-text-green">{{ _total }}&nbsp;</span>部
                         </li>
                         <li><a class="fed-more" href="/label/news.html">更多</a></li>
                     </ul>

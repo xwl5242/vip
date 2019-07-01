@@ -26,26 +26,26 @@
                             <li class="fed-col-xs12 fed-col-md6 fed-part-eone">
                                 <span class="fed-text-muted">主演：</span>
                                     {% for ta in tv_detail.tv_actors|str_split %}
-                                        <a href="/t-actors/{{ ta }}" target="_blank">{{ ta }}</a>
+                                        <a href="/t-t/actors={{ ta|b64encode }}" target="_blank">{{ ta }}</a>
                                     {% endfor %}
                             </li>
                             <li class="fed-col-xs12 fed-col-md6 fed-part-eone">
                                 <span class="fed-text-muted">导演：</span>
                                 {% for td in tv_detail.tv_director|str_split %}
-                                    <a href="/t-director/{{ td }}" target="_blank">{{ td }}</a>&nbsp;
+                                    <a href="/t-t/director={{ td|b64encode }}" target="_blank">{{ td }}</a>&nbsp;
                                 {% endfor %}
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">分类：</span>
-                                <a href="/tv/more/i={{ tv_detail.tv_type|b64encode }}" target="_blank">{{ tv_detail.tv_type }}</a>
+                                <a href="/t-t/i={{ tv_detail.tv_type|b64encode }}" target="_blank">{{ tv_detail.tv_type }}</a>
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">地区：</span>
-                                <a href="/t-area/{{ tv_detail.tv_area }}" target="_blank">{{ tv_detail.tv_area }}</a>&nbsp;
+                                <a href="/t-t/area={{ tv_detail.tv_area|b64encode }}" target="_blank">{{ tv_detail.tv_area }}</a>&nbsp;
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">年份：</span>
-                                <a href="/t-year/{{ tv_detail.tv_year }}" target="_blank">{{ tv_detail.tv_year }}</a>&nbsp;
+                                <a href="/t-t/year={{ tv_detail.tv_year }}" target="_blank">{{ tv_detail.tv_year }}</a>&nbsp;
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">更新：</span>{{ tv_detail.update_time|string|truncate(13,end='') }}

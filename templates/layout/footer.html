@@ -8,7 +8,7 @@
 </div>
 <div class="fed-foot-info fed-part-layout fed-back-whits">
     <div class="fed-part-case">
-        <p class="fed-text-center fed-text-black">本站所有数据来自互联网，侵权联系邮箱：vip@z9n.cn</p>
+        <p class="fed-text-center fed-text-black">本站所有数据来自互联网，侵权联系邮箱：xwl5242@163.com</p>
         <p class="fed-text-center fed-text-black"></p>
     </div>
 </div>
@@ -56,6 +56,18 @@
                 $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden');
             }
         });
+        $('#index_ser_web_btn').click(function(){
+            if($('.fed-navs-search').hasClass('fed-hidden')){
+                $('.fed-navs-search').removeClass('fed-hidden').addClass('fed-visible');
+            }else{
+                $('.fed-navs-search').removeClass('fed-visible').addClass('fed-hidden');
+            }
+            if($('.fed-pops-search').hasClass('fed-hidden')){
+                $('.fed-pops-search').removeClass('fed-hidden').addClass('fed-visible');
+            }else{
+                $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden');
+            }
+        });
         //设置导航被选中样式相关
         $('.fed-menu-info > li').click(function(){
             localStorage.setItem('selected_nav_id', $(this).attr('id'));
@@ -64,7 +76,7 @@
             localStorage.setItem('selected_nav_id', $(this).attr('data-p-id'));
         })
         //搜索功能
-        $('#index_ser_btn').click(function(){
+        $('#index_ser_btn,#index_ser_web_btn').click(function(){
             let k = $(this).siblings('input').val();
             if(k){
                window.location.href = '/t-t/k='+ k;
