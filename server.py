@@ -142,7 +142,7 @@ def tv_type_4_name_html(tv_name):
     :return:
     """
     items = DB.index_search(tv_name)
-    return render_template('tv/tv_item.html', items=items)
+    return render_template_('tv/tv_item.html', items=items)
 
 
 @app.route('/t-t/<tv_type>-<tv_item>')
@@ -194,6 +194,6 @@ if __name__ == '__main__':
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
-    scheduler.add_job(id='app_index_job', func=j.app_index_job, trigger='interval', seconds=17*60)
-    app.run(host='0.0.0.0', port=80, debug=False)
+    scheduler.add_job(id='app_index_job', func=j.app_index_job, trigger='interval', seconds=11*60)
+    app.run(host='0.0.0.0', port=9999, debug=False)
 
