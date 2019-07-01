@@ -15,7 +15,7 @@ app = Flask("yo_vip_tv", static_folder="static", template_folder="templates")
 
 
 def render_template_(html, to_page=False, **kwargs):
-    return render_template(html, to_page=False,
+    return render_template(html, to_page=to_page,
                            mv_top=json.loads(j.r.get('mv_top')), dsj_top=json.loads(j.r.get('dsj_top')),
                            zy_top=json.loads(j.r.get('zy_top')),  dm_top=json.loads(j.r.get('dm_top')),
                            mv_kv_type=Config.TV_KV.get('mv'), dm_kv_type=Config.TV_KV.get('dm'),
@@ -72,12 +72,12 @@ def tv_detail_html(tv_id):
 
 
 @app.route('/t-t/a')
-def tv_type_all():
+def index_news_more_html():
     return to_page_html(request, None, 'tv/tv_item.html')
 
 
 @app.route('/t-t/i=<tv_item>')
-def tv_type_item_2_html(tv_item):
+def tv_type_item_html(tv_item):
     """
     每个小类的更多链接
     :param tv_item:
@@ -85,44 +85,57 @@ def tv_type_item_2_html(tv_item):
     """
     tv_item = au.b64_str_decode(tv_item)
     tv_item_k, tv_type = '', ''
-    for kvs in Config.TV_TYPE_KV_DICT:
-        for kkvv in Config.TV_TYPE_KV_DICT[kvs]:
-            if kkvv['value'] == tv_item:
-                tv_type = kvs
-                tv_item_k = kkvv['key']
+    for key in Config.TV_KV:
+        for k_v in Config.TV_KV[key]:
+            if k_v[1] == tv_item:
+                tv_type = key
+                tv_item_k = k_v[0]
                 break
     return redirect(f'/t-t/{tv_type}-{tv_item_k}')
 
 
 @app.route('/t-t/actors=<tv_actors>')
-def tv_type_4_actors_2_html(tv_actors):
+def tv_type_4_actors_html(tv_actors):
     tv_actors = au.b64_str_decode(tv_actors)
-    where = f" and tv_actors like '%%{tv_actors}%%' "
+    where = f"tv_actors like '%{tv_actors}%' "
     return to_page_html(request, where, 'tv/tv_item.html')
 
 
 @app.route('/t-t/director=<tv_director>')
-def tv_type_4_director_2_html(tv_director):
+def tv_type_4_director_html(tv_director):
     tv_director = au.b64_str_decode(tv_director)
-    where = f" and tv_director like '%%{tv_director}%%' "
+    where = f"tv_director like '%{tv_director}%' "
     return to_page_html(request, where, 'tv/tv_item.html')
 
 
 @app.route('/t-t/area=<tv_area>')
-def tv_type_4_area_2_html(tv_area):
+def tv_type_4_area_html(tv_area):
     tv_area = au.b64_str_decode(tv_area)
-    where = f" and tv_area like '%%{tv_area}%%' "
+    if tv_area == 'other':
+        where = f"(tv_area like '%其他%' or tv_area like '%其它%')"
+    else:
+        where = f"tv_area like '%{tv_area}%' "
     return to_page_html(request, where, 'tv/tv_item.html')
 
 
 @app.route('/t-t/year=<tv_year>')
-def tv_type_4_year_2_html(tv_year):
-    where = f" and tv_year = '{tv_year}' "
+def tv_type_4_year_html(tv_year):
+    where = f"tv_year = '{tv_year}' "
+    return to_page_html(request, where, 'tv/tv_item.html')
+
+
+@app.route('/t-t/year_bt-<cur_type>-<year>')
+def tv_type_4_between_year_html(cur_type, year):
+    year = [y for y in Config.YEARS if str(y).startswith(year+':')]
+    year = str(year).split(':')[1]
+    year = str(year).split('@')
+    tv_type = "','".join(Config.TV_KV_LIST.get(cur_type))
+    where = f"tv_type in ('{tv_type}') and tv_year >= {year[0]} and tv_year <= {year[1]}"
     return to_page_html(request, where, 'tv/tv_item.html')
 
 
 @app.route('/t-t/k=<tv_name>')
-def tv_type_4_name_2_html(tv_name):
+def tv_type_4_name_html(tv_name):
     """
     根据电影名称搜索，目前用于首页的搜索功能
     :param tv_name: 电影名称
@@ -133,7 +146,7 @@ def tv_type_4_name_2_html(tv_name):
 
 
 @app.route('/t-t/<tv_type>-<tv_item>')
-def tv_type_2_html(tv_type, tv_item):
+def tv_type_html(tv_type, tv_item):
     """
     tv视频小类的详情页
     :param tv_type: 视频的大类，如mv：电影，dm：动漫
@@ -141,10 +154,10 @@ def tv_type_2_html(tv_type, tv_item):
     :return:
     """
     # 获取具体的数据库中视频的分类
-    tv_type = [(k, v) for (k, v) in Config.item_list(tv_type) if int(k) == int(tv_item)]
+    tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
     tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
     # 查询分页数据
-    where = f" and tv_type = '{tv_type}'"
+    where = f"tv_type = '{tv_type}'"
     return to_page_html(request, where, 'tv/tv_item.html')
 
 

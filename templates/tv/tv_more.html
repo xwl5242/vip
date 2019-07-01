@@ -78,20 +78,18 @@
                 </dl>
                 <dl class="fed-col-sx12 fed-col-sm6 fed-col-md4 fed-hide-sm fed-show-md-block">
                     <dt>年代</dt>
-                    <dd><a href="/t-year/-1">更早</a></dd>
-                    <dd><a href="/t-year/70">70年代</a></dd>
-                    <dd><a href="/t-year/80">80年代</a></dd>
-                    <dd><a href="/t-year/90">90年代</a></dd>
-                    <dd><a href="/t-year/00">00年代</a></dd>
-                    <dd><a href="/t-year/10">10年代</a></dd>
-                    <dd><a href="/t-year/0">最近</a></dd>
+                    {% for yy in tv_more.tv_years %}
+                        <dd><a href="/t-t/year_bt-{{ tv_more.cur_type }}-{{ yy|str_split(':')|get_list(0) }}">
+                            {{ yy|str_split(':')|get_list(2) }}
+                        </a></dd>
+                    {% endfor %}
                 </dl>
                 <dl class="fed-col-sx12 fed-col-sm6 fed-col-md4">
                     <dt>地区</dt>
                     {% for aa in tv_more.tv_areas %}
                         <dd><a href="/t-t/area={{ aa|b64encode }}">{{ aa }}</a></dd>
                     {% endfor %}
-                    <dd><a href="/t-area/other">其他</a></dd>
+                    <dd><a href="/t-t/area={{ 'other'|b64encode }}">其他</a></dd>
                 </dl>
             </div>
             <div class="fed-part-layout fed-back-whits">
@@ -101,157 +99,26 @@
                         <li>今日更新&nbsp;<span class="fed-text-green">{{ _today }}</span>&nbsp;部&nbsp;&nbsp;共&nbsp;<span
                                 class="fed-text-green">{{ _total }}&nbsp;</span>部
                         </li>
-                        <li><a class="fed-more" href="/label/news.html">更多</a></li>
+{#                        <li><a class="fed-more" href="">更多</a></li>#}
                     </ul>
                 </div>
                 <ul class="fed-list-info fed-part-rows">
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105813.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15615447100.jpg"
-                           style="display: block; background-image: url(&quot;https://img.pic-imges.com/pic/upload/vod/2019-06/15615447100.jpg&quot;);">
+                    {% for new in tv_more.tv_news %}
+                        <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ new.tv_id|b64encode }}"
+                           style="display: block; background-image: url({{ new.tv_img }});">
                             <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">3.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
+                            <span class="fed-list-score fed-font-xii fed-back-green">{{ new.tv_area }}</span>
+                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
+                                {{ new.update_time|string|truncate(13,end='') }}
+                            </span>
                         </a>
                         <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105813.html">怪物少女</a>
+                           href="/t-d/{{ new.tv_id|b64encode }}">{{ new.tv_name }}</a>
                         <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
 建泽正</span>
                     </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105825.html"
-                           data-original="http://img.pic-imges.com/pic/upload/vod/2019-06/15615665930.jpg"
-                           style="display: block; background-image: url(&quot;http://img.pic-imges.com/pic/upload/vod/2019-06/15615665930.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">7.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105825.html">舞极限 </a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-黄鸿升,李艳馨,周定纬</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105824.html"
-                           data-original="http://img.pic-imges.com/pic/upload/vod/2019-06/15615591800.jpg"
-                           style="display: block; background-image: url(&quot;http://img.pic-imges.com/pic/upload/vod/2019-06/15615591800.jpg&quot;);">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">9.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105824.html">小委托人</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-李东辉,柳善,高素熙,徐正妍,元贤俊</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105817.html"
-                           data-original="http://img.pic-imges.com/pic/upload/vod/2019-06/15615540510.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">7.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105817.html">完美正义</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-古斌,王家梁,伊正,刘奕儿,宝咖咖,鐵齒哥</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105810.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15615434932.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">10.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105810.html">水上人间</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-徐洁儿,姜星丘,冯瓅,钟紫心,桓淼淼,许林,Lin,Xu,邢昀,屈刚</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105808.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15615434840.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">9.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105808.html">终结之旅</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-迪恩·J·韦斯特,艾伦·杰伊·罗姆,Ashley,Lenz</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105807.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15615391010.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">6.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105807.html">恶人传</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-马东锡,金武烈,金成圭</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105809.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15615434881.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">10.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105809.html">疯狂的彩票2019</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-马朋朋</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/98622.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-04/201904061554520108.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">9.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">BD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/98622.html">雷霆沙赞</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-,扎克瑞·莱维,马克·斯特朗,亚瑟·安其,杰克·迪伦·格雷泽,杰曼·翰苏,费斯·赫尔曼,约文·阿曼德,陈琦烨,格蕾丝·富尔顿,亚当·布罗迪,梅根·古德,米歇尔·博斯,罗斯·巴特勒,马尔塔·米兰斯,库珀·安德鲁斯,罗维娜·亚瓦里,埃文·马什,娜塔莉亚姗福瑞,D·J·科特罗纳,艾娃·普雷斯顿,安迪·奥修,卡尔森·迈克马克,莎伊娜·瑞恩,莎拉·贝纳尼,安吉莉卡·利斯克,辛迪·戴,洛塔·洛森,西蒙·诺斯伍德</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105805.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/15615347381.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">3.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105805.html">职场无间道</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-Eduardo,Noriega,Najwa,Nimri</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105803.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/156153443519.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">9.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105803.html">巡弋悍将</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-伊丽莎白·赫利,,韦斯利·斯奈普斯,汤姆·塞兹摩尔</span>
-                    </li>
-                    <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/voddetail/105802.html"
-                           data-original="https://img.pic-imges.com/pic/upload/vod/2019-06/156153443318.jpg">
-                            <span class="fed-list-play fed-hide-xs"></span>
-                            <span class="fed-list-score fed-font-xii fed-back-green">8.0</span>
-                            <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">HD</span>
-                        </a>
-                        <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/voddetail/105802.html">基佬四十</a>
-                        <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
-林子祥,陈小春,吴镇宇,伍咏薇,林建明,毛俊辉,舒淇,杨恭如,张坚庭,张同祖,袁咏仪</span>
-                    </li>
+                    {% endfor %}
                 </ul>
             </div>
             {% for tty in tv_more.tv_types %}

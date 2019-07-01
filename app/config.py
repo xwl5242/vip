@@ -11,11 +11,9 @@ class Config:
     AES_KEY = conf.get('AES_KEY', 'aes_key')
     # TV_TYPE_ITEM
     TV_KV = {}
-    TV_VK = {}
     for ty in conf.get('TV_TYPE_ITEM', 'tv_type').split(','):
         kvs = conf.get('TV_TYPE_ITEM', f'{ty}_type_kv').split(',')
         TV_KV[ty] = [(kv.split(':')[0], kv.split(':')[1]) for kv in kvs]
-        TV_VK[ty] = [(kv.split(':')[1], kv.split(':')[0]) for kv in kvs]
     # EVERY TV ITEM
     MV = [mv for mv in conf.get('TV_TYPE_ITEM', 'mv').split(',')]
     DSJ = [dsj for dsj in conf.get('TV_TYPE_ITEM', 'dsj').split(',')]
@@ -31,9 +29,10 @@ class Config:
     MS_CHARSET = conf.get('MYSQL_DB', 'charset')
     # img server
     IMG_WEB = 'http://img.yoviptv.com/'
+    # 年代
+    YEARS = [y for y in conf.get('YEARS', 'years').split(',')]
 
 
 if __name__ == '__main__':
-    print(Config.TV_TYPE_ITEM_KV_DICT)
-    print(Config.TV_TYPE_ITEM_VK_DICT)
+    print(Config.TV_VK)
 

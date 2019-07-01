@@ -15,6 +15,9 @@ class DB(Base):
         :param limit_: limit 结束
         :return:
         """
+        where = where if where else ' 1=1 '
+        where = str(where).strip()
+        where = where[3:] if where.startswith('and') or where.startswith('AND') else where
         sql = f"select tv_id,tv_name,tv_actors,tv_director,tv_type,tv_area,tv_year,tv_lang,tv_intro,update_time," \
               f"concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img from t_tv where 1=1 and {where} " \
               f"order by update_time desc"
@@ -114,19 +117,20 @@ class DB(Base):
     def index_tv_more(tv_type):
         """
         首页每项视频的更多功能
-        :param cursor:
         :param tv_type: 视频的大类
         :return:
         """
         result = {}
         for tty in Config.TV_KV_LIST.get(tv_type):
             result[tty] = DB.query_list(DB.gen_sql(f"tv_type='{tty}'", 0, 12, True))
-        result['tv_types'] = Config.item_list(tv_type)
-        where_str = "','".join(Config.item_value_list(tv_type))
+        result['tv_types'] = Config.TV_KV.get(tv_type)
+        where_str = "','".join(Config.TV_KV_LIST.get(tv_type))
         area_sql = f"select group_concat(distinct tv_area) areas from t_tv where tv_type in('{where_str}')"
         tv_areas = DB.get(area_sql)['areas']
         tv_areas = [aa for aa in str(tv_areas).split(',') if '其' not in aa]
         result['tv_areas'] = tv_areas
+        result['tv_news'] = DB.query_list(DB.gen_sql(f"tv_type in ('{where_str}')", 0, 12, True))
+        result['tv_years'] = Config.YEARS
         return result
 
     @staticmethod
