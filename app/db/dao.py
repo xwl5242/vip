@@ -114,6 +114,20 @@ class DB(Base):
         return DB.query_list(DB.gen_sql(f"tv_name like '%%{tv_name}%%'", 0, 0))
 
     @staticmethod
+    def tv_areas(tv_type):
+        """
+        某类视频所包含的所有地区
+        :param tv_type: 视频的大类
+        :return:
+        """
+        where_str = "','".join(Config.TV_KV_LIST.get(tv_type)) if tv_type else None
+        where = f" tv_type in('{where_str}') " if where_str else ' 1=1 '
+        area_sql = f"select group_concat(distinct tv_area) areas from t_tv where {where} "
+        tv_areas = DB.get(area_sql)['areas']
+        tv_areas = [aa for aa in str(tv_areas).split(',') if '其' not in aa]
+        return tv_areas
+
+    @staticmethod
     def index_tv_more(tv_type):
         """
         首页每项视频的更多功能
@@ -121,16 +135,10 @@ class DB(Base):
         :return:
         """
         result = {}
+        where_str = "','".join(Config.TV_KV_LIST.get(tv_type))
         for tty in Config.TV_KV_LIST.get(tv_type):
             result[tty] = DB.query_list(DB.gen_sql(f"tv_type='{tty}'", 0, 12, True))
-        result['tv_types'] = Config.TV_KV.get(tv_type)
-        where_str = "','".join(Config.TV_KV_LIST.get(tv_type))
-        area_sql = f"select group_concat(distinct tv_area) areas from t_tv where tv_type in('{where_str}')"
-        tv_areas = DB.get(area_sql)['areas']
-        tv_areas = [aa for aa in str(tv_areas).split(',') if '其' not in aa]
-        result['tv_areas'] = tv_areas
         result['tv_news'] = DB.query_list(DB.gen_sql(f"tv_type in ('{where_str}')", 0, 12, True))
-        result['tv_years'] = Config.YEARS
         return result
 
     @staticmethod

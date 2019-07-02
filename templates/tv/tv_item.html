@@ -2,10 +2,44 @@
 {% block body %}
     <div class="fed-main-info fed-min-width">
         <div class="fed-part-case">
-            <title>优视频-真正的免费在线视频</title>
+            {% if is_choose %}
+            <div class="fed-casc-info fed-part-layout fed-back-whits fed-part-rows">
+                <div class="fed-casc-list fed-part-rows">
+                    <dl>
+                        <dt>频道</dt>
+                        {% for mv in tv_choose.tvs %}
+                            <dd><a class="{% if mv|get_list(0)==cur_tv_type %} fed-this fed-text-green {% endif %}"
+                                   href="/t-choose">{{ mv|get_list(1) }}</a></dd>
+                        {% endfor %}
+                    </dl>
+                    <dl>
+                        <dt>分类</dt>
+                        <dd><a href="/t-choose">全部</a></dd>
+                        {% for tty in tv_choose.tv_types[cur_tv_type] %}
+                            <dd><a class="{% if tty[0]==cur_tv_item %} fed-this fed-text-green {% endif %}"
+                                   href="/t-choose">{{ tty[1] }}</a></dd>
+                        {% endfor %}
+                    </dl>
+                    <dl>
+                        <dt>地区</dt>
+                        <dd><a class="fed-this fed-text-green" href="/t-choose">全部</a></dd>
+                        {% for area in tv_choose.tv_areas %}
+                            <dd><a href="/t-choose">{{ area}}</a></dd>
+                        {% endfor %}
+                    </dl>
+                    <dl>
+                        <dt>年代</dt>
+                        <dd><a class="fed-this fed-text-green" href="/t-choose">全部</a></dd>
+                        {% for yy in tv_choose.tv_years %}
+                        <dd><a href="/t-choose">{{ yy|str_split(':')|get_list(2) }}</a></dd>
+                        {% endfor %}
+                    </dl>
+                </div>
+            </div>
+            {% endif %}
             <div class="fed-part-layout fed-back-whits">
                 <div class="fed-list-head fed-part-rows fed-padding">
-                    <h2 class="fed-font-xvi">最近更新</h2>
+                    <h2 class="fed-font-xvi">{{ items[0].tv_type }}</h2>
 {#                    <ul class="fed-part-tips fed-padding">#}
 {#                        <li><a class="fed-more" href="/tv/choose">筛选</a></li>#}
 {#                    </ul>#}

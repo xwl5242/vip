@@ -78,7 +78,7 @@
                 </dl>
                 <dl class="fed-col-sx12 fed-col-sm6 fed-col-md4 fed-hide-sm fed-show-md-block">
                     <dt>年代</dt>
-                    {% for yy in tv_more.tv_years %}
+                    {% for yy in tv_years %}
                         <dd><a href="/t-t/year_bt-{{ tv_more.cur_type }}-{{ yy|str_split(':')|get_list(0) }}">
                             {{ yy|str_split(':')|get_list(2) }}
                         </a></dd>
