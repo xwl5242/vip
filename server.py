@@ -6,7 +6,7 @@ from app.config import Config
 from app.util.jobs import MyJobs as j
 from app.db.dao import DB
 from flask_apscheduler import APScheduler
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 
 # name, static resource path, templates resource path
 # 整体项目中tv_type为视频的大类（如mv:电影，dm:动漫...）,
@@ -22,7 +22,8 @@ def render_template_(html, to_page=False, **kwargs):
     :param kwargs: 要传递到页面上obj
     :return:
     """
-    return render_template(html, to_page=to_page,
+    root = url_for('index', _external=True)
+    return render_template(html, to_page=to_page, root=root,
                            mv_top=json.loads(j.r.get('mv_top')), dsj_top=json.loads(j.r.get('dsj_top')),
                            zy_top=json.loads(j.r.get('zy_top')),  dm_top=json.loads(j.r.get('dm_top')),
                            mv_kv_type=Config.TV_KV.get('mv'), dm_kv_type=Config.TV_KV.get('dm'),
@@ -30,15 +31,16 @@ def render_template_(html, to_page=False, **kwargs):
                            tv_years=Config.YEARS, **kwargs)
 
 
-def tv_item_page_html(req, where, html, is_choose=False, tv_type=None, tv_item=None):
+def tv_item_page_html(req, where, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
     """
     render template for pagination
     :param req: 请求 request
     :param where: where 查询条件
-    :param html: 要渲染的页面路径
     :param is_choose: 要渲染的页面是否需要筛选功能展示
     :param tv_type: is_choose为True时必填 tv的大类
     :param tv_item: is_choose为True时必填 tv的小类
+    :param tv_area:
+    :param tv_year:
     :return:
     """
     page_no = req.args.get('p')
@@ -50,8 +52,10 @@ def tv_item_page_html(req, where, html, is_choose=False, tv_type=None, tv_item=N
         tv_choose['tv_types'] = Config.TV_KV
         tv_choose['tv_areas'] = DB.tv_areas(None)
         tv_choose['tv_years'] = Config.YEARS
-    return render_template(html, to_page=True, items=items, total=total, page_no=page_no,
-                           is_choose=is_choose, tv_choose=tv_choose, cur_tv_type=tv_type, cur_tv_item=tv_item)
+    root = url_for('index', _external=True)
+    return render_template('tv/tv_item.html', to_page=True, page_no=page_no, root=root,
+                           cur_tv_area=tv_area, cur_tv_year=tv_year, cur_tv_type=tv_type, cur_tv_item=tv_item,
+                           is_choose=is_choose, items=items, total=total, tv_choose=tv_choose)
 
 
 @app.route('/')
@@ -104,7 +108,7 @@ def index_news_more_html():
     首页最近更新视频的"更多"链接
     :return:
     """
-    return tv_item_page_html(request, None, 'tv/tv_item.html')
+    return tv_item_page_html(request, None)
 
 
 @app.route('/t-t/i=<tv_item>')
@@ -134,7 +138,7 @@ def tv_type_4_actors_html(tv_actors):
     """
     tv_actors = au.b64_str_decode(tv_actors)
     where = f"tv_actors like '%{tv_actors}%' "
-    return tv_item_page_html(request, where, 'tv/tv_item.html')
+    return tv_item_page_html(request, where)
 
 
 @app.route('/t-t/director=<tv_director>')
@@ -146,7 +150,7 @@ def tv_type_4_director_html(tv_director):
     """
     tv_director = au.b64_str_decode(tv_director)
     where = f"tv_director like '%{tv_director}%' "
-    return tv_item_page_html(request, where, 'tv/tv_item.html')
+    return tv_item_page_html(request, where)
 
 
 @app.route('/t-t/area=<tv_area>')
@@ -161,7 +165,7 @@ def tv_type_4_area_html(tv_area):
         where = f"(tv_area like '%其他%' or tv_area like '%其它%')"
     else:
         where = f"tv_area like '%{tv_area}%' "
-    return tv_item_page_html(request, where, 'tv/tv_item.html')
+    return tv_item_page_html(request, where)
 
 
 @app.route('/t-t/year=<tv_year>')
@@ -172,7 +176,7 @@ def tv_type_4_year_html(tv_year):
     :return:
     """
     where = f"tv_year = '{tv_year}' "
-    return tv_item_page_html(request, where, 'tv/tv_item.html')
+    return tv_item_page_html(request, where)
 
 
 @app.route('/t-t/year_bt-<cur_type>-<year>')
@@ -188,7 +192,7 @@ def tv_type_4_between_year_html(cur_type, year):
     year = str(year).split('@')
     tv_type = "','".join(Config.TV_KV_LIST.get(cur_type))
     where = f"tv_type in ('{tv_type}') and tv_year >= {year[0]} and tv_year <= {year[1]}"
-    return tv_item_page_html(request, where, 'tv/tv_item.html')
+    return tv_item_page_html(request, where)
 
 
 @app.route('/t-t/k=<tv_name>')
@@ -216,7 +220,27 @@ def tv_type_html(tv_type, tv_item):
     tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
     # 查询分页数据
     where = f"tv_type = '{tv_type}'"
-    return tv_item_page_html(request, where, 'tv/tv_item.html', is_choose=True, tv_type=_tv_type, tv_item=tv_item)
+    return tv_item_page_html(request, where, is_choose=True, tv_type=_tv_type, tv_item=tv_item)
+
+
+@app.route('/t-choose/tt=<tv_type>/ti=<tv_item>/ta=<tv_area>/ty=<tv_year>')
+def tv_choose_html(tv_type, tv_item, tv_area, tv_year):
+    _tv_type = tv_type
+    where = []
+    if tv_item != 'all':
+        tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
+        tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
+        where.append(f"tv_type='{tv_type}'")
+    if tv_area != 'all':
+        where.append(f"tv_area='{tv_area}'")
+    if tv_year != 'all':
+        year = [y for y in Config.YEARS if str(y).startswith(tv_year + ':')]
+        year = str(year).split(':')[1]
+        year = str(year).split('@')
+        where.append(f"tv_year>={year[0]} and tv_year<={year[1]}")
+    where = " and ".join(where)
+    return tv_item_page_html(request, where, is_choose=True, tv_type=_tv_type,
+                             tv_item=tv_item, tv_area=tv_area, tv_year=tv_year)
 
 
 @app.route('/t-play/<tv_id>/url=<url>')

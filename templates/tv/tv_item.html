@@ -1,6 +1,7 @@
 {% extends './default.html' %}
 {% block body %}
     <div class="fed-main-info fed-min-width">
+        <input type="hidden" id="is_choose_in" value="{{ is_choose }}" />
         <div class="fed-part-case">
             {% if is_choose %}
             <div class="fed-casc-info fed-part-layout fed-back-whits fed-part-rows">
@@ -8,30 +9,37 @@
                     <dl>
                         <dt>频道</dt>
                         {% for mv in tv_choose.tvs %}
-                            <dd><a class="{% if mv|get_list(0)==cur_tv_type %} fed-this fed-text-green {% endif %}"
-                                   href="/t-choose">{{ mv|get_list(1) }}</a></dd>
+                            <dd>
+                                <a data-key="tt" data-value="{{ mv|get_list(0) }}"
+                                   class="{% if mv|get_list(0)==cur_tv_type %} fed-this fed-text-green {% endif %}">
+                                    {{ mv|get_list(1) }}
+                                </a>
+                            </dd>
                         {% endfor %}
                     </dl>
                     <dl>
                         <dt>分类</dt>
-                        <dd><a href="/t-choose">全部</a></dd>
+                        <dd><a data-key="ti" data-value="all">全部</a></dd>
                         {% for tty in tv_choose.tv_types[cur_tv_type] %}
-                            <dd><a class="{% if tty[0]==cur_tv_item %} fed-this fed-text-green {% endif %}"
-                                   href="/t-choose">{{ tty[1] }}</a></dd>
+                            <dd><a data-key="ti" data-value="{{ tty[0] }}" class="{% if tty[0]==cur_tv_item %} fed-this fed-text-green {% endif %}">
+                                {{ tty[1] }}</a></dd>
                         {% endfor %}
                     </dl>
                     <dl>
                         <dt>地区</dt>
-                        <dd><a class="fed-this fed-text-green" href="/t-choose">全部</a></dd>
+                        <dd><a data-key="ta" data-value="all"
+                               class="{% if cur_tv_area=='all' %}fed-this fed-text-green{% endif %}">全部</a></dd>
                         {% for area in tv_choose.tv_areas %}
-                            <dd><a href="/t-choose">{{ area}}</a></dd>
+                            <dd><a data-key="ta" data-value="{{ area }}" class="{% if cur_tv_area==area %}fed-this fed-text-green{% endif %}">{{ area}}</a></dd>
                         {% endfor %}
                     </dl>
                     <dl>
                         <dt>年代</dt>
-                        <dd><a class="fed-this fed-text-green" href="/t-choose">全部</a></dd>
+                        <dd><a data-key="ty" data-value="all"
+                               class="{% if cur_tv_year=='all' %}fed-this fed-text-green{% endif %}">全部</a></dd>
                         {% for yy in tv_choose.tv_years %}
-                        <dd><a href="/t-choose">{{ yy|str_split(':')|get_list(2) }}</a></dd>
+                        <dd><a data-key="ty" class="{% if cur_tv_year==yy|str_split(':')|get_list(0) %}fed-this fed-text-green{% endif %}"
+                               data-value="{{ yy|str_split(':')|get_list(0) }}">{{ yy|str_split(':')|get_list(2) }}</a></dd>
                         {% endfor %}
                     </dl>
                 </div>
@@ -39,7 +47,7 @@
             {% endif %}
             <div class="fed-part-layout fed-back-whits">
                 <div class="fed-list-head fed-part-rows fed-padding">
-                    <h2 class="fed-font-xvi">{{ items[0].tv_type }}</h2>
+                    <h2 class="fed-font-xvi"></h2>
 {#                    <ul class="fed-part-tips fed-padding">#}
 {#                        <li><a class="fed-more" href="/tv/choose">筛选</a></li>#}
 {#                    </ul>#}
@@ -70,7 +78,7 @@
     </div>
 {% endblock %}
 {% block js %}
-    <script src="../../static/js/pagination.js"></script>
+    <script src="{{ root }}static/js/pagination.js"></script>
     <script>
     $(function(){
         $('.fed-page-info').pagination(function(pageNo){
@@ -78,6 +86,18 @@
             to_url = to_url.split('?')[0]+'?p='+pageNo;
             window.location.href = to_url;
         });
+        $('.fed-casc-list a').click(function(){
+            $(this).addClass('fed-this').addClass('fed-text-green')
+            $(this).parent().siblings('dd').find('a').removeClass('fed-this').removeClass('fed-text-green')
+            $(this).parent().siblings('dd')
+            let sel_a_s = $('.fed-casc-list a').filter('.fed-this')
+            let to_url = '/t-choose'
+            for(let i=0;i<sel_a_s.length;i++){
+                to_url += '/'+$(sel_a_s[i]).attr('data-key')+'='+$(sel_a_s[i]).attr('data-value')
+            }
+            console.log(to_url)
+            window.location.href=to_url
+        })
     })
     </script>
 {% endblock %}
