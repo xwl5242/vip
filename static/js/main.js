@@ -1,5 +1,9 @@
 (function($){
 	$(function(){
+	    let my_theme_href = localStorage.getItem('my_theme_href');
+	    if(my_theme_href){
+	        top.$('#fed-colo-color').attr('href', my_theme_href);
+        }
         $('#sx_switch').toggle(function(){
             $(this).html('视频排序：倒序')
             $('#zx_url').hide();
@@ -104,5 +108,23 @@
                 content: $('#declare_content').html()
             });
         });
+        $('.fed-goto-color').click(function(){
+            layer.open({
+                title: '换肤',
+                content: $('#color').html(),
+                success: function(layero, index){
+                    $(layero).find('.layui-layer-content li').click(function(){
+                        let color_css = $(this).find('a').attr('data-type');
+                        let old_css = top.$('#fed-colo-color').attr('href');
+                        let prefix = old_css.substring(0, old_css.indexOf('css/')+4);
+                        let subffix = old_css.substring(old_css.indexOf('.css'));
+                        let new_css = prefix+color_css+subffix;
+                        localStorage.setItem('my_theme_href', new_css);
+                        top.$('#fed-colo-color').attr('href', new_css)
+                    });
+                }
+            })
+        });
+
     });
 })(jQuery);

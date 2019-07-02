@@ -52,10 +52,9 @@ def tv_item_page_html(req, where, is_choose=False, tv_type=None, tv_item=None, t
         tv_choose['tv_types'] = Config.TV_KV
         tv_choose['tv_areas'] = DB.tv_areas(None)
         tv_choose['tv_years'] = Config.YEARS
-    root = url_for('index', _external=True)
-    return render_template('tv/tv_item.html', to_page=True, page_no=page_no, root=root,
-                           cur_tv_area=tv_area, cur_tv_year=tv_year, cur_tv_type=tv_type, cur_tv_item=tv_item,
-                           is_choose=is_choose, items=items, total=total, tv_choose=tv_choose)
+    return render_template_('tv/tv_item.html', to_page=True, page_no=page_no,
+                            cur_tv_area=tv_area, cur_tv_year=tv_year, cur_tv_type=tv_type, cur_tv_item=tv_item,
+                            is_choose=is_choose, items=items, total=total, tv_choose=tv_choose)
 
 
 @app.route('/')
