@@ -6,6 +6,9 @@ from app.db.dao import DB
 
 
 class DateEncoder(json.JSONEncoder):
+    """
+    date encoder , analysis datetime for json
+    """
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return obj.strftime('%Y-%m-%d %H:%M:%S')
@@ -21,6 +24,10 @@ class MyJobs:
 
     @classmethod
     def app_index_job(cls):
+        """
+        cron, init index info
+        :return:
+        """
         import time
         s = time.time()
         print('init--redis')

@@ -4,6 +4,7 @@ import configparser
 
 
 class Config:
+    # read config property from config.ini
     cfg = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.ini')
     conf = configparser.ConfigParser()
     conf.read(cfg, encoding='utf-8')
@@ -28,7 +29,7 @@ class Config:
     MS_PORT = conf.get('MYSQL_DB', 'port')
     MS_CHARSET = conf.get('MYSQL_DB', 'charset')
     # img server
-    IMG_WEB = 'http://img.yoviptv.com/'
+    IMG_WEB = conf.get('IMG_SERVER', 'url')
     # 年代
     YEARS = [y for y in conf.get('YEARS', 'years').split(',')]
 

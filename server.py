@@ -15,6 +15,13 @@ app = Flask("yo_vip_tv", static_folder="static", template_folder="templates")
 
 
 def render_template_(html, to_page=False, **kwargs):
+    """
+    render template, have tops and tv_type
+    :param html: 要渲染的页面路径
+    :param to_page: 是否分页
+    :param kwargs: 要传递到页面上obj
+    :return:
+    """
     return render_template(html, to_page=to_page,
                            mv_top=json.loads(j.r.get('mv_top')), dsj_top=json.loads(j.r.get('dsj_top')),
                            zy_top=json.loads(j.r.get('zy_top')),  dm_top=json.loads(j.r.get('dm_top')),
@@ -23,6 +30,13 @@ def render_template_(html, to_page=False, **kwargs):
 
 
 def to_page_html(req, where, html):
+    """
+    render template for pagination
+    :param req: 请求 request
+    :param where: where 查询条件
+    :param html: 要渲染的页面路径
+    :return:
+    """
     page_no = req.args.get('p')
     page_no = int(page_no) if page_no else 1
     items, total = DB.tv_page(where, page_no)
@@ -73,6 +87,10 @@ def tv_detail_html(tv_id):
 
 @app.route('/t-t/a')
 def index_news_more_html():
+    """
+    首页最近更新视频的"更多"链接
+    :return:
+    """
     return to_page_html(request, None, 'tv/tv_item.html')
 
 
@@ -96,6 +114,11 @@ def tv_type_item_html(tv_item):
 
 @app.route('/t-t/actors=<tv_actors>')
 def tv_type_4_actors_html(tv_actors):
+    """
+    根据视频演员搜索相关视频
+    :param tv_actors: 演员名字
+    :return:
+    """
     tv_actors = au.b64_str_decode(tv_actors)
     where = f"tv_actors like '%{tv_actors}%' "
     return to_page_html(request, where, 'tv/tv_item.html')
@@ -103,6 +126,11 @@ def tv_type_4_actors_html(tv_actors):
 
 @app.route('/t-t/director=<tv_director>')
 def tv_type_4_director_html(tv_director):
+    """
+    根据视频导演搜索相关视频
+    :param tv_director: 导演名称
+    :return:
+    """
     tv_director = au.b64_str_decode(tv_director)
     where = f"tv_director like '%{tv_director}%' "
     return to_page_html(request, where, 'tv/tv_item.html')
@@ -110,6 +138,11 @@ def tv_type_4_director_html(tv_director):
 
 @app.route('/t-t/area=<tv_area>')
 def tv_type_4_area_html(tv_area):
+    """
+    根据视频所属地域搜索相关视频
+    :param tv_area: 地域名称
+    :return:
+    """
     tv_area = au.b64_str_decode(tv_area)
     if tv_area == 'other':
         where = f"(tv_area like '%其他%' or tv_area like '%其它%')"
@@ -120,12 +153,23 @@ def tv_type_4_area_html(tv_area):
 
 @app.route('/t-t/year=<tv_year>')
 def tv_type_4_year_html(tv_year):
+    """
+    根据视频指定的年份搜索相关视频
+    :param tv_year: 指定的年份
+    :return:
+    """
     where = f"tv_year = '{tv_year}' "
     return to_page_html(request, where, 'tv/tv_item.html')
 
 
 @app.route('/t-t/year_bt-<cur_type>-<year>')
 def tv_type_4_between_year_html(cur_type, year):
+    """
+    根据视频指定的年代搜索相关视频
+    :param cur_type: 当前视频类型
+    :param year: 年代
+    :return:
+    """
     year = [y for y in Config.YEARS if str(y).startswith(year+':')]
     year = str(year).split(':')[1]
     year = str(year).split('@')
