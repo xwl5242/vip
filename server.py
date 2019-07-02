@@ -266,6 +266,7 @@ if __name__ == '__main__':
     app.add_template_filter(au.get_list, 'get_list')
     app.add_template_filter(au.get_sub_list, 'get_sub_list')
     app.add_template_filter(au.b64encode, 'b64encode')
+    app.config['SERVER_NAME'] = 'www.yoviptv.com'
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
