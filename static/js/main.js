@@ -108,6 +108,7 @@
                 content: $('#declare_content').html()
             });
         });
+        //换肤
         $('.fed-goto-color').click(function(){
             layer.open({
                 title: '换肤',
@@ -125,6 +126,33 @@
                 }
             })
         });
-
+        //报错
+        $('.fed-tabs-errs').click(function(){
+            layer.open({
+                title: '报错',
+                content: $('#err_seek_msg').html(),
+                btn: ['提交', '取消'],
+                success: function(layero, index){
+                    $(layero).find('textarea').attr('placeholder','请输入200字以内的错误信息，谢谢！');
+                },
+                btn1: function(index, layero) {
+                    let msg = $(layero).find('textarea').val()
+                    if (msg) {
+                        $.post('/err-seek-msg',{msg: msg, m_type: '0'},function(data){
+                            if(data.code=='success'){
+                                layer.close(index);
+                                layer.msg('提交成功！我们会尽快处理，谢谢！');
+                            }
+                        },'json');
+                    } else {
+                        layer.tips('请先填写错误信息！', '.layui-layer-btn0', {tips: 1});
+                        return false;
+                    }
+                },
+                btn2: function(index, layero){
+                    layer.close(index);
+                }
+            })
+        });
     });
 })(jQuery);

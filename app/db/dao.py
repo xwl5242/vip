@@ -161,6 +161,13 @@ class DB(Base):
         sql = "select f_title,f_url from t_f_u where del_flag='0'"
         return DB.query_list(sql)
 
+    @staticmethod
+    def insert_msg(m_type, msg):
+        import uuid
+        sql = f"insert into t_err_seek_msg(id,type,text,del_flag,create_time) " \
+              f"values('{uuid.uuid4()}','{m_type}','{msg}','0',now())"
+        return DB.insert(sql)
+
 
 if __name__ == '__main__':
     print(DB.today_total(None))

@@ -25,8 +25,8 @@ class Config:
     DM = [dm for dm in conf.get('TV_TYPE_ITEM', 'dm').split(',')]
     TV_KV_LIST = {'mv': MV, 'dsj': DSJ, 'zy': ZY, 'dm': DM}
     # MYSQL_DB
-    __run_mode = conf.get('RUN_MODE', 'mode')
-    __db_version = 'PRO' if __run_mode == 'pro' else 'TEST'
+    _run_mode = conf.get('RUN_MODE', 'mode')
+    __db_version = 'PRO' if _run_mode == 'pro' else 'TEST'
     MS_HOST = conf.get(f'MYSQL_DB_{__db_version}', 'host')
     MS_USER = conf.get(f'MYSQL_DB_{__db_version}', 'user')
     MS_PASSWD = conf.get(f'MYSQL_DB_{__db_version}', 'passwd')

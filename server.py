@@ -6,7 +6,7 @@ from app.config import Config
 from app.util.jobs import MyJobs as j
 from app.db.dao import DB
 from flask_apscheduler import APScheduler
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 
 # name, static resource path, templates resource path
 # 整体项目中tv_type为视频的大类（如mv:电影，dm:动漫...）,
@@ -258,6 +258,14 @@ def tv_play_html(tv_id, url):
     return render_template_('tv/tv_play.html', cur_tv_url=url, tv_detail=detail, like_hots=like_host[0:6])
 
 
+@app.route('/err-seek-msg', methods=['POST'])
+def err_seek_msg():
+    m_type = request.form.get('m_type')
+    msg = request.form.get('msg')
+    r = DB.insert_msg(m_type, msg)
+    return jsonify({'code': 'success' if r and r == 1 else 'fail'})
+
+
 if __name__ == '__main__':
     # DEBUG RUN
     # j.app_index_job()
@@ -266,7 +274,8 @@ if __name__ == '__main__':
     app.add_template_filter(au.get_list, 'get_list')
     app.add_template_filter(au.get_sub_list, 'get_sub_list')
     app.add_template_filter(au.b64encode, 'b64encode')
-    app.config['SERVER_NAME'] = 'www.yoviptv.com'
+    if Config._run_mode == 'pro':
+        app.config['SERVER_NAME'] = 'www.yoviptv.com'
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()

@@ -16,7 +16,10 @@ def app_db(func):
             conn = POOL.connection()
             cursor = conn.cursor()
             return func(cursor, *args, **kwargs)
+        except Exception as e:
+            conn.rollback()
         finally:
+            conn.commit()
             cursor.close()
             conn.close()
     return wrapper
@@ -68,3 +71,7 @@ class Base:
         cursor.execute(get_sql)
         return cursor.fetchone()
 
+    @staticmethod
+    @app_db
+    def insert(cursor, sql):
+        return cursor.execute(sql)
