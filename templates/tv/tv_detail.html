@@ -147,6 +147,35 @@
 {% endblock %}
 {% block js %}
     <script>
+        //报错
+        $('#detail_err_msg').click(function(){
+            console.log($(this))
+            layer.open({
+                title: '报错',
+                content: $('#err_seek_msg').html(),
+                btn: ['提交', '取消'],
+                success: function(layero, index){
+                    $(layero).find('textarea').attr('placeholder','请输入200字以内的错误信息，谢谢！');
+                },
+                btn1: function(index, layero) {
+                    let msg = $(layero).find('textarea').val()
+                    if (msg) {
+                        $.post('/err-seek-msg',{msg: msg, m_type: '0'},function(data){
+                            if(data.code=='success'){
+                                layer.close(index);
+                                layer.msg('提交成功！我们会尽快处理，谢谢！');
+                            }
+                        },'json');
+                    } else {
+                        layer.tips('请先填写错误信息！', '.layui-layer-btn0', {tips: 1});
+                        return false;
+                    }
+                },
+                btn2: function(index, layero){
+                    layer.close(index);
+                }
+            })
+        });
         layer.msg('温馨提示：由于采集资源更新问题，部分视频播放列表会出现无效的链接，' +
             '请尝试另外的链接，同时希望您能把无效的链接通过右侧‘报错’方式反馈给我们，我们将会予以删除，祝您观影愉快，谢谢！', {time: 5000});
     </script>
