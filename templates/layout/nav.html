@@ -27,6 +27,10 @@
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
                        href="/tv/more/dm">动漫</a>
                 </li>
+                <li id="nav_li_6" class="fed-pull-left">
+                    <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
+                       href="http://vip.yoviptv.com">VIP解析</a>
+                </li>
                 <li class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-navs-navbar fed-event fed-hide fed-show-sm-block"
                        href="javascript:;">导航<span class="fed-part-move fed-edge-info fed-edge-bottom"></span></a>
@@ -80,6 +84,9 @@
                 <li class="p-id-nav_li_5 fed-col-sm2" data-p-id="nav_li_5">
                     <a class="fed-part-eone" href="/tv/more/dm">动漫</a>
                 </li>
+                <li class="p-id-nav_li_6 fed-col-sm2" data-p-id="nav_li_5">
+                    <a class="fed-part-eone" href="http://vip.yoviptv.com">VIP解析</a>
+                </li>
             </ul>
         </div>
         <div class="fed-pops-search fed-hidden fed-conceal fed-anim fed-anim-upbit">
@@ -89,7 +96,7 @@
                     <div class="fed-pops-hot">
                         <div class="fed-pops-title fed-back-whits fed-part-rows fed-line-bottom">热门搜索</div>
                         <ul class="fed-pops-list fed-back-whits fed-part-rows">
-                            {% for mt in mv_top|get_sub_list(0, 3) %}
+                            {% for mt in tv_tops['mv']|get_sub_list(0, 3) %}
                                 <li class="fed-col-xs6">
                                     <a class="fed-event fed-part-eone" href="/t-d/{{ mt.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
@@ -97,7 +104,7 @@
                                     </a>
                                 </li>
                             {% endfor %}
-                            {% for dst in dsj_top|get_sub_list(0, 2) %}
+                            {% for dst in tv_tops['dsj']|get_sub_list(0, 2) %}
                                 <li class="fed-col-xs6">
                                     <a class="fed-event fed-part-eone" href="/t-d/{{ dst.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 3 }}">{{ loop.index + 3 }}</span>
@@ -105,7 +112,7 @@
                                     </a>
                                 </li>
                             {% endfor %}
-                            {% for zt in zy_top|get_sub_list(0, 3) %}
+                            {% for zt in tv_tops['zy']|get_sub_list(0, 3) %}
                                 <li class="fed-col-xs6">
                                     <a class="fed-event fed-part-eone" href="/t-d/{{ zt.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 5 }}">{{ loop.index + 5 }}</span>
@@ -113,7 +120,7 @@
                                     </a>
                                 </li>
                             {% endfor %}
-                            {% for dt in dm_top|get_sub_list(0, 2) %}
+                            {% for dt in tv_tops['dm']|get_sub_list(0, 2) %}
                                 <li class="fed-col-xs6">
                                     <a class="fed-event fed-part-eone" href="/t-d/{{ dt.tv_vo.tv_id|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 8 }}">{{ loop.index + 8 }}</span>

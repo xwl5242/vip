@@ -6,19 +6,19 @@
             <!-- 轮播图开始 -->
             {% include './layout/banner.html' %}
             <!-- 轮播图结束 -->
-            <!-- 活动通知/公告开始 -->
-            <div class="fed-part-layout fed-back-whits">
-                <div class="fed-padding">
-                    <p>
-                        <marquee onmouseover=stop() onmouseout=start()>
-                            <a href="http://vip.yoviptv.com" target="_blank">
-                                <span style="font-size: 18px;">本站提供各类视频（含vip视频）且免费观看。另有vip解析功能，点击此前往VIP视频解析...</span>
-                            </a>
-                        </marquee>
-                    </p>
-                </div>
-            </div>
-            <!-- 活动通知/公告结束 -->
+{#            <!-- 活动通知/公告开始 -->#}
+{#            <div class="fed-part-layout fed-back-whits">#}
+{#                <div class="fed-padding">#}
+{#                    <p>#}
+{#                        <marquee onmouseover=stop() onmouseout=start()>#}
+{#                            <a href="http://vip.yoviptv.com" target="_blank">#}
+{#                                <span style="font-size: 18px;">本站提供各类视频（含vip视频）且免费观看。另有vip解析功能，点击此前往VIP视频解析...</span>#}
+{#                            </a>#}
+{#                        </marquee>#}
+{#                    </p>#}
+{#                </div>#}
+{#            </div>#}
+{#            <!-- 活动通知/公告结束 -->#}
             <!-- 最新更新开始 -->
             <div class="fed-part-layout fed-back-whits">
                 <div class="fed-list-head fed-part-rows fed-padding">
@@ -63,8 +63,7 @@
                 </div>
                 <div class="fed-padding fed-col-sx12 fed-col-md5">
                     <div class="fed-swip-container fed-part-rows swiper-container-horizontal">
-                        <ul class="fed-swip-wrapper fed-font-size"
-                            style="transform: translate3d(-910px, 0px, 0px); transition-duration: 0ms;">
+                        <ul class="fed-swip-wrapper fed-font-size">
                             {% for ttop in tv_tops[key] %}
                                 <li class="fed-swip-slide swiper-slide-duplicate" style="width: 455px;">
                                     <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"

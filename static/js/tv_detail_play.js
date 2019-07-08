@@ -1,7 +1,4 @@
 $(function(){
-    //提示信息
-    layer.msg('温馨提示：由于采集资源更新问题，部分视频播放列表会出现无效的链接，' +
-                '请尝试另外的链接，同时希望您能把无效的链接通过右侧‘报错’方式反馈给我们，我们将会予以删除，祝您观影愉快，谢谢！', {time: 5000});
     //视频播放源点击功能
     $('.tv-source a').click(function(){
         $('.tv-source a').removeClass('fed-back-green');

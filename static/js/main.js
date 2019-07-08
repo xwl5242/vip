@@ -101,6 +101,19 @@
                window.location.href = '/t-t/k='+ k;
             }
         });
+        //手机端搜索取消
+        $('.fed-navs-close').click(function(){
+            if($('.fed-navs-search').hasClass('fed-visible')){
+                $('.fed-navs-search').removeClass('fed-visible').addClass('fed-hidden');
+            }else{
+                $('.fed-navs-search').removeClass('fed-hidden').addClass('fed-visible');
+            }
+            if($('.fed-pops-search').hasClass('fed-visible')){
+                $('.fed-pops-search').removeClass('fed-visible').addClass('fed-hidden');
+            }else{
+                $('.fed-pops-search').removeClass('fed-hidden').addClass('fed-visible');
+            }
+        });
         $('.fed-navs-record').click(function(){
             layer.open({
                 title: '免责声明',

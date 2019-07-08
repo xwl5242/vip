@@ -71,12 +71,12 @@
                     <!-- 播放源 -->
                         <div class="fed-drop-boxs fed-drop-tops fed-matp-v">
                             <ul class="tv-source fed-part-rows">
-                                <li data-tv-source="1" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone fed-back-green"
-                                       href="javascript:;">播放源➀</a>
+                                <li data-tv-source="2" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
+                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.source == '2' %} fed-back-green {% endif %}"
+                                       href="javascript:;">播放源➀(推荐)</a>
                                 </li>
-                                <li data-tv-source="2" class="fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone"
+                                <li data-tv-source="1" class="fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
+                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.source == '1' %} fed-back-green {% endif %}"
                                        href="javascript:;">播放源➁</a>
                                 </li>
                             </ul>
@@ -92,11 +92,11 @@
                                 </ul>
                                 <!-- 播放地址-->
                                 {% for s_type in ['1', '2'] %}
-                                    <ul class="data-tv-source-{{ s_type }} fed-part-rows" >
+                                    <ul class="data-tv-source-{{ s_type }} fed-part-rows {% if s_type!=cur_tv_info.source %} fed-hidden {% endif %}" >
                                         {% for t_u in tv_detail.urls %}
                                             {% if t_u[0] == s_type %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
-                                                    <a class="fed-btns-info fed-rims-info fed-part-eone"
+                                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.index == loop.index|string %} fed-back-green {% endif %}"
                                                        data-tv-id="{{ tv_detail.tv_id|b64encode }}" data-tv-index="{{ loop.index }}"
                                                        data-tv-url="{{ t_u[1]|str_split('$')|get_list(1)|b64encode }}" data-source="{{ s_type }}" >
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
@@ -109,7 +109,7 @@
                                         {% for t_u in tv_detail.urls|reverse %}
                                             {% if t_u[0] == s_type %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
-                                                    <a class="fed-btns-info fed-rims-info fed-part-eone"
+                                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.index == '1' %} fed-back-green {% endif %}"
                                                        data-tv-id="{{ tv_detail.tv_id|b64encode }}" data-tv-index="{{ loop.index }}"
                                                        data-tv-url="{{ t_u[1]|str_split('$')|get_list(1)|b64encode }}" data-source="{{ s_type }}" >
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
@@ -218,6 +218,8 @@
     <script src="{{ url_for('static', filename='js/tv_detail_play.js') }}" ></script>
     <script>
         $(function() {
+            //提示信息
+            layer.msg('视频缓冲中,大约需6秒...', {time: 4000});
             let tv_source = '{{ cur_tv_info.source }}';
             //报错
             $('#play_err_msg').click(errseekmsg);

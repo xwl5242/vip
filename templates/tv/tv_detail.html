@@ -83,11 +83,11 @@
                 <!-- 播放源 -->
                     <div class="fed-drop-boxs fed-drop-tops fed-matp-v">
                         <ul class="tv-source fed-part-rows">
-                            <li data-tv-source="2" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
+                            <li data-tv-source="2" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
                                 <a class="fed-btns-info fed-rims-info fed-part-eone fed-back-green"
                                    href="javascript:;">播放源➀(推荐)</a>
                             </li>
-                            <li data-tv-source="1" class="fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
+                            <li data-tv-source="1" class="fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
                                 <a class="fed-btns-info fed-rims-info fed-part-eone"
                                    href="javascript:;">播放源➁</a>
                             </li>
@@ -104,7 +104,7 @@
                             </ul>
                             <!-- 播放地址-->
                                 {% for s_type in ['1', '2'] %}
-                                    <ul class="data-tv-source-{{ s_type }} fed-part-rows" >
+                                    <ul class="data-tv-source-{{ s_type }} fed-part-rows fed-hidden" >
                                         {% for t_u in tv_detail.urls %}
                                             {% if t_u[0] == s_type %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
