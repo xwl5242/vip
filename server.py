@@ -12,6 +12,14 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 # 整体项目中tv_type为视频的大类（如mv:电影，dm:动漫...）,
 # tv_item为视频大类下的具体小类（如动作片，微电影，国产剧...）
 app = Flask("yo_vip_tv", static_folder="static", template_folder="templates")
+app.add_template_filter(au.split_strings, 'str_split')
+app.add_template_filter(au.get_list, 'get_list')
+app.add_template_filter(au.get_sub_list, 'get_sub_list')
+app.add_template_filter(au.b64encode, 'b64encode')
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+scheduler.add_job(id='app_index_job', func=j.app_index_job, trigger='interval', seconds=11*60)
 
 
 def render_template_(html, to_page=False, **kwargs):
@@ -22,8 +30,7 @@ def render_template_(html, to_page=False, **kwargs):
     :param kwargs: 要传递到页面上obj
     :return:
     """
-    root = url_for('index', _external=True)
-    return render_template(html, to_page=to_page, root=root,
+    return render_template(html, to_page=to_page,
                            mv_top=json.loads(j.r.get('mv_top')), dsj_top=json.loads(j.r.get('dsj_top')),
                            zy_top=json.loads(j.r.get('zy_top')),  dm_top=json.loads(j.r.get('dm_top')),
                            mv_kv_type=Config.TV_KV.get('mv'), dm_kv_type=Config.TV_KV.get('dm'),
@@ -270,15 +277,6 @@ if __name__ == '__main__':
     # DEBUG RUN
     # j.app_index_job()
     # 添加自定义过滤器
-    app.add_template_filter(au.split_strings, 'str_split')
-    app.add_template_filter(au.get_list, 'get_list')
-    app.add_template_filter(au.get_sub_list, 'get_sub_list')
-    app.add_template_filter(au.b64encode, 'b64encode')
-    if Config._run_mode == 'pro':
-        app.config['SERVER_NAME'] = 'www.yoviptv.com'
-    scheduler = APScheduler()
-    scheduler.init_app(app)
-    scheduler.start()
-    scheduler.add_job(id='app_index_job', func=j.app_index_job, trigger='interval', seconds=11*60)
+
     app.run(host='0.0.0.0', port=9999, debug=True)
 

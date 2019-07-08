@@ -78,7 +78,7 @@
     </div>
 {% endblock %}
 {% block js %}
-    <script src="{{ root }}static/js/pagination.js"></script>
+    <script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
     <script>
     $(function(){
         $('.fed-page-info').pagination(function(pageNo){
