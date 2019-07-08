@@ -114,8 +114,10 @@
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
                                 <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ mv.tv_id|b64encode }}" style="display: block; background-image: url({{mv.tv_img}});">
                                     <span class="fed-list-play fed-hide-xs"></span>
-                                    <span class="fed-list-score fed-font-xii fed-back-green">{{ mv.tv_type }}</span>
-                                    <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ mv.tv_lang }}</span>
+                                    <span class="fed-list-score fed-font-xii fed-back-green">{{ mv.tv_area }}</span>
+                                    <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
+                                        {{ mv.update_time|string|truncate(13,end='') }}
+                                    </span>
                                 </a>
                                 <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
                                    href="/t-d/{{ mv.tv_id|b64encode }}">{{ mv.tv_name }}</a>
