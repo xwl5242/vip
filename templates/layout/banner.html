@@ -1,0 +1,17 @@
+<div class="fed-swip-container fed-part-rows swiper-container-horizontal">
+    <ul class="fed-swip-wrapper fed-font-size"
+        style="transform: translate3d(-2340px, 0px, 0px); transition-duration: 0ms;">
+        {% for banner in banners %}
+        <li class="fed-swip-slide fed-marg-top swiper-slide-duplicate" style="width: 1170px;">
+            <a class="fed-list-pics fed-part-5by2 fed-swip-lazy swiper-lazy-loaded"
+               href="/t-d/{{ banner.tv_vo.tv_id|b64encode }}"
+               style="background-image: url({{ banner.tv_img }});">
+                <div class="fed-swip-title fed-text-white fed-part-eone">
+                    <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ banner.tv_vo.tv_name }}</span>
+                    <span class="fed-part-eone fed-font-xii">{{ banner.tv_vo.update_time|string|truncate(13,end='') }}</span>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

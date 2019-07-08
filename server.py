@@ -30,12 +30,12 @@ def render_template_(html, to_page=False, **kwargs):
     :param kwargs: 要传递到页面上obj
     :return:
     """
-    return render_template(html, to_page=to_page,
-                           mv_top=json.loads(j.r.get('mv_top')), dsj_top=json.loads(j.r.get('dsj_top')),
-                           zy_top=json.loads(j.r.get('zy_top')),  dm_top=json.loads(j.r.get('dm_top')),
-                           mv_kv_type=Config.TV_KV.get('mv'), dm_kv_type=Config.TV_KV.get('dm'),
-                           zy_kv_type=Config.TV_KV.get('zy'), dsj_kv_type=Config.TV_KV.get('dsj'),
-                           tv_years=Config.YEARS, **kwargs)
+    tv_tops = {'mv': json.loads(j.r.get('mv_top')), 'dsj': json.loads(j.r.get('dsj_top')),
+               'dm': json.loads(j.r.get('dm_top')), 'zy': json.loads(j.r.get('zy_top'))}
+    tv_types = {'mv': Config.TV_KV.get('mv'), 'dsj': Config.TV_KV.get('dsj'),
+                'dm': Config.TV_KV.get('dm'), 'zy': Config.TV_KV.get('zy')}
+    return render_template(html, to_page=to_page, tv_tops=tv_tops, tv_types=tv_types,
+                           tv=Config.TV, banners=DB.index_tops('banner'), tv_years=Config.YEARS, **kwargs)
 
 
 def tv_item_page_html(req, where, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
@@ -72,10 +72,11 @@ def index():
     """
     # news:最新视频,mvs:电影,dsjs:电视剧,dms:动漫,zys:综艺,today_:今日更新,total_:总视频,
     # mv_kv_type:电影类型,dm_kv_type:动漫类型,zy_kv_type:综艺类型,dsj_kv_type:电视剧类型,fus:友情链接
-    return render_template_('index.html', news=json.loads(j.r.get('news')), mvs=json.loads(j.r.get('mvs')),
-                            dsjs=json.loads(j.r.get('dsjs')), dms=json.loads(j.r.get('dms')),
-                            zys=json.loads(j.r.get('zys')),  today_=json.loads(j.r.get('today')),
-                            total_=json.loads(j.r.get('total')), fus=DB.query_friend_urls())
+    tvs = {'mv': json.loads(j.r.get('mvs')), 'dsj': json.loads(j.r.get('dsjs')),
+           'dm': json.loads(j.r.get('dms')), 'zy': json.loads(j.r.get('zys'))}
+    return render_template_('index.html', news=json.loads(j.r.get('news')), tvs=tvs,
+                            today_=json.loads(j.r.get('today')), total_=json.loads(j.r.get('total')),
+                            fus=DB.query_friend_urls())
 
 
 @app.route('/tv/more/<tv_type>')
@@ -249,20 +250,23 @@ def tv_choose_html(tv_type, tv_item, tv_area, tv_year):
                              tv_item=tv_item, tv_area=tv_area, tv_year=tv_year)
 
 
-@app.route('/t-play/<tv_id>/url=<url>')
-def tv_play_html(tv_id, url):
+@app.route('/t-p/<tv_id>/<tv_index>/<tv_source>/<tv_url>')
+def tv_play_html(tv_id, tv_index, tv_source, tv_url):
     """
     视频播放页面，url：视频的地址，detail：视频页面的详情，like_host:热门推荐
     :param tv_id: 播放视频的id
-    :param url: 播放视频的url
+    :param tv_url: 播放视频的url
+    :param tv_index:
+    :param tv_source:
     :return:
     """
-    url = au.b64_str_decode(url)
+    url = au.b64_str_decode(tv_url)
     tv_id = au.b64_str_decode(tv_id)
     detail = DB.tv_detail(tv_id)
     like_host = DB.like_hot(detail.get('tv_type'))
     random.shuffle(like_host)
-    return render_template_('tv/tv_play.html', cur_tv_url=url, tv_detail=detail, like_hots=like_host[0:6])
+    cur_tv_info = {'index': tv_index, 'source': tv_source, 'url': url}
+    return render_template_('tv/tv_play.html', cur_tv_info=cur_tv_info, tv_detail=detail, like_hots=like_host[0:6])
 
 
 @app.route('/err-seek-msg', methods=['POST'])
@@ -275,8 +279,7 @@ def err_seek_msg():
 
 if __name__ == '__main__':
     # DEBUG RUN
-    # j.app_index_job()
+    j.app_index_job()
     # 添加自定义过滤器
-
     app.run(host='0.0.0.0', port=9999, debug=True)
 

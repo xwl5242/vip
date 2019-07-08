@@ -3,17 +3,15 @@
     <div class="fed-main-info fed-min-width">
         <div class="fed-part-case">
             <div class="fed-play-info fed-part-rows fed-back-whits fed-marg-top">
-                <div class="fed-play-player fed-rage-head fed-part-rows fed-back-black" style="padding-top:56.25%">
-                    <style type="text/css">@media (max-width: 47.9375rem) {
-                        .fed-play-player {
-                            padding-top: 56.25% !important
-                        }fed-play-iframe
-                    }</style>
-                    <div class="fed-play-loader fed-part-full" style="display: none;"><span
-                            class="fed-part-core fed-font-xvi fed-text-white fed-text-center">正在加载，请稍后...</span></div>
-                    <iframe id="fed-play-iframe" class="fed-play-iframe fed-part-full" frameborder="0" scrolling="no"
-                            allowfullscreen="true" src="{{ cur_tv_url }}"></iframe>
-                </div>
+                {% if cur_tv_info.source == '1' %}
+                    <div class="fed-play-player fed-rage-head fed-part-rows fed-back-black" style="padding-top:56.25%">
+                        <iframe id="fed-play-iframe" class="fed-play-iframe fed-part-full" frameborder="0" scrolling="no"
+                                allowfullscreen="true" src="{{ cur_tv_info.url }}"></iframe>
+                    </div>
+                {% endif %}
+                {% if cur_tv_info.source == '2' %}
+                    <div id="video" style="width: 100%;height: 500px;"></div>
+                {% endif %}
                 <div class="fed-play-title fed-part-rows">
                     <ul class="fed-play-boxs fed-padding fed-part-rows fed-col-xs12 fed-col-md6">
                         <li class="fed-padding fed-col-xs5">
@@ -60,38 +58,68 @@
             </div>
             <div class="fed-tabs-info  fed-rage-foot fed-part-rows fed-part-layout fed-back-whits fed-play-data">
                 <ul class="fed-list-head fed-part-rows fed-padding">
-                    <li id="tv_list" class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v fed-text-green" href="javascript:;">
+                    <li class="tv_list fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v fed-text-green" href="javascript:;">
                         播放列表
                     </li>
-                    <li  id="tv_intro" class="fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">剧情简介</li>
+                    <li class="tv_intro fed-tabs-btns fed-part-curs fed-font-xvi fed-mart-v" href="javascript:;">剧情简介</li>
                     <li class="fed-part-tips fed-padding">
-                        <a id="play_err_msg" class="fed-tabs-errs fed-event fed-more">报错</a>
+                        <a id="play_err_msg" data-tv-id="{{ tv_detail.tv_id }}" class="fed-tabs-errs fed-event fed-more">报错</a>
                     </li>
                 </ul>
                 <div class="fed-tabs-boxs">
                     <div class="fed-tabs-item fed-drop-info fed-visible">
+                    <!-- 播放源 -->
+                        <div class="fed-drop-boxs fed-drop-tops fed-matp-v">
+                            <ul class="tv-source fed-part-rows">
+                                <li data-tv-source="1" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
+                                    <a class="fed-btns-info fed-rims-info fed-part-eone fed-back-green"
+                                       href="javascript:;">播放源➀</a>
+                                </li>
+                                <li data-tv-source="2" class="fed-drop-btns fed-padding fed-col-xs3 fed-col-md2">
+                                    <a class="fed-btns-info fed-rims-info fed-part-eone"
+                                       href="javascript:;">播放源➁</a>
+                                </li>
+                            </ul>
+                        </div>
+                    <!-- 播放源 -->
                         <div class="fed-drop-boxs fed-drop-btms fed-matp-v">
                             <div class="fed-play-item fed-drop-item fed-visible">
                                 <ul class="fed-drop-head fed-padding fed-part-rows">
                                     <li class="fed-padding fed-col-xs4 fed-part-eone fed-font-xvi">播放集数</li>
                                     <li class="fed-padding fed-col-xs8 fed-part-eone fed-font-xvi fed-text-right">
-                                        <a id="sx_switch" class="fed-drop-sort fed-back-green" href="javascript:;">视频排序：正序</a>
+                                        <a class="tv-order fed-drop-sort fed-back-green" href="javascript:;">视频排序：正序</a>
                                     </li>
                                 </ul>
-                                <ul id="zx" class="fed-part-rows">
-                                    {% for t_u in tv_detail.urls %}
-                                    <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
-                                        <a class="fed-btns-info fed-rims-info fed-part-eone" data-url="{{ t_u|str_split('$')|get_list(1) }}">{{ t_u|str_split('$')|get_list(0) }}</a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                                <ul id="dx" class="fed-part-rows fed-hidden">
-                                    {% for t_u in tv_detail.urls|reverse %}
-                                    <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
-                                        <a class="fed-btns-info fed-rims-info fed-part-eone" data-url="{{ t_u|str_split('$')|get_list(1) }}">{{ t_u|str_split('$')|get_list(0) }}</a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
+                                <!-- 播放地址-->
+                                {% for s_type in ['1', '2'] %}
+                                    <ul class="data-tv-source-{{ s_type }} fed-part-rows" >
+                                        {% for t_u in tv_detail.urls %}
+                                            {% if t_u[0] == s_type %}
+                                                <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
+                                                    <a class="fed-btns-info fed-rims-info fed-part-eone"
+                                                       data-tv-id="{{ tv_detail.tv_id|b64encode }}" data-tv-index="{{ loop.index }}"
+                                                       data-tv-url="{{ t_u[1]|str_split('$')|get_list(1)|b64encode }}" data-source="{{ s_type }}" >
+                                                        {{ t_u[1]|str_split('$')|get_list(0) }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                    <ul class="data-tv-source-{{ s_type }}-r fed-part-rows fed-hidden" >
+                                        {% for t_u in tv_detail.urls|reverse %}
+                                            {% if t_u[0] == s_type %}
+                                                <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
+                                                    <a class="fed-btns-info fed-rims-info fed-part-eone"
+                                                       data-tv-id="{{ tv_detail.tv_id|b64encode }}" data-tv-index="{{ loop.index }}"
+                                                       data-tv-url="{{ t_u[1]|str_split('$')|get_list(1)|b64encode }}" data-source="{{ s_type }}" >
+                                                        {{ t_u[1]|str_split('$')|get_list(0) }}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                {% endfor %}
+                            <!-- 播放地址-->
                             </div>
                         </div>
                     </div>
@@ -186,42 +214,28 @@
     </div>
 {% endblock %}
 {% block js %}
+    <script charset="utf-8" type="text/javascript" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"></script>
+    <script src="{{ url_for('static', filename='js/tv_detail_play.js') }}" ></script>
     <script>
-        $(function(){
-            layer.msg('温馨提示：由于采集资源更新问题，部分视频播放列表会出现无效的链接，' +
-                '请尝试另外的链接，同时希望您能把无效的链接通过右侧‘报错’方式反馈给我们，我们将会予以删除，祝您观影愉快，谢谢！', {time: 5000});
-            $('#zx,#dx').find('a').click(function(){
-                $('#fed-play-iframe').attr('src', $(this).attr('data-url'));
-            });
+        $(function() {
+            let tv_source = '{{ cur_tv_info.source }}';
             //报错
-        $('#play_err_msg').click(function(){
-            console.log($(this))
-            layer.open({
-                title: '报错',
-                content: $('#err_seek_msg').html(),
-                btn: ['提交', '取消'],
-                success: function(layero, index){
-                    $(layero).find('textarea').attr('placeholder','请输入200字以内的错误信息，谢谢！');
-                },
-                btn1: function(index, layero) {
-                    let msg = $(layero).find('textarea').val()
-                    if (msg) {
-                        $.post('/err-seek-msg',{msg: msg, m_type: '0'},function(data){
-                            if(data.code=='success'){
-                                layer.close(index);
-                                layer.msg('提交成功！我们会尽快处理，谢谢！');
-                            }
-                        },'json');
-                    } else {
-                        layer.tips('请先填写错误信息！', '.layui-layer-btn0', {tips: 1});
-                        return false;
-                    }
-                },
-                btn2: function(index, layero){
-                    layer.close(index);
-                }
-            })
+            $('#play_err_msg').click(errseekmsg);
+            //Aliplayer
+            if(tv_source=='2'){
+                let player = new Aliplayer({
+                    id: 'video',
+                    width: '100%',
+                    autoplay: true,
+                    //支持播放地址播放,此播放优先级最高
+                    source: '{{ cur_tv_info.url }}'
+                });
+            }else{
+                //iframe的方式播放
+                $('ul[class^="data-tv-source-"]').find('a').click(function () {
+                    $('#fed-play-iframe').attr('src', $(this).attr('data-url'));
+                });
+            }
         });
-        })
     </script>
 {% endblock %}

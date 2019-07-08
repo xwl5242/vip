@@ -52,13 +52,14 @@ class DB(Base):
         :return:
         """
         result = []
-        top_sql = f"select tv_name,tv_top from t_tv_top where tv_type='{tv_type}'"
+        top_sql = f"select tv_name,tv_img from t_tv_banner_top where tv_type='{tv_type}'"
         tops = Base.query_list(top_sql)
         if tops and len(tops) > 0:
             for t in tops:
-                tvs = DB.query_list(DB.gen_sql(f"tv_name like '%%{t['tv_name']}%%'", 0, 0))
+                tn = str(t['tv_name']).strip()
+                tvs = DB.query_list(DB.gen_sql(f"tv_name like '%%{tn}%%'", 0, 0))
                 if tvs and len(tvs) > 0:
-                    result.append({"tv_vo": tvs[0], "tv_top": int(t['tv_top'])})
+                    result.append({"tv_vo": tvs[0], "tv_img": str(t['tv_img'])})
         return result
 
     @staticmethod
@@ -96,11 +97,11 @@ class DB(Base):
         :return:
         """
         d_sql = DB.gen_sql(f"tv_id='{tv_id}'", 0, 0)
-        u_sql = f"select tv_url from t_tv_urls where tv_id='{tv_id}'"
+        u_sql = f"select tv_source,tv_url from t_tv_urls where tv_id='{tv_id}'"
         detail = DB.get(d_sql)
         if detail:
             urls = DB.query_list(u_sql)
-            urls = [url['tv_url'] for url in urls]
+            urls = [(su['tv_source'], su['tv_url']) for su in urls]
             detail['urls'] = urls
         return detail
 
@@ -170,6 +171,6 @@ class DB(Base):
 
 
 if __name__ == '__main__':
-    print(DB.today_total(None))
+    print(len(DB.index_tops('banner')))
 
 
