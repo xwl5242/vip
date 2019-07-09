@@ -38,11 +38,12 @@ def render_template_(html, to_page=False, **kwargs):
                            tv=Config.TV, banners=DB.index_tops('banner'), tv_years=Config.YEARS, **kwargs)
 
 
-def tv_item_page_html(req, where, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
+def tv_item_page_html(req, where, args, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
     """
     render template for pagination
     :param req: 请求 request
     :param where: where 查询条件
+    :param args:
     :param is_choose: 要渲染的页面是否需要筛选功能展示
     :param tv_type: is_choose为True时必填 tv的大类
     :param tv_item: is_choose为True时必填 tv的小类
@@ -52,7 +53,11 @@ def tv_item_page_html(req, where, is_choose=False, tv_type=None, tv_item=None, t
     """
     page_no = req.args.get('p')
     page_no = int(page_no) if page_no else 1
-    items, total = DB.tv_page(where, page_no)
+    if not args:
+        args = []
+    args = list(args)
+    args.append(page_no)
+    items, total = DB.tv_page(where, args)
     tv_choose = {}
     if is_choose and tv_type and tv_item:
         tv_choose['tvs'] = Config.TV
@@ -79,8 +84,39 @@ def index():
                             fus=DB.query_friend_urls())
 
 
-@app.route('/tv/more/<tv_type>')
-def index_more_html(tv_type):
+@app.route('/t-t/k=<tv_name>')
+def tv_type_4_name_html(tv_name):
+    """
+    根据电影名称搜索，目前用于首页的搜索功能
+    :param tv_name: 电影名称
+    :return:
+    """
+    items = DB.index_search(tv_name)
+    return render_template_('tv/tv_item.html', items=items)
+
+
+@app.route('/err-seek-msg', methods=['POST'])
+def err_seek_msg():
+    m_type = request.form.get('m_type')
+    msg = request.form.get('msg')
+    r = DB.insert_msg(m_type, msg)
+    return jsonify({'code': 'success' if r and r == 1 else 'fail'})
+
+
+@app.route('/cnm/<route>')
+def dispatch(route):
+    route = au.b64_str_decode(route)
+    if route:
+        if ';;;' in route:
+            func = route.split(';;;')[0]
+            objs = route.split(';;;')[1]
+            objs = objs.split('@')
+            return eval(func)(*objs)
+        else:
+            return eval(route)()
+
+
+def index_tv_more_html(tv_type):
     """
     跳转到首页tv视频更多页
     :param tv_type:
@@ -94,14 +130,12 @@ def index_more_html(tv_type):
     return render_template_('tv/tv_more.html', _today=today, _total=total, tv_more=tv_more)
 
 
-@app.route('/t-d/<tv_id>')
 def tv_detail_html(tv_id):
     """
     tv视频详情页
     :param tv_id: 视频的id
     :return:
     """
-    tv_id = au.b64_str_decode(tv_id)
     detail = DB.tv_detail(tv_id)
     like_hot = DB.like_hot(detail.get('tv_type'))
     # random select 6 item
@@ -109,23 +143,20 @@ def tv_detail_html(tv_id):
     return render_template_('tv/tv_detail.html', tv_detail=detail, like_hots=like_hot[0:6])
 
 
-@app.route('/t-t/a')
 def index_news_more_html():
     """
     首页最近更新视频的"更多"链接
     :return:
     """
-    return tv_item_page_html(request, None)
+    return tv_item_page_html(request, None, None)
 
 
-@app.route('/t-t/i=<tv_item>')
 def tv_type_item_html(tv_item):
     """
     每个小类的更多链接
     :param tv_item:
     :return:
     """
-    tv_item = au.b64_str_decode(tv_item)
     tv_item_k, tv_type = '', ''
     for key in Config.TV_KV:
         for k_v in Config.TV_KV[key]:
@@ -136,57 +167,51 @@ def tv_type_item_html(tv_item):
     return redirect(f'/t-t/{tv_type}-{tv_item_k}')
 
 
-@app.route('/t-t/actors=<tv_actors>')
 def tv_type_4_actors_html(tv_actors):
     """
     根据视频演员搜索相关视频
     :param tv_actors: 演员名字
     :return:
     """
-    tv_actors = au.b64_str_decode(tv_actors)
-    where = f"tv_actors like '%{tv_actors}%' "
-    return tv_item_page_html(request, where)
+    where = f"tv_actors like %s "
+    return tv_item_page_html(request, where, '%'+tv_actors+'%')
 
 
-@app.route('/t-t/director=<tv_director>')
 def tv_type_4_director_html(tv_director):
     """
     根据视频导演搜索相关视频
     :param tv_director: 导演名称
     :return:
     """
-    tv_director = au.b64_str_decode(tv_director)
-    where = f"tv_director like '%{tv_director}%' "
-    return tv_item_page_html(request, where)
+    where = f"tv_director like %s "
+    return tv_item_page_html(request, where, '%'+tv_director+'%')
 
 
-@app.route('/t-t/area=<tv_area>')
 def tv_type_4_area_html(tv_area):
     """
     根据视频所属地域搜索相关视频
     :param tv_area: 地域名称
     :return:
     """
-    tv_area = au.b64_str_decode(tv_area)
     if tv_area == 'other':
-        where = f"(tv_area like '%其他%' or tv_area like '%其它%')"
+        where = f"(tv_area like %s or tv_area like %s)"
+        args = ['%其它%', '%其他%']
     else:
-        where = f"tv_area like '%{tv_area}%' "
-    return tv_item_page_html(request, where)
+        where = f"tv_area like %s "
+        args = ['%'+tv_area+'%']
+    return tv_item_page_html(request, where, args)
 
 
-@app.route('/t-t/year=<tv_year>')
 def tv_type_4_year_html(tv_year):
     """
     根据视频指定的年份搜索相关视频
     :param tv_year: 指定的年份
     :return:
     """
-    where = f"tv_year = '{tv_year}' "
-    return tv_item_page_html(request, where)
+    where = f"tv_year = %s "
+    return tv_item_page_html(request, where, (tv_year, ))
 
 
-@app.route('/t-t/year_bt-<cur_type>-<year>')
 def tv_type_4_between_year_html(cur_type, year):
     """
     根据视频指定的年代搜索相关视频
@@ -198,22 +223,10 @@ def tv_type_4_between_year_html(cur_type, year):
     year = str(year).split(':')[1]
     year = str(year).split('@')
     tv_type = "','".join(Config.TV_KV_LIST.get(cur_type))
-    where = f"tv_type in ('{tv_type}') and tv_year >= {year[0]} and tv_year <= {year[1]}"
-    return tv_item_page_html(request, where)
+    where = f"tv_type in ('{tv_type}') and tv_year >= %s and tv_year <= %s"
+    return tv_item_page_html(request, where, (year[0], year[1], ))
 
 
-@app.route('/t-t/k=<tv_name>')
-def tv_type_4_name_html(tv_name):
-    """
-    根据电影名称搜索，目前用于首页的搜索功能
-    :param tv_name: 电影名称
-    :return:
-    """
-    items = DB.index_search(tv_name)
-    return render_template_('tv/tv_item.html', items=items)
-
-
-@app.route('/t-t/<tv_type>-<tv_item>')
 def tv_type_html(tv_type, tv_item):
     """
     tv视频小类的详情页
@@ -226,31 +239,33 @@ def tv_type_html(tv_type, tv_item):
     tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
     tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
     # 查询分页数据
-    where = f"tv_type = '{tv_type}'"
-    return tv_item_page_html(request, where, is_choose=True, tv_type=_tv_type, tv_item=tv_item)
+    where = f"tv_type = %s"
+    return tv_item_page_html(request, where, (tv_type, ), is_choose=True, tv_type=_tv_type, tv_item=tv_item)
 
 
 @app.route('/t-choose/tt=<tv_type>/ti=<tv_item>/ta=<tv_area>/ty=<tv_year>')
 def tv_choose_html(tv_type, tv_item, tv_area, tv_year):
     _tv_type = tv_type
-    where = []
+    where, args = [], []
     if tv_item != 'all':
         tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
         tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
-        where.append(f"tv_type='{tv_type}'")
+        where.append("tv_type=%s")
+        args.append(tv_type)
     if tv_area != 'all':
-        where.append(f"tv_area='{tv_area}'")
+        where.append("tv_area=%s")
+        args.append(tv_area)
     if tv_year != 'all':
         year = [y for y in Config.YEARS if str(y).startswith(tv_year + ':')]
         year = str(year).split(':')[1]
         year = str(year).split('@')
-        where.append(f"tv_year>={year[0]} and tv_year<={year[1]}")
+        where.append("tv_year>=%s and tv_year<=%s")
+        args.append(year[0]).append(year[1])
     where = " and ".join(where)
-    return tv_item_page_html(request, where, is_choose=True, tv_type=_tv_type,
+    return tv_item_page_html(request, where, args, is_choose=True, tv_type=_tv_type,
                              tv_item=tv_item, tv_area=tv_area, tv_year=tv_year)
 
 
-@app.route('/t-p/<tv_id>/<tv_index>/<tv_source>/<tv_url>')
 def tv_play_html(tv_id, tv_index, tv_source, tv_url):
     """
     视频播放页面，url：视频的地址，detail：视频页面的详情，like_host:热门推荐
@@ -260,21 +275,11 @@ def tv_play_html(tv_id, tv_index, tv_source, tv_url):
     :param tv_source:
     :return:
     """
-    url = au.b64_str_decode(tv_url)
-    tv_id = au.b64_str_decode(tv_id)
     detail = DB.tv_detail(tv_id)
     like_host = DB.like_hot(detail.get('tv_type'))
     random.shuffle(like_host)
-    cur_tv_info = {'index': tv_index, 'source': tv_source, 'url': url}
+    cur_tv_info = {'index': tv_index, 'source': tv_source, 'url': tv_url}
     return render_template_('tv/tv_play.html', cur_tv_info=cur_tv_info, tv_detail=detail, like_hots=like_host[0:6])
-
-
-@app.route('/err-seek-msg', methods=['POST'])
-def err_seek_msg():
-    m_type = request.form.get('m_type')
-    msg = request.form.get('msg')
-    r = DB.insert_msg(m_type, msg)
-    return jsonify({'code': 'success' if r and r == 1 else 'fail'})
 
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@
             <div class="fed-col-xs12 fed-col-sm8 fed-col-md9">
                 <dl class="fed-deta-info fed-margin fed-part-rows fed-part-over">
                     <dt class="fed-deta-images fed-list-info fed-col-xs3">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ tv_detail.tv_id|b64encode }}"
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+tv_detail.tv_id)|b64encode }}"
                            data-original="{{ tv_detail.tv_img }}"
                            style="display: block; background-image: url({{ tv_detail.tv_img }});">
                             <span class="fed-list-play fed-hide-xs"></span>
@@ -18,31 +18,31 @@
                         </a>
                     </dt>
                     <dd class="fed-deta-content fed-col-xs7 fed-col-sm8 fed-col-md10">
-                        <h1 class="fed-part-eone fed-font-xvi"><a href="/t-d/{{ tv_detail.tv_id|b64encode }}">{{ tv_detail.tv_name }}</a></h1>
+                        <h1 class="fed-part-eone fed-font-xvi"><a href="/cnm/{{ ('tv_detail_html;;;'+tv_detail.tv_id)|b64encode }}">{{ tv_detail.tv_name }}</a></h1>
                         <ul class="fed-part-rows">
                             <li class="fed-col-xs12 fed-col-md6 fed-part-eone">
                                 <span class="fed-text-muted">主演：</span>
                                     {% for ta in tv_detail.tv_actors|str_split %}
-                                        <a href="/t-t/actors={{ ta|b64encode }}" target="_blank">{{ ta }}</a>
+                                        <a href="/cnm/{{ ('tv_type_4_actors_html;;;'+ta)|b64encode }}" target="_blank">{{ ta }}</a>
                                     {% endfor %}
                             </li>
                             <li class="fed-col-xs12 fed-col-md6 fed-part-eone">
                                 <span class="fed-text-muted">导演：</span>
                                 {% for td in tv_detail.tv_director|str_split %}
-                                    <a href="/t-t/director={{ td|b64encode }}" target="_blank">{{ td }}</a>&nbsp;
+                                    <a href="/cnm/{{ ('tv_type_4_director_html;;;'+td)|b64encode }}" target="_blank">{{ td }}</a>&nbsp;
                                 {% endfor %}
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">分类：</span>
-                                <a href="/t-t/i={{ tv_detail.tv_type|b64encode }}" target="_blank">{{ tv_detail.tv_type }}</a>
+                                <a href="/cnm/{{ ('tv_type_item_html;;;'+tv_detail.tv_type)|b64encode }}" target="_blank">{{ tv_detail.tv_type }}</a>
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">地区：</span>
-                                <a href="/t-t/area={{ tv_detail.tv_area|b64encode }}" target="_blank">{{ tv_detail.tv_area }}</a>&nbsp;
+                                <a href="/cnm/{{ ('tv_type_4_area_html;;;'+tv_detail.tv_area)|b64encode }}" target="_blank">{{ tv_detail.tv_area }}</a>&nbsp;
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">年份：</span>
-                                <a href="/t-t/year={{ tv_detail.tv_year }}" target="_blank">{{ tv_detail.tv_year }}</a>&nbsp;
+                                <a href="/cnm/{{ ('tv_type_4_year_html;;;'+tv_detail.tv_year) }}" target="_blank">{{ tv_detail.tv_year }}</a>&nbsp;
                             </li>
                             <li class="fed-col-xs6 fed-col-md3 fed-part-eone">
                                 <span class="fed-text-muted">更新：</span>{{ tv_detail.update_time|string|truncate(13,end='') }}
@@ -56,7 +56,7 @@
                     </dd>
                     <dd class="fed-deta-button fed-col-xs7 fed-col-sm8 fed-part-rows">
                         <a class="fed-deta-play fed-rims-info fed-btns-info fed-btns-green fed-col-xs4"
-                           href="/t-play/{{ tv_detail.tv_id|b64encode }}/url={{ tv_detail.urls[0]|str_split('$')|get_list(1)|b64encode }}">立即播放</a>
+                           href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(((tv_detail.urls|length)/2)|string)+'@'+'1@'+(tv_detail.urls[0]|str_split('$')|get_list(1)))|b64encode }}">立即播放</a>
                     </dd>
                 </dl>
 
@@ -109,8 +109,7 @@
                                             {% if t_u[0] == s_type %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                                     <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                                       data-tv-id="{{ tv_detail.tv_id|b64encode }}" data-tv-index="{{ loop.index }}"
-                                                       data-tv-url="{{ t_u[1]|str_split('$')|get_list(1)|b64encode }}" data-source="{{ s_type }}" >
+                                                       href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(loop.index|string)+'@'+s_type+'@'+(t_u[1]|str_split('$')|get_list(1)))|b64encode }}">
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
                                                     </a>
                                                 </li>
@@ -122,8 +121,7 @@
                                             {% if t_u[0] == s_type %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                                     <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                                       data-tv-id="{{ tv_detail.tv_id|b64encode }}" data-tv-index="{{ loop.index }}"
-                                                       data-tv-url="{{ t_u[1]|str_split('$')|get_list(1)|b64encode }}" data-source="{{ s_type }}" >
+                                                       href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(loop.index|string)+'@'+s_type+'@'+(t_u[1]|str_split('$')|get_list(1)))|b64encode }}">
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
                                                     </a>
                                                 </li>
@@ -146,20 +144,20 @@
             <div class="fed-list-head fed-part-rows fed-padding">
                 <h2 class="fed-font-xvi">相关热播</h2>
                 <ul class="fed-part-tips fed-padding">
-                    <li><a class="fed-more" href="/t-t/i={{ tv_detail.tv_type|b64encode }}">更多</a></li>
+                    <li><a class="fed-more" href="/cnm/{{ ('tv_type_item_html;;;'+tv_detail.tv_type)|b64encode }}">更多</a></li>
                 </ul>
             </div>
             <ul class="fed-list-info fed-part-rows">
                 {% for lh in like_hots %}
                     <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2
                        {% if loop.index==5 or loop.index==6 %} fed-hide-sm fed-show-md-block{% endif %}">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ lh.tv_id|b64encode }}" style="display: block; background-image: url({{lh.tv_img}});">
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+lh.tv_id)|b64encode }}" style="display: block; background-image: url({{lh.tv_img}});">
                             <span class="fed-list-play fed-hide-xs"></span>
                             <span class="fed-list-score fed-font-xii fed-back-green">{{ lh.tv_area }}</span>
                             <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ lh.update_time|string|truncate(13,end='') }}</span>
                         </a>
                         <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/t-d/{{ lh.tv_id|b64encode }}">{{ lh.tv_name }}</a>
+                           href="/cnm/{{ ('tv_detail_html;;;'+lh.tv_id)|b64encode }}">{{ lh.tv_name }}</a>
                         <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                             {{ lh.tv_intro }}
                         </span>
@@ -179,14 +177,6 @@
             $('ul[class^="data-tv-source-2"] :eq(0)').show();
             //报错
             $('#detail_err_msg').click(errseekmsg);
-            //点击集数，跳转到播放
-            $('ul[class^="data-tv-source-"] a').click(function(){
-                let tid = $(this).attr("data-tv-id");
-                let tindex = $(this).attr("data-tv-index");
-                let turl = $(this).attr("data-tv-url");
-                let tsource = $(this).attr("data-source");
-                window.location.href='/t-p/'+tid+'/'+tindex+'/'+tsource+'/'+turl;
-            });
         });
     </script>
 {% endblock %}

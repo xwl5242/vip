@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import time
 from app.config import Config
 from app.db.base import Base
 
@@ -10,9 +11,9 @@ class DB(Base):
         """
         因为sql中有很多公用的部分，现在只需传递where条件和是否分页
         :param where: where条件
-        :param use_limit: 是否用limit
-        :param _limit: limit 开始
-        :param limit_: limit 结束
+        :param _limit: limit
+        :param limit_: limit
+        :param use_limit: 使用limit
         :return:
         """
         where = where if where else ' 1=1 '
@@ -22,7 +23,7 @@ class DB(Base):
               f"concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img from t_tv where 1=1 and {where} " \
               f"order by update_time desc"
         if use_limit:
-            sql = sql + f' limit {_limit},{limit_} '
+            sql += f' limit {_limit},{limit_} '
         return sql
 
     @staticmethod
@@ -33,13 +34,13 @@ class DB(Base):
         :return:
         """
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
-        types = "','".join(tv_type) if tv_type else None
-        where_str = f" and  tv_type in ('{types}')" if tv_type else ''
+        types = ",".join(['%s' for i in tv_type]) if tv_type else None
+        where_str = f" and  tv_type in ({types})" if tv_type else ''
         today_sql = f"select count(1) total from t_tv where 1=1 {where_str} and " \
                     f"date_format(update_time,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d') "
         total_sql = f"select count(1) total from t_tv where 1=1 {where_str}"
-        today = DB.get(today_sql)
-        total = DB.get(total_sql)
+        today = DB.get(today_sql, tv_type)
+        total = DB.get(total_sql, tv_type)
         today = today['total'] if today and today['total'] else 0
         total = total['total'] if total and total['total'] else 0
         return today, total
@@ -52,12 +53,12 @@ class DB(Base):
         :return:
         """
         result = []
-        top_sql = f"select tv_name,tv_img from t_tv_banner_top where tv_type='{tv_type}'"
-        tops = Base.query_list(top_sql)
+        top_sql = "select tv_name,tv_img from t_tv_banner_top where tv_type=%s"
+        tops = Base.query_list(top_sql, (tv_type,))
         if tops and len(tops) > 0:
             for t in tops:
                 tn = str(t['tv_name']).strip()
-                tvs = DB.query_list(DB.gen_sql(f"tv_name like '%%{tn}%%'", 0, 0))
+                tvs = DB.query_list(DB.gen_sql("tv_name like %s", 0, 0), ('%'+tn+'%', ))
                 if tvs and len(tvs) > 0:
                     result.append({"tv_vo": tvs[0], "tv_img": str(t['tv_img'])})
         return result
@@ -68,7 +69,7 @@ class DB(Base):
         首页最新视频
         :return:
         """
-        return DB.query_list(DB.gen_sql('', 0, 12, True))
+        return DB.query_list(DB.gen_sql('', 0, 12, True), [])
 
     @staticmethod
     def index_mvs(tv_type):
@@ -77,8 +78,9 @@ class DB(Base):
         :param tv_type: 视频类型 mv,dm,zy,dsj
         :return:
         """
-        where_str = "','".join(Config.TV_KV_LIST.get(tv_type))
-        return DB.query_list(DB.gen_sql(f"tv_type in('{where_str}')", 0, 8, True))
+        tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
+        types = ",".join(['%s' for i in tv_type]) if tv_type else None
+        return DB.query_list(DB.gen_sql(f"tv_type in({types})", 0, 8, True), tv_type)
 
     @staticmethod
     def like_hot(tv_type_item):
@@ -87,7 +89,7 @@ class DB(Base):
         :param tv_type_item: 视频的小类
         :return:
         """
-        return DB.query_list(DB.gen_sql(f"tv_type = '{tv_type_item}'", 0, 20, True))
+        return DB.query_list(DB.gen_sql("tv_type = %s", 0, 20, True), (tv_type_item, ))
 
     @staticmethod
     def tv_detail(tv_id):
@@ -96,11 +98,11 @@ class DB(Base):
         :param tv_id: 视频的id
         :return:
         """
-        d_sql = DB.gen_sql(f"tv_id='{tv_id}'", 0, 0)
-        u_sql = f"select tv_source,tv_url from t_tv_urls where tv_id='{tv_id}'"
-        detail = DB.get(d_sql)
+        d_sql = DB.gen_sql(f"tv_id=%s", 0, 0)
+        u_sql = f"select tv_source,tv_url from t_tv_urls where tv_id=%s"
+        detail = DB.get(d_sql, (tv_id, ))
         if detail:
-            urls = DB.query_list(u_sql)
+            urls = DB.query_list(u_sql, (tv_id, ))
             urls = [(su['tv_source'], su['tv_url']) for su in urls]
             detail['urls'] = urls
         return detail
@@ -112,7 +114,7 @@ class DB(Base):
         :param tv_name: 搜索关键字
         :return:
         """
-        return DB.query_list(DB.gen_sql(f"tv_name like '%%{tv_name}%%'", 0, 0))
+        return DB.query_list(DB.gen_sql("tv_name like %s", 0, 0), ('%'+tv_name+'%', ))
 
     @staticmethod
     def tv_areas(tv_type):
@@ -121,10 +123,11 @@ class DB(Base):
         :param tv_type: 视频的大类
         :return:
         """
-        where_str = "','".join(Config.TV_KV_LIST.get(tv_type)) if tv_type else None
-        where = f" tv_type in('{where_str}') " if where_str else ' 1=1 '
+        tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
+        types = ",".join(['%s' for i in tv_type]) if tv_type else None
+        where = f" tv_type in({types}) " if types else ' 1=1 '
         area_sql = f"select group_concat(distinct tv_area) areas from t_tv where {where} "
-        tv_areas = DB.get(area_sql)['areas']
+        tv_areas = DB.get(area_sql, tv_type)['areas']
         tv_areas = [aa for aa in str(tv_areas).split(',') if '其' not in aa]
         return tv_areas
 
@@ -136,22 +139,24 @@ class DB(Base):
         :return:
         """
         result = {}
-        where_str = "','".join(Config.TV_KV_LIST.get(tv_type))
-        for tty in Config.TV_KV_LIST.get(tv_type):
-            result[tty] = DB.query_list(DB.gen_sql(f"tv_type='{tty}'", 0, 12, True))
-        result['tv_news'] = DB.query_list(DB.gen_sql(f"tv_type in ('{where_str}')", 0, 12, True))
+        tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
+        types = ",".join(['%s' for i in tv_type]) if tv_type else None
+        for tty in tv_type:
+            result[tty] = DB.query_list(DB.gen_sql(f"tv_type=%s", 0, 12, True), (tty, ))
+        result['tv_news'] = DB.query_list(DB.gen_sql(f"tv_type in ({types})", 0, 12, True), tv_type)
         return result
 
     @staticmethod
-    def tv_page(where_str, page_no):
+    def tv_page(where_str, args):
         """
         分页 tv
         :param where_str: 查询条件
-        :param page_no:
+        :param args:
         :return:
         """
         where_str = ' 1=1 ' if not where_str else where_str
-        return DB.query_page(DB.gen_sql(where_str, 0, 0), page_no)
+        args = [] if not args else args
+        return DB.query_page(DB.gen_sql(where_str, 0, 0), args)
 
     @staticmethod
     def query_friend_urls():
@@ -159,18 +164,19 @@ class DB(Base):
         首页友情链接
         :return:
         """
-        sql = "select f_title,f_url from t_f_u where del_flag='0'"
-        return DB.query_list(sql)
+        sql = "select f_title,f_url from t_f_u where del_flag=%s"
+        return DB.query_list(sql, ('0',))
 
     @staticmethod
     def insert_msg(m_type, msg):
         import uuid
-        sql = f"insert into t_err_seek_msg(id,type,text,del_flag,create_time) " \
-              f"values('{uuid.uuid4()}','{m_type}','{msg}','0',now())"
-        return DB.insert(sql)
+        insert_sql = "insert into t_err_seek_msg(id,type,text,del_flag,create_time) values(%s,%s,%s,%s,%s)"
+        print(insert_sql)
+        return DB.insert(insert_sql, (str(uuid.uuid4()), m_type, msg, '0',
+                                      time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())))
 
 
 if __name__ == '__main__':
-    print(len(DB.index_tops('banner')))
+    print(DB.tv_page('tv_type=%s', ['动作片', int(0)]))
 
 

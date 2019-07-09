@@ -14,7 +14,7 @@
                 <dl class="fed-col-sx12 fed-col-sm6 fed-col-md4 fed-hide-sm fed-show-md-block">
                     <dt>年代</dt>
                     {% for yy in tv_years %}
-                        <dd><a href="/t-t/year_bt-{{ tv_more.cur_type }}-{{ yy|str_split(':')|get_list(0) }}">
+                        <dd><a href="/cnm/{{ ('tv_type_4_between_year_html;;;'+tv_more.cur_type+'@'+(yy|str_split(':')|get_list(0)))|b64encode }}">
                             {{ yy|str_split(':')|get_list(2) }}
                         </a></dd>
                     {% endfor %}
@@ -22,9 +22,9 @@
                 <dl class="fed-col-sx12 fed-col-sm6 fed-col-md4">
                     <dt>地区</dt>
                     {% for aa in tv_more.tv_areas %}
-                        <dd><a href="/t-t/area={{ aa|b64encode }}">{{ aa }}</a></dd>
+                        <dd><a href="/cnm/{{ ('tv_type_4_area_html;;;'+aa)|b64encode }}">{{ aa }}</a></dd>
                     {% endfor %}
-                    <dd><a href="/t-t/area={{ 'other'|b64encode }}">其他</a></dd>
+                    <dd><a href="/cnm/{{ 'tv_type_4_area_html;;;other'|b64encode }}">其他</a></dd>
                 </dl>
             </div>
             <div class="fed-part-layout fed-back-whits">
@@ -40,7 +40,7 @@
                 <ul class="fed-list-info fed-part-rows">
                     {% for new in tv_more.tv_news %}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ new.tv_id|b64encode }}"
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+new.tv_id)|b64encode }}"
                            style="display: block; background-image: url({{ new.tv_img }});">
                             <span class="fed-list-play fed-hide-xs"></span>
                             <span class="fed-list-score fed-font-xii fed-back-green">{{ new.tv_area }}</span>
@@ -49,7 +49,7 @@
                             </span>
                         </a>
                         <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/t-d/{{ new.tv_id|b64encode }}">{{ new.tv_name }}</a>
+                           href="/cnm/{{ ('tv_detail_html;;;'+new.tv_id)|b64encode }}">{{ new.tv_name }}</a>
                         <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
 建泽正</span>
                     </li>
@@ -67,13 +67,13 @@
                 <ul class="fed-list-info fed-part-rows">
                     {% for tv in tv_more[tty[1]] %}
                     <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ tv.tv_id|b64encode }}" style="display: block; background-image: url({{tv.tv_img}});">
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+tv.tv_id)|b64encode }}" style="display: block; background-image: url({{tv.tv_img}});">
                             <span class="fed-list-play fed-hide-xs"></span>
                             <span class="fed-list-score fed-font-xii fed-back-green">{{ tv.tv_area }}</span>
                             <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ tv.tv_year }}</span>
                         </a>
                         <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                           href="/t-d/{{ tv.tv_id|b64encode }}">{{ tv.tv_name }}</a>
+                           href="/cnm/{{ ('tv_detail_html;;;'+tv.tv_id)|b64encode }}">{{ tv.tv_name }}</a>
                         <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                             {{ tv.tv_actors }}
                         </span>

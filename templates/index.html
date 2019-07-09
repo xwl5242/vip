@@ -27,20 +27,20 @@
                         <li>今日更新&nbsp;<span class="fed-text-green">{{ today_ }}</span>&nbsp;部&nbsp;&nbsp;共&nbsp;<span
                                 class="fed-text-green">{{ total_ }}&nbsp;</span>部
                         </li>
-                        <li><a class="fed-more" href="/t-t/a">更多</a></li>
+                        <li><a class="fed-more" href="/cnm/{{ 'index_news_more_html'|b64encode }}">更多</a></li>
                     </ul>
                 </div>
                 <ul class="fed-list-info fed-part-rows">
                     {% for new in news%}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ new.tv_id|b64encode }}"
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+new.tv_id)|b64encode }}"
                                style="display: block; background-image: url({{new.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ new.tv_type }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至{{new.update_time|string|truncate(13,end='')}}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/t-d/{{ new.tv_id|b64encode }}">{{new.tv_name}}</a>
+                               href="/cnm/{{ ('tv_detail_html;;;'+new.tv_id)|b64encode }}">{{new.tv_name}}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ new.tv_actors }}
                             </span>
@@ -56,9 +56,9 @@
                     <h2 class="fed-font-xvi">{{ v }}</h2>
                     <ul class="fed-part-tips fed-padding">
                         {% for mt in tv_types[key] %}
-                            <li class="fed-hide-xs"><a href="/t-t/{{ key }}-{{ mt[0] }}">{{ mt[1] }}</a> /</li>
+                            <li class="fed-hide-xs"><a href="/cnm/{{ ('tv_type_html;;;'+key+'@'+mt[0])|b64encode }}">{{ mt[1] }}</a> /</li>
                         {% endfor %}
-                        <li><a class="fed-more" href="/tv/more/{{ key }}">更多</a></li>
+                        <li><a class="fed-more" href="/cnm/{{ ('index_tv_more_html;;;'+key)|b64encode }}">更多</a></li>
                     </ul>
                 </div>
                 <div class="fed-padding fed-col-sx12 fed-col-md5">
@@ -67,7 +67,7 @@
                             {% for ttop in tv_tops[key] %}
                                 <li class="fed-swip-slide swiper-slide-duplicate" style="width: 455px;">
                                     <a class="fed-list-pics fed-part-3by2 fed-swip-lazy swiper-lazy-loaded"
-                                       href="/t-d/{{ ttop.tv_vo.tv_id|b64encode }}" style="background-image: url({{ ttop.tv_img }});">
+                                       href="/cnm/{{ ('tv_detail_html;;;'+ttop.tv_vo.tv_id)|b64encode }}" style="background-image: url({{ ttop.tv_img }});">
                                         <div class="fed-swip-title fed-text-white fed-part-eone">
                                             <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ ttop.tv_vo.tv_name }}</span>
                                             <span class="fed-part-eone fed-font-xii">
@@ -84,7 +84,8 @@
 {#                            <a class="fed-part-tips fed-font-xiv" href="">更多</a>#}
                         </h2>
                         <div class="fed-col-md4 fed-list-ones">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ tv_tops[key][0].tv_vo.tv_id|b64encode }}"
+                            <a class="fed-list-pics fed-lazy fed-part-2by3"
+                               href="/cnm/{{ ('tv_detail_html;;;'+tv_tops[key][0].tv_vo.tv_id)|b64encode }}"
                                style="display: block; background-image: url({{tv_tops[key][0].tv_vo.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
@@ -96,7 +97,7 @@
                             <ul class="fed-part-rows">
                                 {% for ttop in tv_tops[key] %}
                                     <li class="fed-part-eone fed-hide-md fed-show-lg-block">
-                                    <a href="/t-d/{{ ttop.tv_vo.tv_id|b64encode }}">
+                                    <a href="/cnm/{{ ('tv_detail_html;;;'+ttop.tv_vo.tv_id)|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
                                         {{ ttop.tv_vo.tv_name }}
 {#                                        <span class="fed-part-tips fed-text-green">{{ ttop.tv_top }}</span>#}
@@ -112,7 +113,7 @@
                         {% for mv in tvs[key]%}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ mv.tv_id|b64encode }}" style="display: block; background-image: url({{mv.tv_img}});">
+                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+mv.tv_id)|b64encode }}" style="display: block; background-image: url({{mv.tv_img}});">
                                     <span class="fed-list-play fed-hide-xs"></span>
                                     <span class="fed-list-score fed-font-xii fed-back-green">{{ mv.tv_area }}</span>
                                     <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
@@ -120,7 +121,7 @@
                                     </span>
                                 </a>
                                 <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                                   href="/t-d/{{ mv.tv_id|b64encode }}">{{ mv.tv_name }}</a>
+                                   href="/cnm/{{ ('tv_detail_html;;;'+mv.tv_id)|b64encode }}">{{ mv.tv_name }}</a>
                                 <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                     {{ mv.tv_actors }}
                                 </span>

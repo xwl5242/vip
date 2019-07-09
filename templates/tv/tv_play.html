@@ -97,8 +97,7 @@
                                             {% if t_u[0] == s_type %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                                     <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.index == loop.index|string %} fed-back-green {% endif %}"
-                                                       data-tv-id="{{ tv_detail.tv_id|b64encode }}" data-tv-index="{{ loop.index }}"
-                                                       data-tv-url="{{ t_u[1]|str_split('$')|get_list(1)|b64encode }}" data-source="{{ s_type }}" >
+                                                       data-url="{{ t_u[1]|str_split('$')|get_list(1) }}" >
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
                                                     </a>
                                                 </li>
@@ -110,8 +109,7 @@
                                             {% if t_u[0] == s_type %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                                     <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.index == '1' %} fed-back-green {% endif %}"
-                                                       data-tv-id="{{ tv_detail.tv_id|b64encode }}" data-tv-index="{{ loop.index }}"
-                                                       data-tv-url="{{ t_u[1]|str_split('$')|get_list(1)|b64encode }}" data-source="{{ s_type }}" >
+                                                       data-url="{{ t_u[1]|str_split('$')|get_list(1) }}" >
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
                                                     </a>
                                                 </li>
@@ -142,21 +140,21 @@
                                     <ul class="fed-part-rows">
                                         <li class="fed-col-xs12 fed-col-md6 fed-part-eone"><span class="fed-text-muted">主演：</span>
                                             {% for ta in tv_detail.tv_actors|str_split %}
-                                                <a href="/t-t/actors={{ ta|b64encode }}" target="_blank">{{ ta }}</a>
+                                                <a href="/cnm/{{ ('tv_type_4_actors_html;;;'+ta)|b64encode }}" target="_blank">{{ ta }}</a>
                                             {% endfor %}
                                         </li>
                                         <li class="fed-col-xs12 fed-col-md6 fed-part-eone"><span class="fed-text-muted">导演：</span>
                                             {% for td in tv_detail.tv_director|str_split %}
-                                                <a href="/t-t/director={{ td|b64encode }}" target="_blank">{{ td }}</a>&nbsp;
+                                                <a href="/cnm/{{ ('tv_type_4_director_html;;;'+td)|b64encode }}" target="_blank">{{ td }}</a>&nbsp;
                                             {% endfor %}
                                         </li>
                                         <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">分类：</span><a
-                                                href="/t-t/i={{ tv_detail.tv_type|b64encode }}" target="_blank">{{ tv_detail.tv_type }}</a></li>
+                                                href="/cnm/{{ ('tv_type_item_html;;;'+tv_detail.tv_type)|b64encode }}" target="_blank">{{ tv_detail.tv_type }}</a></li>
                                         <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">地区：</span><a
-                                                href="/t-t/area={{ tv_detail.tv_area|b64encode }}" target="_blank">{{ tv_detail.tv_area }}</a>&nbsp;
+                                                href="/cnm/{{ ('tv_type_4_area_html;;;'+tv_detail.tv_area)|b64encode }}" target="_blank">{{ tv_detail.tv_area }}</a>&nbsp;
                                         </li>
                                         <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">年份：</span><a
-                                                href="/t-t/year={{ tv_detail.tv_year }}" target="_blank">{{ tv_detail.tv_year }}</a>&nbsp;
+                                                href="/cnm/{{ ('tv_type_4_year_html;;;'+tv_detail.tv_year) }}" target="_blank">{{ tv_detail.tv_year }}</a>&nbsp;
                                         </li>
                                         <li class="fed-col-xs6 fed-col-md3 fed-part-eone"><span class="fed-text-muted">更新：</span>
                                             {{ tv_detail.update_time|string|truncate(13,end='') }}
@@ -189,20 +187,20 @@
                 <div class="fed-list-head fed-part-rows fed-padding">
                     <h2 class="fed-font-xvi">相关热播</h2>
                     <ul class="fed-part-tips fed-padding">
-                        <li><a class="fed-more" href="/t-t/i={{ tv_detail.tv_type|b64encode }}">更多</a></li>
+                        <li><a class="fed-more" href="/cnm/{{ ('tv_type_item_html;;;'+tv_detail.tv_type)|b64encode }}">更多</a></li>
                     </ul>
                 </div>
                 <ul class="fed-list-info fed-part-rows">
                     {% for lh in like_hots %}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2
                            {% if loop.index==5 or loop.index==6 %} fed-hide-sm fed-show-md-block{% endif %}">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/t-d/{{ lh.tv_id|b64encode }}" style="display: block; background-image: url({{lh.tv_img}});">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+lh.tv_id)|b64encode }}" style="display: block; background-image: url({{lh.tv_img}});">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ lh.tv_area }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ lh.update_time|string|truncate(13,end='') }}</span>
                             </a>
                             <a class="fed-list-title fed-font-xiv fed-text-center fed-text-sm-left fed-visible fed-part-eone"
-                               href="/t-d/{{ lh.tv_id|b64encode }}">{{ lh.tv_name }}</a>
+                               href="/cnm/{{ ('tv_detail_html;;;'+lh.tv_id)|b64encode }}">{{ lh.tv_name }}</a>
                             <span class="fed-list-desc fed-font-xii fed-visible fed-part-eone fed-text-muted fed-hide-xs fed-show-sm-block">
                                 {{ lh.tv_intro }}
                             </span>
@@ -219,25 +217,40 @@
     <script>
         $(function() {
             //提示信息
-            layer.msg('视频缓冲中,大约需6秒...', {time: 4000});
+            aliplayer = {}
+            layer.msg('建议在连接wifi的情况下观看,视频缓冲中,大约需6秒...', {time: 4000});
             let tv_source = '{{ cur_tv_info.source }}';
             //报错
             $('#play_err_msg').click(errseekmsg);
             //Aliplayer
             if(tv_source=='2'){
-                let player = new Aliplayer({
+                aliplayer = new Aliplayer({
                     id: 'video',
                     width: '100%',
                     autoplay: true,
-                    //支持播放地址播放,此播放优先级最高
+                    useH5Prism: true,
+                    playsinline: true,
                     source: '{{ cur_tv_info.url }}'
                 });
-            }else{
-                //iframe的方式播放
-                $('ul[class^="data-tv-source-"]').find('a').click(function () {
-                    $('#fed-play-iframe').attr('src', $(this).attr('data-url'));
-                });
             }
+            //iframe的方式播放
+            $('ul[class^="data-tv-source-"]').find('a').click(function () {
+                $('ul[class^="data-tv-source-"]').find('a').removeClass('fed-back-green');
+                $(this).addClass('fed-back-green');
+                if(tv_source=='1') {
+                    $('#fed-play-iframe').attr('src', $(this).attr('data-url'));
+                }else{
+                    aliplayer.dispose();
+                    aliplayer = new Aliplayer({
+                        id: 'video',
+                        width: '100%',
+                        autoplay: true,
+                        useH5Prism: true,
+                        playsinline: true,
+                        source: $(this).attr('data-url')
+                    });
+                }
+            });
         });
     </script>
 {% endblock %}

@@ -4,7 +4,7 @@
         {% for banner in banners %}
         <li class="fed-swip-slide fed-marg-top swiper-slide-duplicate" style="width: 1170px;">
             <a class="fed-list-pics fed-part-5by2 fed-swip-lazy swiper-lazy-loaded"
-               href="/t-d/{{ banner.tv_vo.tv_id|b64encode }}"
+               href="/cnm/{{ ('tv_detail_html;;;'+banner.tv_vo.tv_id)|b64encode }}"
                style="background-image: url({{ banner.tv_img }});">
                 <div class="fed-swip-title fed-text-white fed-part-eone">
                     <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ banner.tv_vo.tv_name }}</span>

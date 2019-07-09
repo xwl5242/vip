@@ -13,19 +13,19 @@
                 </li>
                 <li id="nav_li_2" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-md-block"
-                       href="/tv/more/mv">电影</a>
+                       href="/cnm/{{ 'index_tv_more_html;;;mv'|b64encode }}">电影</a>
                 </li>
                 <li id="nav_li_3" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
-                       href="/tv/more/dsj">连续剧</a>
+                       href="/cnm/{{ 'index_tv_more_html;;;dsj'|b64encode }}">连续剧</a>
                 </li>
                 <li id="nav_li_4" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
-                       href="/tv/more/zy">综艺</a>
+                       href="/cnm/{{ 'index_tv_more_html;;;zy'|b64encode }}">综艺</a>
                 </li>
                 <li id="nav_li_5" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
-                       href="/tv/more/dm">动漫</a>
+                       href="/cnm/{{ 'index_tv_more_html;;;dm'|b64encode }}">动漫</a>
                 </li>
                 <li id="nav_li_6" class="fed-pull-left">
                     <a class="fed-menu-title fed-show-kind fed-font-xvi fed-hide fed-show-lg-block"
@@ -73,16 +73,16 @@
                     <a class="fed-part-eone" href="/">首页</a>
                 </li>
                 <li class="p-id-nav_li_2 fed-col-sm2" data-p-id="nav_li_2">
-                    <a class="fed-part-eone" href="/tv/more/mv">电影</a>
+                    <a class="fed-part-eone" href="/cnm/{{ 'index_tv_more_html;;;mv'|b64encode }}">电影</a>
                 </li>
                 <li class="p-id-nav_li_3 fed-col-sm2" data-p-id="nav_li_3">
-                    <a class="fed-part-eone" href="/tv/more/dsj">连续剧</a>
+                    <a class="fed-part-eone" href="/cnm/{{ 'index_tv_more_html;;;dsj'|b64encode }}">连续剧</a>
                 </li>
                 <li class="p-id-nav_li_4 fed-col-sm2" data-p-id="nav_li_4">
-                    <a class="fed-part-eone" href="/tv/more/zy">综艺</a>
+                    <a class="fed-part-eone" href="/cnm/{{ 'index_tv_more_html;;;zy'|b64encode }}">综艺</a>
                 </li>
                 <li class="p-id-nav_li_5 fed-col-sm2" data-p-id="nav_li_5">
-                    <a class="fed-part-eone" href="/tv/more/dm">动漫</a>
+                    <a class="fed-part-eone" href="/cnm/{{ 'index_tv_more_html;;;dm'|b64encode }}">动漫</a>
                 </li>
                 <li class="p-id-nav_li_6 fed-col-sm2" data-p-id="nav_li_5">
                     <a class="fed-part-eone" href="http://vip.yoviptv.com">VIP解析</a>
@@ -98,7 +98,8 @@
                         <ul class="fed-pops-list fed-back-whits fed-part-rows">
                             {% for mt in tv_tops['mv']|get_sub_list(0, 3) %}
                                 <li class="fed-col-xs6">
-                                    <a class="fed-event fed-part-eone" href="/t-d/{{ mt.tv_vo.tv_id|b64encode }}">
+                                    <a class="fed-event fed-part-eone"
+                                       href="/cnm/{{ ('tv_detail_html;;;'+mt.tv_vo.tv_id)|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index }}">{{ loop.index }}</span>
                                         <span class="fed-name">{{ mt.tv_vo.tv_name }}</span>
                                     </a>
@@ -106,7 +107,8 @@
                             {% endfor %}
                             {% for dst in tv_tops['dsj']|get_sub_list(0, 2) %}
                                 <li class="fed-col-xs6">
-                                    <a class="fed-event fed-part-eone" href="/t-d/{{ dst.tv_vo.tv_id|b64encode }}">
+                                    <a class="fed-event fed-part-eone"
+                                       href="/cnm/{{ ('tv_detail_html;;;'+dst.tv_vo.tv_id)|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 3 }}">{{ loop.index + 3 }}</span>
                                         <span class="fed-name">{{ dst.tv_vo.tv_name }}</span>
                                     </a>
@@ -114,7 +116,8 @@
                             {% endfor %}
                             {% for zt in tv_tops['zy']|get_sub_list(0, 3) %}
                                 <li class="fed-col-xs6">
-                                    <a class="fed-event fed-part-eone" href="/t-d/{{ zt.tv_vo.tv_id|b64encode }}">
+                                    <a class="fed-event fed-part-eone"
+                                       href="/cnm/{{ ('tv_detail_html;;;'+zt.tv_vo.tv_id)|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 5 }}">{{ loop.index + 5 }}</span>
                                         <span class="fed-name">{{ zt.tv_vo.tv_name }}</span>
                                     </a>
@@ -122,7 +125,8 @@
                             {% endfor %}
                             {% for dt in tv_tops['dm']|get_sub_list(0, 2) %}
                                 <li class="fed-col-xs6">
-                                    <a class="fed-event fed-part-eone" href="/t-d/{{ dt.tv_vo.tv_id|b64encode }}">
+                                    <a class="fed-event fed-part-eone"
+                                       href="/cnm/{{ ('tv_detail_html;;;'+dt.tv_vo.tv_id)|b64encode }}">
                                         <span class="fed-part-nums fed-part-num{{ loop.index + 8 }}">{{ loop.index + 8 }}</span>
                                         <span class="fed-name">{{ dt.tv_vo.tv_name }}</span>
                                     </a>
