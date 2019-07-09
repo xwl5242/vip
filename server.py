@@ -36,7 +36,7 @@ def render_template_(html, to_page=False, **kwargs):
     tv_types = {'mv': Config.TV_KV.get('mv'), 'dsj': Config.TV_KV.get('dsj'),
                 'dm': Config.TV_KV.get('dm'), 'zy': Config.TV_KV.get('zy')}
     return render_template(html, to_page=to_page, tv_tops=tv_tops, tv_types=tv_types,
-                           tv=Config.TV, banners=DB.index_tops('banner'), tv_years=Config.YEARS, **kwargs)
+                           tv=Config.TV, tv_years=Config.YEARS, **kwargs)
 
 
 def tv_item_page_html(req, where, args, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
@@ -82,7 +82,7 @@ def index():
            'dm': json.loads(j.r.get('dms')), 'zy': json.loads(j.r.get('zys'))}
     return render_template_('index.html', news=json.loads(j.r.get('news')), tvs=tvs,
                             today_=json.loads(j.r.get('today')), total_=json.loads(j.r.get('total')),
-                            fus=DB.query_friend_urls())
+                            fus=DB.query_friend_urls(), banners=DB.index_tops('banner'),)
 
 
 @app.route('/favicon.ico')
@@ -134,7 +134,8 @@ def index_tv_more_html(tv_type):
     tv_more['cur_type'] = tv_type
     tv_more['tv_areas'] = DB.tv_areas(tv_type)
     tv_more['tv_types'] = Config.TV_KV.get(tv_type)
-    return render_template_('tv/tv_more.html', _today=today, _total=total, tv_more=tv_more)
+    return render_template_('tv/tv_more.html', _today=today, _total=total,
+                            tv_more=tv_more, banners=DB.index_tops(tv_type))
 
 
 def tv_detail_html(tv_id):
