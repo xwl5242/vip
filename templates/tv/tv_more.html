@@ -8,7 +8,7 @@
                 <dl class="fed-col-sx12 fed-col-sm6 fed-col-md4">
                     <dt>分类</dt>
                     {% for tty in tv_more.tv_types %}
-                        <dd><a href="/t-t/{{ tv_more.cur_type }}-{{ tty[0] }}">{{ tty[1] }}</a></dd>
+                        <dd><a href="/cnm/{{ ('tv_type_html;;;'+tv_more.cur_type+'@'+tty[0])|b64encode }}">{{ tty[1] }}</a></dd>
                     {% endfor %}
                 </dl>
                 <dl class="fed-col-sx12 fed-col-sm6 fed-col-md4 fed-hide-sm fed-show-md-block">
