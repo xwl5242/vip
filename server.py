@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import os
 import json
 import random
 import app.util.apps as au
@@ -6,7 +7,7 @@ from app.config import Config
 from app.util.jobs import MyJobs as j
 from app.db.dao import DB
 from flask_apscheduler import APScheduler
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
 
 # name, static resource path, templates resource path
 # 整体项目中tv_type为视频的大类（如mv:电影，dm:动漫...）,
@@ -82,6 +83,12 @@ def index():
     return render_template_('index.html', news=json.loads(j.r.get('news')), tvs=tvs,
                             today_=json.loads(j.r.get('today')), total_=json.loads(j.r.get('total')),
                             fus=DB.query_friend_urls())
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/t-t/k=<tv_name>')
