@@ -10,7 +10,7 @@
                     </div>
                 {% endif %}
                 {% if cur_tv_info.source == '2' %}
-                    <div id="video" style="width: 100%;height: 500px;"></div>
+                    <div id="dplayer" style="width: 100%;height: 350px;"></div>
                 {% endif %}
                 <div class="fed-play-title fed-part-rows">
                     <ul class="fed-play-boxs fed-padding fed-part-rows fed-col-xs12 fed-col-md6">
@@ -212,26 +212,34 @@
     </div>
 {% endblock %}
 {% block js %}
-    <script charset="utf-8" type="text/javascript" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"></script>
+    <script src="{{ url_for('static', filename='js/p2p_dplayer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dplayer.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/tv_detail_play.js') }}" ></script>
     <script>
         $(function() {
             //提示信息
-            aliplayer = {}
             layer.msg('建议在连接wifi的情况下观看,视频缓冲中,大约需6秒...', {time: 4000});
-            let tv_source = '{{ cur_tv_info.source }}';
             //报错
             $('#play_err_msg').click(errseekmsg);
-            //Aliplayer
+            var dp = {};
+            let tv_source = '{{ cur_tv_info.source }}';
             if(tv_source=='2'){
-                aliplayer = new Aliplayer({
-                    id: 'video',
-                    width: '100%',
-                    autoplay: true,
-                    useH5Prism: true,
-                    playsinline: true,
-                    source: '{{ cur_tv_info.url }}'
-                });
+                //DPlayer
+                dp = new DPlayer({
+                   container: document.getElementById('dplayer'),
+                   lang: 'zh-cn',
+                   autoplay: true,
+                   video: {
+                       url: '{{ cur_tv_info.url }}',
+                       type: 'hls'
+                   },
+                   hlsjsConfig: {
+                       p2pConfig: {
+                            logLevel: false,
+                            live: false,
+                       }
+                   }
+               });
             }
             //iframe的方式播放
             $('ul[class^="data-tv-source-"]').find('a').click(function () {
@@ -240,15 +248,7 @@
                 if(tv_source=='1') {
                     $('#fed-play-iframe').attr('src', $(this).attr('data-url'));
                 }else{
-                    aliplayer.dispose();
-                    aliplayer = new Aliplayer({
-                        id: 'video',
-                        width: '100%',
-                        autoplay: true,
-                        useH5Prism: true,
-                        playsinline: true,
-                        source: $(this).attr('data-url')
-                    });
+                    dp.switchVideo({url: $(this).attr('data-url')});
                 }
             });
         });
