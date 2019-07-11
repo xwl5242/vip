@@ -1,13 +1,15 @@
 # -*- coding:utf-8 -*-
 import os
 import json
+import hmac
 import random
 import app.util.apps as au
 from app.config import Config
 from app.util.jobs import MyJobs as j
 from app.db.dao import DB
+from urllib.request import quote
 from flask_apscheduler import APScheduler
-from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
+from flask import Flask, render_template, request, redirect, jsonify, send_from_directory, abort
 
 # name, static resource path, templates resource path
 # 整体项目中tv_type为视频的大类（如mv:电影，dm:动漫...）,
@@ -68,6 +70,25 @@ def tv_item_page_html(req, where, args, is_choose=False, tv_type=None, tv_item=N
     return render_template_('tv/tv_item.html', to_page=True, page_no=page_no,
                             cur_tv_area=tv_area, cur_tv_year=tv_year, cur_tv_type=tv_type, cur_tv_item=tv_item,
                             is_choose=is_choose, items=items, total=total, tv_choose=tv_choose)
+
+
+@app.route('/api/search_tv', methods=['POST'])
+def webservice_search_tv():
+    web_root, resp = 'http://www.yoviptv.com/', {}
+    if 'X-Signature' not in request.headers:
+        abort(401)
+    sec = Config.WEBSERVICE_SERET
+    sec = sec.encode('utf-8') if isinstance(sec, str) else sec
+    sig = hmac.new(sec, request.get_data(), 'sha1').hexdigest()
+    if request.headers['X-Signature'] != sig:
+        abort(403)
+    kw = request.get_data().decode()
+    items = DB.index_search(kw)
+    if items and len(items) > 0:
+        resp = {'ret_nums': len(items), 'url': web_root+f't-t/k={quote(kw)}'}
+    else:
+        resp = {'ret_nums': 0}
+    return jsonify(resp)
 
 
 @app.route('/')

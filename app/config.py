@@ -37,6 +37,7 @@ class Config:
     IMG_WEB = conf.get('IMG_SERVER', 'url')
     # 年代
     YEARS = [y for y in conf.get('YEARS', 'years').split(',')]
+    WEBSERVICE_SERET = conf.get('WEBSERVICE', 'secret')
 
 
 if __name__ == '__main__':
