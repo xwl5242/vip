@@ -24,6 +24,7 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 scheduler.add_job(id='app_index_job', func=j.app_index_job, trigger='interval', seconds=11*60)
+j.app_index_job()
 
 
 def render_template_(html, to_page=False, **kwargs):
@@ -301,7 +302,6 @@ def tv_play_html(tv_id, tv_index, tv_source, tv_url):
 
 if __name__ == '__main__':
     # DEBUG RUN
-    j.app_index_job()
     # 添加自定义过滤器
     app.run(host='0.0.0.0', port=9999, debug=True)
 
