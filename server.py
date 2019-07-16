@@ -189,7 +189,7 @@ def tv_type_item_html(tv_item):
                 tv_type = key
                 tv_item_k = k_v[0]
                 break
-    return redirect(f'/t-t/{tv_type}-{tv_item_k}')
+    return tv_type_html(tv_type, tv_item_k)
 
 
 def tv_type_4_actors_html(tv_actors):
@@ -243,7 +243,6 @@ def tv_type_4_between_year_html(cur_type, year):
     year = str(year).split(':')[1]
     year = str(year).split('@')
     tv_type = "','".join(Config.TV_KV_LIST.get(cur_type))
-    where = f"tv_type in ('{tv_type}') and tv_year >= %s and tv_year <= %s"
     where = {'$and': [{'tv_type': tv_type}, {'tv_year': {'$gte': year[0]}}, {'tv_year': {'$lte': year[1]}}]}
     return tv_item_page_html(request, where)
 

@@ -33,7 +33,7 @@
                     {% for new in news%}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
                             <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+new.tv_id)|b64encode }}"
-                               style="display: block; background-image: url({{new.tv_img}});">
+                               style="display: block; background-image: url('http://img.yoviptv.com/{{new.tv_id}}.jpg');">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ new.tv_type }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">更新至{{new.update_time|string|truncate(13,end='')}}</span>
@@ -85,7 +85,7 @@
                         <div class="fed-col-md4 fed-list-ones">
                             <a class="fed-list-pics fed-lazy fed-part-2by3"
                                href="/cnm/{{ ('tv_detail_html;;;'+tv_tops[key][0].tv_vo.tv_id)|b64encode }}"
-                               style="display: block; background-image: url({{tv_tops[key][0].tv_vo.tv_img}});">
+                               style="display: block; background-image: url('http://img.yoviptv.com/{{tv_tops[key][0].tv_vo.tv_id}}.jpg');">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
                                     {{ tv_tops[key][0].tv_vo.update_time|string|truncate(13,end='') }}
@@ -112,7 +112,8 @@
                         {% for mv in tvs[key]%}
                             <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md3
                             {% if loop.index==7 or loop.index==8 %} fed-hide-xs{% endif %}">
-                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+mv.tv_id)|b64encode }}" style="display: block; background-image: url({{mv.tv_img}});">
+                                <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+mv.tv_id)|b64encode }}"
+                                   style="display: block; background-image: url('http://img.yoviptv.com/{{mv.tv_id}}.jpg');">
                                     <span class="fed-list-play fed-hide-xs"></span>
                                     <span class="fed-list-score fed-font-xii fed-back-green">{{ mv.tv_area }}</span>
                                     <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">

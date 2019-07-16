@@ -153,7 +153,9 @@ class DB(Mongo):
         :param page_no: 分页页码
         :return:
         """
-        return Mongo.find_page('t_tv', condition, page_no)
+        items = Mongo.find_page('t_tv', condition, page_no)
+        total = Mongo.count('t_tv', condition)
+        return items, total
 
     @staticmethod
     def query_friend_urls():
