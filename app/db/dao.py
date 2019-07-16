@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
+import re
 import time
 from app.config import Config
-from app.db.base import Base
+from app.db.mongod import Mongo
 
 
-class DB(Base):
+class DB(Mongo):
 
     @staticmethod
     def gen_sql(where, _limit, limit_, use_limit=False):
@@ -33,16 +34,13 @@ class DB(Base):
         :param tv_type: 视频类型mv,dm,zy,dsj;None:all
         :return:
         """
+        now = time.strftime('%Y-%m-%d', time.localtime())
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
-        types = ",".join(['%s' for i in tv_type]) if tv_type else None
-        where_str = f" and  tv_type in ({types})" if tv_type else ''
-        today_sql = f"select count(1) total from t_tv where 1=1 {where_str} and " \
-                    f"date_format(update_time,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d') "
-        total_sql = f"select count(1) total from t_tv where 1=1 {where_str}"
-        today = DB.get(today_sql, tv_type)
-        total = DB.get(total_sql, tv_type)
-        today = today['total'] if today and today['total'] else 0
-        total = total['total'] if total and total['total'] else 0
+        tv_type_condition = {'tv_type': {'$in': tuple(tv_type)}} if tv_type else {}
+        today = Mongo.count('t_tv', {'$and': [tv_type_condition, {'update_time': f'/^{now}/'}]})
+        total = Mongo.count('t_tv', tv_type_condition)
+        today = today if today else 0
+        total = total if total else 0
         return today, total
 
     @staticmethod
@@ -53,12 +51,11 @@ class DB(Base):
         :return:
         """
         result = []
-        top_sql = "select tv_name,tv_img from t_tv_banner_top where tv_type=%s"
-        tops = Base.query_list(top_sql, (tv_type,))
+        tops = Mongo.find('t_tv_banner_top', {'tv_type': tv_type})
         if tops and len(tops) > 0:
             for t in tops:
                 tn = str(t['tv_name']).strip()
-                tvs = DB.query_list(DB.gen_sql("tv_name like %s", 0, 0), ('%'+tn+'%', ))
+                tvs = Mongo.find('t_tv', {'tv_name': re.compile(tn)})
                 if tvs and len(tvs) > 0:
                     result.append({"tv_vo": tvs[0], "tv_img": str(t['tv_img'])})
         return result
@@ -69,7 +66,7 @@ class DB(Base):
         首页最新视频
         :return:
         """
-        return DB.query_list(DB.gen_sql('', 0, 12, True), [])
+        return Mongo.find('t_tv', {}, skip=0, limit=12)
 
     @staticmethod
     def index_mvs(tv_type):
@@ -79,8 +76,7 @@ class DB(Base):
         :return:
         """
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
-        types = ",".join(['%s' for i in tv_type]) if tv_type else None
-        return DB.query_list(DB.gen_sql(f"tv_type in({types})", 0, 8, True), tv_type)
+        return Mongo.find('t_tv', {'tv_type': {'$in': tuple(tv_type)}}, skip=0, limit=8)
 
     @staticmethod
     def like_hot(tv_type_item):
@@ -89,7 +85,7 @@ class DB(Base):
         :param tv_type_item: 视频的小类
         :return:
         """
-        return DB.query_list(DB.gen_sql("tv_type = %s", 0, 20, True), (tv_type_item, ))
+        return Mongo.find('t_tv', {'tv_type': tv_type_item}, skip=0, limit=20)
 
     @staticmethod
     def tv_detail(tv_id):
@@ -98,11 +94,9 @@ class DB(Base):
         :param tv_id: 视频的id
         :return:
         """
-        d_sql = DB.gen_sql(f"tv_id=%s", 0, 0)
-        u_sql = f"select tv_source,tv_url from t_tv_urls where tv_id=%s"
-        detail = DB.get(d_sql, (tv_id, ))
+        detail = Mongo.find_one('t_tv', {'tv_id': tv_id})
         if detail:
-            urls = DB.query_list(u_sql, (tv_id, ))
+            urls = Mongo.find('t_tv_urls', {'tv_id': tv_id})
             urls = [(su['tv_source'], su['tv_url']) for su in urls]
             detail['urls'] = urls
         return detail
@@ -114,7 +108,7 @@ class DB(Base):
         :param tv_name: 搜索关键字
         :return:
         """
-        return DB.query_list(DB.gen_sql("tv_name like %s", 0, 0), ('%'+tv_name+'%', ))
+        return Mongo.find('t_tv', {'tv_name': re.compile(tv_name)})
 
     @staticmethod
     def tv_areas(tv_type):
@@ -123,13 +117,19 @@ class DB(Base):
         :param tv_type: 视频的大类
         :return:
         """
+        area_list = []
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
-        types = ",".join(['%s' for i in tv_type]) if tv_type else None
-        where = f" tv_type in({types}) " if types else ' 1=1 '
-        area_sql = f"select group_concat(distinct tv_area) areas from t_tv where {where} "
-        tv_areas = DB.get(area_sql, tv_type)['areas']
-        tv_areas = [aa for aa in str(tv_areas).split(',') if '其' not in aa]
-        return tv_areas
+        tv_areas = Mongo.get_col('t_tv').aggregate([
+            {'$match': {'tv_type': {'$in': tv_type}}},
+            {'$group': {'_id': '$img_save', 'tv_areas': {'$addToSet': '$tv_area'}}}
+        ])
+        for tao in tv_areas:
+            if tao.get('_id') == '1':
+                tas = tao.get('tv_areas')
+                for ta in tas:
+                    if '其' not in ta and '更新时间' not in ta and ta not in area_list:
+                        area_list.append(ta)
+        return area_list
 
     @staticmethod
     def index_tv_more(tv_type):
@@ -140,23 +140,20 @@ class DB(Base):
         """
         result = {}
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
-        types = ",".join(['%s' for i in tv_type]) if tv_type else None
         for tty in tv_type:
-            result[tty] = DB.query_list(DB.gen_sql(f"tv_type=%s", 0, 12, True), (tty, ))
-        result['tv_news'] = DB.query_list(DB.gen_sql(f"tv_type in ({types})", 0, 12, True), tv_type)
+            result[tty] = Mongo.find('t_tv', {'tv_type': tv_type}, skip=0, limit=12)
+        result['tv_news'] = Mongo.find('t_tv', {'tv_type': {'$in': tv_type}}, skip=0, limit=12)
         return result
 
     @staticmethod
-    def tv_page(where_str, args):
+    def tv_page(condition, page_no):
         """
         分页 tv
-        :param where_str: 查询条件
-        :param args:
+        :param condition: 查询条件
+        :param page_no: 分页页码
         :return:
         """
-        where_str = ' 1=1 ' if not where_str else where_str
-        args = [] if not args else args
-        return DB.query_page(DB.gen_sql(where_str, 0, 0), args)
+        return Mongo.find_page('t_tv', condition, page_no)
 
     @staticmethod
     def query_friend_urls():
@@ -164,19 +161,16 @@ class DB(Base):
         首页友情链接
         :return:
         """
-        sql = "select f_title,f_url from t_f_u where del_flag=%s"
-        return DB.query_list(sql, ('0',))
+        return Mongo.find('t_f_u', {'del_flag': '0'})
 
     @staticmethod
     def insert_msg(m_type, msg):
         import uuid
-        insert_sql = "insert into t_err_seek_msg(id,type,text,del_flag,create_time) values(%s,%s,%s,%s,%s)"
-        print(insert_sql)
-        return DB.insert(insert_sql, (str(uuid.uuid4()), m_type, msg, '0',
-                                      time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())))
+        return Mongo.insert_one('t_err_seek_msg', {'id': str(uuid.uuid4()),
+                                                   'type': m_type, 'text': msg, 'del_flag': '0',
+                                                   'create_time': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())})
 
 
 if __name__ == '__main__':
-    print(DB.tv_page('tv_type=%s', ['动作片', int(0)]))
-
+    print(DB.tv_areas('mv'))
 

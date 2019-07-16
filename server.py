@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import re
 import os
 import json
 import hmac
@@ -41,12 +42,11 @@ def render_template_(html, to_page=False, **kwargs):
                            tv=Config.TV, tv_years=Config.YEARS, **kwargs)
 
 
-def tv_item_page_html(req, where, args, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
+def tv_item_page_html(req, condition, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
     """
     render template for pagination
     :param req: 请求 request
-    :param where: where 查询条件
-    :param args:
+    :param condition: where 查询条件
     :param is_choose: 要渲染的页面是否需要筛选功能展示
     :param tv_type: is_choose为True时必填 tv的大类
     :param tv_item: is_choose为True时必填 tv的小类
@@ -56,11 +56,7 @@ def tv_item_page_html(req, where, args, is_choose=False, tv_type=None, tv_item=N
     """
     page_no = req.args.get('p')
     page_no = int(page_no) if page_no else 1
-    if not args:
-        args = []
-    args = list(args)
-    args.append(page_no)
-    items, total = DB.tv_page(where, args)
+    items, total = DB.tv_page(condition, page_no)
     tv_choose = {}
     if is_choose and tv_type and tv_item:
         tv_choose['tvs'] = Config.TV
@@ -128,7 +124,7 @@ def err_seek_msg():
     m_type = request.form.get('m_type')
     msg = request.form.get('msg')
     r = DB.insert_msg(m_type, msg)
-    return jsonify({'code': 'success' if r and r == 1 else 'fail'})
+    return jsonify({'code': 'success' if r else 'fail'})
 
 
 @app.route('/cnm/<route>')
@@ -177,7 +173,7 @@ def index_news_more_html():
     首页最近更新视频的"更多"链接
     :return:
     """
-    return tv_item_page_html(request, None, None)
+    return tv_item_page_html(request, {})
 
 
 def tv_type_item_html(tv_item):
@@ -202,8 +198,7 @@ def tv_type_4_actors_html(tv_actors):
     :param tv_actors: 演员名字
     :return:
     """
-    where = f"tv_actors like %s "
-    return tv_item_page_html(request, where, '%'+tv_actors+'%')
+    return tv_item_page_html(request, {'tv_actors': re.compile(tv_actors)})
 
 
 def tv_type_4_director_html(tv_director):
@@ -212,8 +207,7 @@ def tv_type_4_director_html(tv_director):
     :param tv_director: 导演名称
     :return:
     """
-    where = f"tv_director like %s "
-    return tv_item_page_html(request, where, '%'+tv_director+'%')
+    return tv_item_page_html(request, {'tv_director': re.compile(tv_director)})
 
 
 def tv_type_4_area_html(tv_area):
@@ -223,12 +217,10 @@ def tv_type_4_area_html(tv_area):
     :return:
     """
     if tv_area == 'other':
-        where = f"(tv_area like %s or tv_area like %s)"
-        args = ['%其它%', '%其他%']
+        where = {'$and': [{'tv_area': re.compile('其他')}, {'tv_area': re.compile('其它')}]}
     else:
-        where = f"tv_area like %s "
-        args = ['%'+tv_area+'%']
-    return tv_item_page_html(request, where, args)
+        where = {'tv_area': re.compile(tv_area)}
+    return tv_item_page_html(request, where)
 
 
 def tv_type_4_year_html(tv_year):
@@ -237,8 +229,7 @@ def tv_type_4_year_html(tv_year):
     :param tv_year: 指定的年份
     :return:
     """
-    where = f"tv_year = %s "
-    return tv_item_page_html(request, where, (tv_year, ))
+    return tv_item_page_html(request, {'tv_year': tv_year})
 
 
 def tv_type_4_between_year_html(cur_type, year):
@@ -253,7 +244,8 @@ def tv_type_4_between_year_html(cur_type, year):
     year = str(year).split('@')
     tv_type = "','".join(Config.TV_KV_LIST.get(cur_type))
     where = f"tv_type in ('{tv_type}') and tv_year >= %s and tv_year <= %s"
-    return tv_item_page_html(request, where, (year[0], year[1], ))
+    where = {'$and': [{'tv_type': tv_type}, {'tv_year': {'$gte': year[0]}}, {'tv_year': {'$lte': year[1]}}]}
+    return tv_item_page_html(request, where)
 
 
 def tv_type_html(tv_type, tv_item):
@@ -269,29 +261,26 @@ def tv_type_html(tv_type, tv_item):
     tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
     # 查询分页数据
     where = f"tv_type = %s"
-    return tv_item_page_html(request, where, (tv_type, ), is_choose=True, tv_type=_tv_type, tv_item=tv_item)
+    return tv_item_page_html(request, {'tv_type': tv_type}, is_choose=True, tv_type=_tv_type, tv_item=tv_item)
 
 
 @app.route('/t-choose/tt=<tv_type>/ti=<tv_item>/ta=<tv_area>/ty=<tv_year>')
 def tv_choose_html(tv_type, tv_item, tv_area, tv_year):
     _tv_type = tv_type
-    where, args = [], []
+    where = []
     if tv_item != 'all':
         tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
         tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
-        where.append("tv_type=%s")
-        args.append(tv_type)
+        where.append({'tv_type': tv_type})
     if tv_area != 'all':
-        where.append("tv_area=%s")
-        args.append(tv_area)
+        where.append({'tv_area': tv_area})
     if tv_year != 'all':
         year = [y for y in Config.YEARS if str(y).startswith(tv_year + ':')]
         year = str(year).split(':')[1]
         year = str(year).split('@')
-        where.append("tv_year>=%s and tv_year<=%s")
-        args.append(year[0]).append(year[1])
-    where = " and ".join(where)
-    return tv_item_page_html(request, where, args, is_choose=True, tv_type=_tv_type,
+        where.append({'tv_year': {'$gte': year[0]}})
+        where.append({'tv_year': {'$lte': year[1]}})
+    return tv_item_page_html(request, {'$and': where}, is_choose=True, tv_type=_tv_type,
                              tv_item=tv_item, tv_area=tv_area, tv_year=tv_year)
 
 

@@ -5,19 +5,6 @@ import redis
 from app.db.dao import DB
 
 
-class DateEncoder(json.JSONEncoder):
-    """
-    date encoder , analysis datetime for json
-    """
-    def default(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return obj.strftime('%Y-%m-%d %H:%M:%S')
-        elif isinstance(obj, datetime.date):
-            return obj.strftime("%Y-%m-%d")
-        else:
-            return json.JSONEncoder.default(self, obj)
-
-
 class MyJobs:
     pool = redis.ConnectionPool(host='127.0.0.1', port=6379)
     r = redis.Redis(connection_pool=pool)
@@ -31,15 +18,15 @@ class MyJobs:
         import time
         s = time.time()
         print('init--redis')
-        news = json.dumps(DB.index_news(), ensure_ascii=False, cls=DateEncoder)
-        mvs = json.dumps(DB.index_mvs('mv'), ensure_ascii=False, cls=DateEncoder)
-        dsjs = json.dumps(DB.index_mvs('dsj'), ensure_ascii=False, cls=DateEncoder)
-        dms = json.dumps(DB.index_mvs('dm'), ensure_ascii=False, cls=DateEncoder)
-        zys = json.dumps(DB.index_mvs('zy'), ensure_ascii=False, cls=DateEncoder)
-        mv_top = json.dumps(DB.index_tops('mv')[0:6], ensure_ascii=False, cls=DateEncoder)
-        dsj_top = json.dumps(DB.index_tops('dsj')[0:6], ensure_ascii=False, cls=DateEncoder)
-        zy_top = json.dumps(DB.index_tops('zy')[0:6], ensure_ascii=False, cls=DateEncoder)
-        dm_top = json.dumps(DB.index_tops('dm')[0:6], ensure_ascii=False, cls=DateEncoder)
+        news = json.dumps(DB.index_news(), ensure_ascii=False)
+        mvs = json.dumps(DB.index_mvs('mv'), ensure_ascii=False)
+        dsjs = json.dumps(DB.index_mvs('dsj'), ensure_ascii=False)
+        dms = json.dumps(DB.index_mvs('dm'), ensure_ascii=False)
+        zys = json.dumps(DB.index_mvs('zy'), ensure_ascii=False)
+        mv_top = json.dumps(DB.index_tops('mv')[0:6], ensure_ascii=False)
+        dsj_top = json.dumps(DB.index_tops('dsj')[0:6], ensure_ascii=False)
+        zy_top = json.dumps(DB.index_tops('zy')[0:6], ensure_ascii=False)
+        dm_top = json.dumps(DB.index_tops('dm')[0:6], ensure_ascii=False)
         # 今日更新和总视频数量
         today, total = DB.today_total(None)
         cls.r.set('news', news)
