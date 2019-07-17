@@ -41,7 +41,7 @@
                     {% for new in tv_more.tv_news %}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
                         <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+new.tv_id)|b64encode }}"
-                           style="display: block; background-image: url({{ new.tv_img }});">
+                           style="display: block; background-image: url('http://img.yoviptv.com/{{ new.tv_id }}.jpg');">
                             <span class="fed-list-play fed-hide-xs"></span>
                             <span class="fed-list-score fed-font-xii fed-back-green">{{ new.tv_area }}</span>
                             <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
@@ -68,7 +68,8 @@
                 <ul class="fed-list-info fed-part-rows">
                     {% for tv in tv_more[tty[1]] %}
                     <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2">
-                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+tv.tv_id)|b64encode }}" style="display: block; background-image: url({{tv.tv_img}});">
+                        <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+tv.tv_id)|b64encode }}"
+                           style="display: block; background-image: url('http://img.yoviptv.com/{{tv.tv_id}}.jpg');">
                             <span class="fed-list-play fed-hide-xs"></span>
                             <span class="fed-list-score fed-font-xii fed-back-green">{{ tv.tv_area }}</span>
                             <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ tv.tv_year }}</span>

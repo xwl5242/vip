@@ -126,7 +126,7 @@
                             <dl class="fed-deta-info fed-margin fed-part-rows fed-part-over">
                                 <dt class="fed-deta-images fed-list-info fed-col-xs3">
                                     <a class="fed-list-pics fed-lazy fed-part-2by3" href="#"
-                                       style="background-image: url({{ tv_detail.tv_img }});">
+                                       style="background-image: url('http://img.yoviptv.com/{{ tv_detail.tv_id }}.jpg');">
                                         <span class="fed-list-play fed-hide-xs"></span>
                                         <span class="fed-list-score fed-font-xii fed-back-green">{{ tv_detail.tv_type }}</span>
                                         <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">
@@ -194,7 +194,8 @@
                     {% for lh in like_hots %}
                         <li class="fed-list-item fed-padding fed-col-xs4 fed-col-sm3 fed-col-md2
                            {% if loop.index==5 or loop.index==6 %} fed-hide-sm fed-show-md-block{% endif %}">
-                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+lh.tv_id)|b64encode }}" style="display: block; background-image: url({{lh.tv_img}});">
+                            <a class="fed-list-pics fed-lazy fed-part-2by3" href="/cnm/{{ ('tv_detail_html;;;'+lh.tv_id)|b64encode }}"
+                               style="display: block; background-image: url('http://img.yoviptv.com/{{lh.tv_id}}.jpg');">
                                 <span class="fed-list-play fed-hide-xs"></span>
                                 <span class="fed-list-score fed-font-xii fed-back-green">{{ lh.tv_area }}</span>
                                 <span class="fed-list-remarks fed-font-xii fed-text-white fed-text-center">{{ lh.update_time|string|truncate(13,end='') }}</span>

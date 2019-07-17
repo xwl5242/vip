@@ -97,10 +97,9 @@ class Mongo:
         return mongo_db[col].find_one(condition)
 
     @staticmethod
-    @app_mongo
-    def find_page(mongo_db, col, condition, page_no):
+    def find_page(col, condition, page_no):
         skip = (int(page_no)-1)*30
-        return Mongo.find(mongo_db, col, condition, skip=skip, limit=30)
+        return Mongo.find(col, condition, skip=skip, limit=30)
 
     @staticmethod
     @app_mongo
