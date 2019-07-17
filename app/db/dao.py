@@ -8,26 +8,6 @@ from app.db.mongod import Mongo
 class DB(Mongo):
 
     @staticmethod
-    def gen_sql(where, _limit, limit_, use_limit=False):
-        """
-        因为sql中有很多公用的部分，现在只需传递where条件和是否分页
-        :param where: where条件
-        :param _limit: limit
-        :param limit_: limit
-        :param use_limit: 使用limit
-        :return:
-        """
-        where = where if where else ' 1=1 '
-        where = str(where).strip()
-        where = where[3:] if where.startswith('and') or where.startswith('AND') else where
-        sql = f"select tv_id,tv_name,tv_actors,tv_director,tv_type,tv_area,tv_year,tv_lang,tv_intro,update_time," \
-              f"concat('{Config.IMG_WEB}',tv_id,'.jpg') tv_img from t_tv where 1=1 and {where} " \
-              f"order by update_time desc"
-        if use_limit:
-            sql += f' limit {_limit},{limit_} '
-        return sql
-
-    @staticmethod
     def today_total(tv_type):
         """
         首页今日更新和总视频数量
@@ -37,7 +17,7 @@ class DB(Mongo):
         now = time.strftime('%Y-%m-%d', time.localtime())
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
         tv_type_condition = {'tv_type': {'$in': tuple(tv_type)}} if tv_type else {}
-        today = Mongo.count('t_tv', {'$and': [tv_type_condition, {'update_time': f'/^{now}/'}]})
+        today = Mongo.count('t_tv', {'$and': [tv_type_condition, {'update_time': re.compile(f'^{now}')}]})
         total = Mongo.count('t_tv', tv_type_condition)
         today = today if today else 0
         total = total if total else 0
@@ -172,5 +152,5 @@ class DB(Mongo):
 
 
 if __name__ == '__main__':
-    print(DB.tv_areas('mv'))
+    print(DB.today_total(None))
 
