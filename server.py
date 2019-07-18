@@ -62,7 +62,7 @@ def tv_item_page_html(req, condition, is_choose=False, tv_type=None, tv_item=Non
     if is_choose and tv_type and tv_item:
         tv_choose['tvs'] = Config.TV
         tv_choose['tv_types'] = Config.TV_KV
-        tv_choose['tv_areas'] = DB.tv_areas(None)
+        tv_choose['tv_areas'] = DB.tv_areas(tv_type)
         tv_choose['tv_years'] = Config.YEARS
     return render_template_('tv/tv_item.html', to_page=True, page_no=page_no,
                             cur_tv_area=tv_area, cur_tv_year=tv_year, cur_tv_type=tv_type, cur_tv_item=tv_item,
@@ -260,7 +260,6 @@ def tv_type_html(tv_type, tv_item):
     tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
     tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
     # 查询分页数据
-    where = f"tv_type = %s"
     return tv_item_page_html(request, {'tv_type': tv_type}, is_choose=True, tv_type=_tv_type, tv_item=tv_item)
 
 
@@ -303,5 +302,5 @@ def tv_play_html(tv_id, tv_index, tv_source, tv_url):
 if __name__ == '__main__':
     # DEBUG RUN
     # 添加自定义过滤器
-    app.run(host='0.0.0.0', port=9999, debug=True)
+    app.run(host='0.0.0.0', port=9999, debug=False)
 

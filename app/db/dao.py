@@ -104,11 +104,10 @@ class DB(Mongo):
             {'$group': {'_id': '$img_save', 'tv_areas': {'$addToSet': '$tv_area'}}}
         ])
         for tao in tv_areas:
-            if tao.get('_id') == '1':
-                tas = tao.get('tv_areas')
-                for ta in tas:
-                    if '其' not in ta and '更新时间' not in ta and ta not in area_list:
-                        area_list.append(ta)
+            tas = tao.get('tv_areas')
+            for ta in tas:
+                if '其' not in ta and '更新时间' not in ta and ta not in area_list:
+                    area_list.append(ta)
         return area_list
 
     @staticmethod
@@ -121,7 +120,7 @@ class DB(Mongo):
         result = {}
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
         for tty in tv_type:
-            result[tty] = Mongo.find('t_tv', {'tv_type': tv_type}, skip=0, limit=12)
+            result[tty] = Mongo.find('t_tv', {'tv_type': tty}, skip=0, limit=12)
         result['tv_news'] = Mongo.find('t_tv', {'tv_type': {'$in': tv_type}}, skip=0, limit=12)
         return result
 
