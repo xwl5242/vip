@@ -9,7 +9,7 @@ from flask_apscheduler import APScheduler
 from flask import Flask, render_template
 
 
-def _dispath_decorator():
+def _dispatch_decorator():
     def deco_decorator(self, router):
         def decorator(func):
             @wraps(func)
@@ -27,10 +27,14 @@ class AppServer:
         self._handlers = dict()
         self.scheduler = APScheduler()
         self._server_app = Flask('yoviptv')
-        self._server_app.route('/cnm/<route>')(self._dispath)
+        self._server_app.route('/cnm/<route>')(self._dispatch)
 
     @property
     def server_app(self):
+        """
+        flask app, 并添加filters，jobs
+        :return:
+        """
         self._server_app.add_template_filter(ft.split_strings, 'str_split')
         self._server_app.add_template_filter(ft.get_list, 'get_list')
         self._server_app.add_template_filter(ft.get_sub_list, 'get_sub_list')
@@ -40,9 +44,14 @@ class AppServer:
         self.scheduler.start()
         return self._server_app
 
-    on_dispatch = _dispath_decorator()
+    on_dispatch = _dispatch_decorator()
 
-    def _dispath(self, route):
+    def _dispatch(self, route):
+        """
+        dispatch，请求跳转，根据地址中的加密字段进行跳转
+        :param route: 请求地址中的加密字段，包含要执行的router名称和参数
+        :return:
+        """
         route = ft.b64_str_decode(route)
         if route:
             if ';;;' in route:
@@ -58,6 +67,13 @@ class AppServer:
                     return handler()
 
     def run(self, host='127.0.0.1', port=9999, **kwargs):
+        """
+        flask启动
+        :param host: host，默认是127.0.0.1
+        :param port: 端口，默认是9999
+        :param kwargs: 其他flask app run的参数，如 debug=False
+        :return:
+        """
         MyJobs.app_index_job()
         self._server_app.run(host=host, port=port, **kwargs)
 
@@ -86,8 +102,8 @@ class AppServer:
         :param is_choose: 要渲染的页面是否需要筛选功能展示
         :param tv_type: is_choose为True时必填 tv的大类
         :param tv_item: is_choose为True时必填 tv的小类
-        :param tv_area:
-        :param tv_year:
+        :param tv_area: 页面筛选条件中的地区
+        :param tv_year: 页面筛选条件中的年份
         :return:
         """
         page_no = req.args.get('p')
