@@ -54,7 +54,8 @@ class AppServer:
                     return handler(*params)
             else:
                 handler = self._handlers.get(route)
-                return handler()
+                if handler:
+                    return handler()
 
     def run(self, host='127.0.0.1', port=9999, **kwargs):
         MyJobs.app_index_job()
