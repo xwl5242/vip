@@ -212,8 +212,8 @@ def tv_play_html(tv_id, tv_index, tv_source, tv_url):
     视频播放页面，url：视频的地址，detail：视频页面的详情，like_host:热门推荐
     :param tv_id: 播放视频的id
     :param tv_url: 播放视频的url
-    :param tv_index:
-    :param tv_source:
+    :param tv_index: 页面集数顺序
+    :param tv_source: 播放源
     :return:
     """
     detail = DB.tv_detail(tv_id)
