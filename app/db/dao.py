@@ -2,7 +2,7 @@
 import re
 import time
 from app.config import Config
-from app.db.mongod import Mongo
+from app.db.mongodb import Mongo
 
 
 class DB(Mongo):

@@ -2,90 +2,16 @@
 import re
 import os
 import json
-import hmac
 import random
-import app.util.apps as au
-from app.config import Config
-from app.util.jobs import MyJobs as j
 from app.db.dao import DB
-from urllib.request import quote
-from flask_apscheduler import APScheduler
-from flask import Flask, render_template, request, redirect, jsonify, send_from_directory, abort
-
-# name, static resource path, templates resource path
-# 整体项目中tv_type为视频的大类（如mv:电影，dm:动漫...）,
-# tv_item为视频大类下的具体小类（如动作片，微电影，国产剧...）
-app = Flask("yo_vip_tv", static_folder="static", template_folder="templates")
-app.add_template_filter(au.split_strings, 'str_split')
-app.add_template_filter(au.get_list, 'get_list')
-app.add_template_filter(au.get_sub_list, 'get_sub_list')
-app.add_template_filter(au.b64encode, 'b64encode')
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
-scheduler.add_job(id='app_index_job', func=j.app_index_job, trigger='interval', seconds=11*60)
-j.app_index_job()
+from app.config import Config
+from app.util.jobs import MyJobs
+from app.appserver import AppServer
+from flask import request, jsonify, send_from_directory
 
 
-def render_template_(html, to_page=False, **kwargs):
-    """
-    render template, have tops and tv_type
-    :param html: 要渲染的页面路径
-    :param to_page: 是否分页
-    :param kwargs: 要传递到页面上obj
-    :return:
-    """
-    tv_tops = {'mv': json.loads(j.r.get('mv_top')), 'dsj': json.loads(j.r.get('dsj_top')),
-               'dm': json.loads(j.r.get('dm_top')), 'zy': json.loads(j.r.get('zy_top'))}
-    tv_types = {'mv': Config.TV_KV.get('mv'), 'dsj': Config.TV_KV.get('dsj'),
-                'dm': Config.TV_KV.get('dm'), 'zy': Config.TV_KV.get('zy')}
-    return render_template(html, to_page=to_page, tv_tops=tv_tops, tv_types=tv_types,
-                           tv=Config.TV, tv_years=Config.YEARS, **kwargs)
-
-
-def tv_item_page_html(req, condition, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
-    """
-    render template for pagination
-    :param req: 请求 request
-    :param condition: where 查询条件
-    :param is_choose: 要渲染的页面是否需要筛选功能展示
-    :param tv_type: is_choose为True时必填 tv的大类
-    :param tv_item: is_choose为True时必填 tv的小类
-    :param tv_area:
-    :param tv_year:
-    :return:
-    """
-    page_no = req.args.get('p')
-    page_no = int(page_no) if page_no else 1
-    items, total = DB.tv_page(condition, page_no)
-    tv_choose = {}
-    if is_choose and tv_type and tv_item:
-        tv_choose['tvs'] = Config.TV
-        tv_choose['tv_types'] = Config.TV_KV
-        tv_choose['tv_areas'] = DB.tv_areas(tv_type)
-        tv_choose['tv_years'] = Config.YEARS
-    return render_template_('tv/tv_item.html', to_page=True, page_no=page_no,
-                            cur_tv_area=tv_area, cur_tv_year=tv_year, cur_tv_type=tv_type, cur_tv_item=tv_item,
-                            is_choose=is_choose, items=items, total=total, tv_choose=tv_choose)
-
-
-@app.route('/api/search_tv', methods=['POST'])
-def webservice_search_tv():
-    web_root, resp = 'http://www.yoviptv.com/', {}
-    if 'X-Signature' not in request.headers:
-        abort(401)
-    sec = Config.WEBSERVICE_SERET
-    sec = sec.encode('utf-8') if isinstance(sec, str) else sec
-    sig = hmac.new(sec, request.get_data(), 'sha1').hexdigest()
-    if request.headers['X-Signature'] != sig:
-        abort(403)
-    kw = request.get_data().decode()
-    items = DB.index_search(kw)
-    if items and len(items) > 0:
-        resp = {'ret_nums': len(items), 'url': web_root+f't-t/k={quote(kw)}'}
-    else:
-        resp = {'ret_nums': 0}
-    return jsonify(resp)
+app_server = AppServer()
+app = app_server.server_app
 
 
 @app.route('/')
@@ -96,11 +22,11 @@ def index():
     """
     # news:最新视频,mvs:电影,dsjs:电视剧,dms:动漫,zys:综艺,today_:今日更新,total_:总视频,
     # mv_kv_type:电影类型,dm_kv_type:动漫类型,zy_kv_type:综艺类型,dsj_kv_type:电视剧类型,fus:友情链接
-    tvs = {'mv': json.loads(j.r.get('mvs')), 'dsj': json.loads(j.r.get('dsjs')),
-           'dm': json.loads(j.r.get('dms')), 'zy': json.loads(j.r.get('zys'))}
-    return render_template_('index.html', news=json.loads(j.r.get('news')), tvs=tvs,
-                            today_=json.loads(j.r.get('today')), total_=json.loads(j.r.get('total')),
-                            fus=DB.query_friend_urls(), banners=DB.index_tops('banner'),)
+    tvs = {'mv': json.loads(MyJobs.r.get('mvs')), 'dsj': json.loads(MyJobs.r.get('dsjs')),
+           'dm': json.loads(MyJobs.r.get('dms')), 'zy': json.loads(MyJobs.r.get('zys'))}
+    return app_server.render('index.html', news=json.loads(MyJobs.r.get('news')), tvs=tvs,
+                             today_=json.loads(MyJobs.r.get('today')), total_=json.loads(MyJobs.r.get('total')),
+                             fus=DB.query_friend_urls(), banners=DB.index_tops('banner'),)
 
 
 @app.route('/favicon.ico')
@@ -117,7 +43,7 @@ def tv_type_4_name_html(tv_name):
     :return:
     """
     items = DB.index_search(tv_name)
-    return render_template_('tv/tv_item.html', items=items)
+    return app_server.render('tv/tv_item.html', items=items)
 
 
 @app.route('/err-seek-msg', methods=['POST'])
@@ -126,141 +52,6 @@ def err_seek_msg():
     msg = request.form.get('msg')
     r = DB.insert_msg(m_type, msg)
     return jsonify({'code': 'success' if r else 'fail'})
-
-
-@app.route('/cnm/<route>')
-def dispatch(route):
-    route = au.b64_str_decode(route)
-    if route:
-        if ';;;' in route:
-            func = route.split(';;;')[0]
-            objs = route.split(';;;')[1]
-            objs = objs.split('@')
-            return eval(func)(*objs)
-        else:
-            return eval(route)()
-
-
-def index_tv_more_html(tv_type):
-    """
-    跳转到首页tv视频更多页
-    :param tv_type:
-    :return:
-    """
-    today, total = DB.today_total(tv_type)
-    tv_more = DB.index_tv_more(tv_type)
-    tv_more['cur_type'] = tv_type
-    tv_more['tv_areas'] = DB.tv_areas(tv_type)
-    tv_more['tv_types'] = Config.TV_KV.get(tv_type)
-    return render_template_('tv/tv_more.html', _today=today, _total=total,
-                            tv_more=tv_more, banners=DB.index_tops(tv_type))
-
-
-def tv_detail_html(tv_id):
-    """
-    tv视频详情页
-    :param tv_id: 视频的id
-    :return:
-    """
-    detail = DB.tv_detail(tv_id)
-    like_hot = DB.like_hot(detail.get('tv_type'))
-    # random select 6 item
-    random.shuffle(like_hot)
-    return render_template_('tv/tv_detail.html', tv_detail=detail, like_hots=like_hot[0:6])
-
-
-def index_news_more_html():
-    """
-    首页最近更新视频的"更多"链接
-    :return:
-    """
-    return tv_item_page_html(request, {})
-
-
-def tv_type_item_html(tv_item):
-    """
-    每个小类的更多链接
-    :param tv_item:
-    :return:
-    """
-    tv_item_k, tv_type = '', ''
-    for key in Config.TV_KV:
-        for k_v in Config.TV_KV[key]:
-            if k_v[1] == tv_item:
-                tv_type = key
-                tv_item_k = k_v[0]
-                break
-    return tv_type_html(tv_type, tv_item_k)
-
-
-def tv_type_4_actors_html(tv_actors):
-    """
-    根据视频演员搜索相关视频
-    :param tv_actors: 演员名字
-    :return:
-    """
-    return tv_item_page_html(request, {'tv_actors': re.compile(tv_actors)})
-
-
-def tv_type_4_director_html(tv_director):
-    """
-    根据视频导演搜索相关视频
-    :param tv_director: 导演名称
-    :return:
-    """
-    return tv_item_page_html(request, {'tv_director': re.compile(tv_director)})
-
-
-def tv_type_4_area_html(tv_area):
-    """
-    根据视频所属地域搜索相关视频
-    :param tv_area: 地域名称
-    :return:
-    """
-    if tv_area == 'other':
-        where = {'$and': [{'tv_area': re.compile('其他')}, {'tv_area': re.compile('其它')}]}
-    else:
-        where = {'tv_area': re.compile(tv_area)}
-    return tv_item_page_html(request, where)
-
-
-def tv_type_4_year_html(tv_year):
-    """
-    根据视频指定的年份搜索相关视频
-    :param tv_year: 指定的年份
-    :return:
-    """
-    return tv_item_page_html(request, {'tv_year': tv_year})
-
-
-def tv_type_4_between_year_html(cur_type, year):
-    """
-    根据视频指定的年代搜索相关视频
-    :param cur_type: 当前视频类型
-    :param year: 年代
-    :return:
-    """
-    year = [y for y in Config.YEARS if str(y).startswith(year+':')]
-    year = str(year).split(':')[1]
-    year = str(year).split('@')
-    tv_type = "','".join(Config.TV_KV_LIST.get(cur_type))
-    where = {'$and': [{'tv_type': tv_type}, {'tv_year': {'$gte': year[0]}}, {'tv_year': {'$lte': year[1]}}]}
-    return tv_item_page_html(request, where)
-
-
-def tv_type_html(tv_type, tv_item):
-    """
-    tv视频小类的详情页
-    :param tv_type: 视频的大类，如mv：电影，dm：动漫
-    :param tv_item: 视频的小类，如动作片，国产剧，微电影
-    :return:
-    """
-    # 获取具体的数据库中视频的分类
-    _tv_type = tv_type
-    tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
-    tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
-    # 查询分页数据
-    return tv_item_page_html(request, {'tv_type': tv_type}, is_choose=True, tv_type=_tv_type, tv_item=tv_item)
 
 
 @app.route('/t-choose/tt=<tv_type>/ti=<tv_item>/ta=<tv_area>/ty=<tv_year>')
@@ -279,10 +70,143 @@ def tv_choose_html(tv_type, tv_item, tv_area, tv_year):
         year = str(year).split('@')
         where.append({'tv_year': {'$gte': year[0]}})
         where.append({'tv_year': {'$lte': year[1]}})
-    return tv_item_page_html(request, {'$and': where}, is_choose=True, tv_type=_tv_type,
-                             tv_item=tv_item, tv_area=tv_area, tv_year=tv_year)
+    return app_server.ti_page_render(request, {'$and': where}, is_choose=True, tv_type=_tv_type,
+                                     tv_item=tv_item, tv_area=tv_area, tv_year=tv_year)
 
 
+@app_server.on_dispatch('index_tv_more_html')
+def index_tv_more_html(tv_type):
+    """
+    跳转到首页tv视频更多页
+    :param tv_type:
+    :return:
+    """
+    today, total = DB.today_total(tv_type)
+    tv_more = DB.index_tv_more(tv_type)
+    tv_more['cur_type'] = tv_type
+    tv_more['tv_areas'] = DB.tv_areas(tv_type)
+    tv_more['tv_types'] = Config.TV_KV.get(tv_type)
+    return app_server.render('tv/tv_more.html', _today=today, _total=total,
+                             tv_more=tv_more, banners=DB.index_tops(tv_type))
+
+
+@app_server.on_dispatch('tv_detail_html')
+def tv_detail_html(tv_id):
+    """
+    tv视频详情页
+    :param tv_id: 视频的id
+    :return:
+    """
+    detail = DB.tv_detail(tv_id)
+    like_hot = DB.like_hot(detail.get('tv_type'))
+    # random select 6 item
+    random.shuffle(like_hot)
+    return app_server.render('tv/tv_detail.html', tv_detail=detail, like_hots=like_hot[0:6])
+
+
+@app_server.on_dispatch('index_news_more_html')
+def index_news_more_html():
+    """
+    首页最近更新视频的"更多"链接
+    :return:
+    """
+    return app_server.ti_page_render(request, {})
+
+
+@app_server.on_dispatch('tv_type_item_html')
+def tv_type_item_html(tv_item):
+    """
+    每个小类的更多链接
+    :param tv_item:
+    :return:
+    """
+    tv_item_k, tv_type = '', ''
+    for key in Config.TV_KV:
+        for k_v in Config.TV_KV[key]:
+            if k_v[1] == tv_item:
+                tv_type = key
+                tv_item_k = k_v[0]
+                break
+    return tv_type_html(tv_type, tv_item_k)
+
+
+@app_server.on_dispatch('tv_type_4_actors_html')
+def tv_type_4_actors_html(tv_actors):
+    """
+    根据视频演员搜索相关视频
+    :param tv_actors: 演员名字
+    :return:
+    """
+    return app_server.ti_page_render(request, {'tv_actors': re.compile(tv_actors)})
+
+
+@app_server.on_dispatch('tv_type_4_director_html')
+def tv_type_4_director_html(tv_director):
+    """
+    根据视频导演搜索相关视频
+    :param tv_director: 导演名称
+    :return:
+    """
+    return app_server.ti_page_render(request, {'tv_director': re.compile(tv_director)})
+
+
+@app_server.on_dispatch('tv_type_4_area_html')
+def tv_type_4_area_html(tv_area):
+    """
+    根据视频所属地域搜索相关视频
+    :param tv_area: 地域名称
+    :return:
+    """
+    if tv_area == 'other':
+        where = {'$and': [{'tv_area': re.compile('其他')}, {'tv_area': re.compile('其它')}]}
+    else:
+        where = {'tv_area': re.compile(tv_area)}
+    return app_server.ti_page_render(request, where)
+
+
+@app_server.on_dispatch('tv_type_4_year_html')
+def tv_type_4_year_html(tv_year):
+    """
+    根据视频指定的年份搜索相关视频
+    :param tv_year: 指定的年份
+    :return:
+    """
+    return app_server.ti_page_render(request, {'tv_year': tv_year})
+
+
+@app_server.on_dispatch('tv_type_4_between_year_html')
+def tv_type_4_between_year_html(cur_type, year):
+    """
+    根据视频指定的年代搜索相关视频
+    :param cur_type: 当前视频类型
+    :param year: 年代
+    :return:
+    """
+    year = [y for y in Config.YEARS if str(y).startswith(year+':')]
+    year = str(year).split(':')[1]
+    year = str(year).split('@')
+    tv_type = "','".join(Config.TV_KV_LIST.get(cur_type))
+    where = {'$and': [{'tv_type': tv_type}, {'tv_year': {'$gte': year[0]}}, {'tv_year': {'$lte': year[1]}}]}
+    return app_server.ti_page_render(request, where)
+
+
+@app_server.on_dispatch('tv_type_html')
+def tv_type_html(tv_type, tv_item):
+    """
+    tv视频小类的详情页
+    :param tv_type: 视频的大类，如mv：电影，dm：动漫
+    :param tv_item: 视频的小类，如动作片，国产剧，微电影
+    :return:
+    """
+    # 获取具体的数据库中视频的分类
+    _tv_type = tv_type
+    tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
+    tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
+    # 查询分页数据
+    return app_server.ti_page_render(request, {'tv_type': tv_type}, is_choose=True, tv_type=_tv_type, tv_item=tv_item)
+
+
+@app_server.on_dispatch('tv_play_html')
 def tv_play_html(tv_id, tv_index, tv_source, tv_url):
     """
     视频播放页面，url：视频的地址，detail：视频页面的详情，like_host:热门推荐
@@ -296,11 +220,10 @@ def tv_play_html(tv_id, tv_index, tv_source, tv_url):
     like_host = DB.like_hot(detail.get('tv_type'))
     random.shuffle(like_host)
     cur_tv_info = {'index': tv_index, 'source': tv_source, 'url': tv_url}
-    return render_template_('tv/tv_play.html', cur_tv_info=cur_tv_info, tv_detail=detail, like_hots=like_host[0:6])
+    return app_server.render('tv/tv_play.html', cur_tv_info=cur_tv_info, tv_detail=detail, like_hots=like_host[0:6])
 
 
 if __name__ == '__main__':
-    # DEBUG RUN
     # 添加自定义过滤器
-    app.run(host='0.0.0.0', port=9999, debug=False)
+    app_server.run()
 
