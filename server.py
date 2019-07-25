@@ -35,6 +35,12 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
+@app.route('/root.txt')
+def root_txt():
+    return send_from_directory(os.path.join(app.root_path, 'templates'),
+                               'root.txt')
+
+
 @app.route('/t-t/k=<tv_name>')
 def tv_type_4_name_html(tv_name):
     """
