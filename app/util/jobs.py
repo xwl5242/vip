@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 import json
-import datetime
 import redis
 from app.db.dao import DB
 
@@ -43,6 +42,3 @@ class MyJobs:
         del news, mvs, dsjs, dms, zys, mv_top, dsj_top, zy_top, dm_top
         print(f'{time.time() - s}')
 
-
-if __name__ == '__main__':
-    MyJobs.app_index_job()
