@@ -52,6 +52,10 @@ class Config:
     # webservice secret
     WEBSERVICE_SERET = conf.get('WEBSERVICE', 'secret')
 
+    TB_AK = conf.get('TAO_BAO', 'tb_app_key')
+    TB_AS = conf.get('TAO_BAO', 'tb_app_secret')
+    TB_AD_ZONE_ID = conf.get('TAO_BAO', 'ad_zone_id')
+
     TV_SOURCE_MAIN, TV_SOURCE_3PART = 'main', '3part'
 
     _3PART_API_URL = str(conf.get('3PART_API', 'url'))
