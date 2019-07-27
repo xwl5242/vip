@@ -83,14 +83,18 @@
                 <!-- 播放源 -->
                     <div class="fed-drop-boxs fed-drop-tops fed-matp-v">
                         <ul class="tv-source fed-part-rows">
-                            <li data-tv-source="2" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
-                                <a class="fed-btns-info fed-rims-info fed-part-eone fed-back-green"
-                                   href="javascript:;">播放源➀(推荐)</a>
+                            {% for ts in tv_detail.tv_sources %}
+                            <li data-tv-source="{{ ts }}" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
+                                <a class="fed-btns-info fed-rims-info fed-part-eone
+                                    {% if loop.index==1 %}fed-back-green{% endif %}"
+                                   href="javascript:;">
+                                    播放源{% if tv_detail.tv_sources|length>1  %}
+                                        {% if ts=='main' %}➀{% endif %}
+                                        {% if ts=='3part' %}➁{% endif %}
+                                    {% endif %}{% if tv_detail.tv_sources|length==1 %}（推荐）{% endif %}
+                                </a>
                             </li>
-                            <li data-tv-source="1" class="fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
-                                <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                   href="javascript:;">播放源➁</a>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 <!-- 播放源 -->
@@ -103,25 +107,26 @@
                                 </li>
                             </ul>
                             <!-- 播放地址-->
-                                {% for s_type in ['1', '2'] %}
-                                    <ul class="data-tv-source-{{ s_type }} fed-part-rows fed-hidden" >
+                                {% for ts in tv_detail.tv_sources %}
+                                    <ul class="data-tv-source-{{ ts }} fed-part-rows
+                                        {% if tv_detail.tv_sources|length!=1 and ts!='main' %}fed-hidden{% endif %}" >
                                         {% for t_u in tv_detail.urls %}
-                                            {% if t_u[0] == s_type %}
+                                            {% if t_u[0] == ts %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                                     <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                                       href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(loop.index|string)+'@'+s_type+'@'+(t_u[1]|str_split('$')|get_list(1)))|b64encode }}">
+                                                       href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(loop.index|string)+'@'+ts+'@'+(t_u[1]|str_split('$')|get_list(1)))|b64encode }}">
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
                                                     </a>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
-                                    <ul class="data-tv-source-{{ s_type }}-r fed-part-rows fed-hidden" >
+                                    <ul class="data-tv-source-{{ ts }}-r fed-part-rows fed-hidden" >
                                         {% for t_u in tv_detail.urls|reverse %}
-                                            {% if t_u[0] == s_type %}
+                                            {% if t_u[0] == ts %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
                                                     <a class="fed-btns-info fed-rims-info fed-part-eone"
-                                                       href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(loop.index|string)+'@'+s_type+'@'+(t_u[1]|str_split('$')|get_list(1)))|b64encode }}">
+                                                       href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(loop.index|string)+'@'+ts+'@'+(t_u[1]|str_split('$')|get_list(1)))|b64encode }}">
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
                                                     </a>
                                                 </li>
@@ -173,9 +178,6 @@
     <script src="{{ url_for('static', filename='js/tv_detail_play.js') }}" ></script>
     <script>
         $(function(){
-            //页面加载的时候默认选择"正序"
-            $('ul[class^="data-tv-source-"]').hide();
-            $('ul[class^="data-tv-source-2"] :eq(0)').show();
             //报错
             $('#detail_err_msg').click(errseekmsg);
         });

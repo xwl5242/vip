@@ -1,7 +1,11 @@
 # -*- coding:utf-8 -*-
 import json
 import redis
-from app.db.dao import DB
+from app.config import Config
+if Config.RUN_PLATFORM == 'mysql':
+    from app.db.mysql_dao import DB
+else:
+    from app.db.mongo_dao import DB
 
 
 class MyJobs:

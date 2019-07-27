@@ -3,11 +3,14 @@ import re
 import os
 import json
 import random
-from app.db.dao import DB
 from app.config import Config
 from app.util.jobs import MyJobs
 from app.appserver import AppServer
 from flask import request, jsonify, send_from_directory
+if Config.RUN_PLATFORM == 'mysql':
+    from app.db.mysql_dao import DB
+else:
+    from app.db.mongo_dao import DB
 
 
 app_server = AppServer()
@@ -225,6 +228,7 @@ def tv_play_html(tv_id, tv_index, tv_source, tv_url):
     detail = DB.tv_detail(tv_id)
     like_host = DB.like_hot(detail.get('tv_type'))
     random.shuffle(like_host)
+    tv_url = Config._3PART_API_URL+tv_url if '.m3u8' not in tv_url and 'http' not in tv_url else tv_url
     cur_tv_info = {'index': tv_index, 'source': tv_source, 'url': tv_url}
     return app_server.render('tv/tv_play.html', cur_tv_info=cur_tv_info, tv_detail=detail, like_hots=like_host[0:6])
 

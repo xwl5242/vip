@@ -35,6 +35,14 @@ class Config:
     MD_USER = str(conf.get('MONGODB', 'user'))
     MD_PWD = str(conf.get('MONGODB', 'pwd'))
 
+    # mysql配置相关
+    MS_HOST = str(conf.get('MYSQL_DB', 'host'))
+    MS_USER = str(conf.get('MYSQL_DB', 'user'))
+    MS_PWD = str(conf.get('MYSQL_DB', 'pwd'))
+    MS_DATABASE = str(conf.get('MYSQL_DB', 'database'))
+    MS_PORT = int(conf.get('MYSQL_DB', 'port'))
+    MS_CHARSET = str(conf.get('MYSQL_DB', 'charset'))
+
     # img server
     IMG_WEB = conf.get('IMG_SERVER', 'url')
 
@@ -43,6 +51,12 @@ class Config:
 
     # webservice secret
     WEBSERVICE_SERET = conf.get('WEBSERVICE', 'secret')
+
+    TV_SOURCE_MAIN, TV_SOURCE_3PART = 'main', '3part'
+
+    _3PART_API_URL = str(conf.get('3PART_API', 'url'))
+
+    RUN_PLATFORM = str(conf.get('RUN', 'platform'))
 
 
 if __name__ == '__main__':

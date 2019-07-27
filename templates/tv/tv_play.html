@@ -3,14 +3,14 @@
     <div class="fed-main-info fed-min-width">
         <div class="fed-part-case">
             <div class="fed-play-info fed-part-rows fed-back-whits fed-marg-top">
-                {% if cur_tv_info.source == '1' %}
-                    <div class="fed-play-player fed-rage-head fed-part-rows fed-back-black" style="padding-top:56.25%">
+                {% if cur_tv_info.source == '3part' %}
+                    <div class="fed-play-player fed-rage-head fed-part-rows fed-back-black" style="padding-top:56.25%;height: 450px;">
                         <iframe id="fed-play-iframe" class="fed-play-iframe fed-part-full" frameborder="0" scrolling="no"
                                 allowfullscreen="true" src="{{ cur_tv_info.url }}"></iframe>
                     </div>
                 {% endif %}
-                {% if cur_tv_info.source == '2' %}
-                    <div id="dplayer" style="width: 100%;height: 350px;"></div>
+                {% if cur_tv_info.source == 'main' %}
+                    <div id="dplayer" style="width: 100%;height: 450px;"></div>
                 {% endif %}
                 <div class="fed-play-title fed-part-rows">
                     <ul class="fed-play-boxs fed-padding fed-part-rows fed-col-xs12 fed-col-md6">
@@ -71,14 +71,18 @@
                     <!-- 播放源 -->
                         <div class="fed-drop-boxs fed-drop-tops fed-matp-v">
                             <ul class="tv-source fed-part-rows">
-                                <li data-tv-source="2" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.source == '2' %} fed-back-green {% endif %}"
-                                       href="javascript:;">播放源➀(推荐)</a>
+                                {% for ts in tv_detail.tv_sources %}
+                                <li data-tv-source="{{ ts }}" class="fed-play-btns fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
+                                    <a class="fed-btns-info fed-rims-info fed-part-eone
+                                        {% if ts==cur_tv_info.source %}fed-back-green{% endif %}"
+                                       href="javascript:;">
+                                        播放源{% if tv_detail.tv_sources|length>1  %}
+                                            {% if ts=='main' %}➀{% endif %}
+                                            {% if ts=='3part' %}➁{% endif %}
+                                        {% endif %}{% if tv_detail.tv_sources|length==1 %}（推荐）{% endif %}
+                                    </a>
                                 </li>
-                                <li data-tv-source="1" class="fed-drop-btns fed-padding fed-col-xs4 fed-col-md2">
-                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.source == '1' %} fed-back-green {% endif %}"
-                                       href="javascript:;">播放源➁</a>
-                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     <!-- 播放源 -->
@@ -91,25 +95,26 @@
                                     </li>
                                 </ul>
                                 <!-- 播放地址-->
-                                {% for s_type in ['1', '2'] %}
-                                    <ul class="data-tv-source-{{ s_type }} fed-part-rows {% if s_type!=cur_tv_info.source %} fed-hidden {% endif %}" >
+                                {% for ts in tv_detail.tv_sources %}
+                                    <ul class="data-tv-source-{{ ts }} fed-part-rows
+                                        {% if tv_detail.tv_sources|length!=1 and ts!='main' %}fed-hidden{% endif %}" >
                                         {% for t_u in tv_detail.urls %}
-                                            {% if t_u[0] == s_type %}
+                                            {% if t_u[0] == ts %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
-                                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.index == loop.index|string %} fed-back-green {% endif %}"
-                                                       data-url="{{ t_u[1]|str_split('$')|get_list(1) }}" >
+                                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if loop.index|string==cur_tv_info.index %}fed-back-green{% endif %}"
+                                                       href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(loop.index|string)+'@'+ts+'@'+(t_u[1]|str_split('$')|get_list(1)))|b64encode }}">
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
                                                     </a>
                                                 </li>
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
-                                    <ul class="data-tv-source-{{ s_type }}-r fed-part-rows fed-hidden" >
+                                    <ul class="data-tv-source-{{ ts }}-r fed-part-rows fed-hidden" >
                                         {% for t_u in tv_detail.urls|reverse %}
-                                            {% if t_u[0] == s_type %}
+                                            {% if t_u[0] == ts %}
                                                 <li class="fed-padding fed-col-xs3 fed-col-md2 fed-col-lg1">
-                                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if cur_tv_info.index == '1' %} fed-back-green {% endif %}"
-                                                       data-url="{{ t_u[1]|str_split('$')|get_list(1) }}" >
+                                                    <a class="fed-btns-info fed-rims-info fed-part-eone {% if loop.index|string==cur_tv_info.index %}fed-back-green{% endif %}"
+                                                       href="/cnm/{{ ('tv_play_html;;;'+tv_detail.tv_id+'@'+(loop.index|string)+'@'+ts+'@'+(t_u[1]|str_split('$')|get_list(1)))|b64encode }}">
                                                         {{ t_u[1]|str_split('$')|get_list(0) }}
                                                     </a>
                                                 </li>
@@ -224,7 +229,7 @@
             $('#play_err_msg').click(errseekmsg);
             var dp = {};
             let tv_source = '{{ cur_tv_info.source }}';
-            if(tv_source=='2'){
+            if(tv_source=='main'){
                 //DPlayer
                 dp = new DPlayer({
                    container: document.getElementById('dplayer'),
@@ -236,16 +241,6 @@
                    }
                });
             }
-            //iframe的方式播放
-            $('ul[class^="data-tv-source-"]').find('a').click(function () {
-                $('ul[class^="data-tv-source-"]').find('a').removeClass('fed-back-green');
-                $(this).addClass('fed-back-green');
-                if(tv_source=='1') {
-                    $('#fed-play-iframe').attr('src', $(this).attr('data-url'));
-                }else{
-                    dp.switchVideo({url: $(this).attr('data-url')});
-                }
-            });
         });
     </script>
 {% endblock %}

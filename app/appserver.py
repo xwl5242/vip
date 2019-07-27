@@ -1,12 +1,15 @@
 # -*- coding:utf-8 -*-
 import json
-from app.db.dao import DB
 from functools import wraps
 from app.config import Config
 from app.util.jobs import MyJobs
 from app.util import filters as ft
 from flask_apscheduler import APScheduler
 from flask import Flask, render_template
+if Config.RUN_PLATFORM == 'mysql':
+    from app.db.mysql_dao import DB
+else:
+    from app.db.mongo_dao import DB
 
 
 def _dispatch_decorator():
@@ -74,7 +77,7 @@ class AppServer:
         :param kwargs: 其他flask app run的参数，如 debug=False
         :return:
         """
-        MyJobs.app_index_job()
+        # MyJobs.app_index_job()
         self._server_app.run(host=host, port=port, **kwargs)
 
     @staticmethod
