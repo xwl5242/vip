@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="272501f5-8756-40bc-b7fd-1c946f3521a6" name="Default Changelist" comment="添加淘宝商品功能">
+    <list default="true" id="272501f5-8756-40bc-b7fd-1c946f3521a6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/mysql.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/appserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/appserver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/util/filters.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/util/filters.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/tv/tv_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/tv/tv_detail.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -55,17 +51,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/tv/tv_detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-108">
+            <state relative-caret-position="-1067">
               <caret line="59" column="21" lean-forward="true" selection-start-line="59" selection-start-column="21" selection-end-line="59" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/util/filters.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="61" column="245" selection-start-line="61" selection-start-column="245" selection-end-line="61" selection-end-column="245" />
+            <state relative-caret-position="258">
+              <caret line="59" selection-start-line="59" selection-end-line="59" />
             </state>
           </provider>
         </entry>
@@ -73,7 +69,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/appserver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
+            <state relative-caret-position="312">
               <caret line="80" column="8" selection-start-line="80" selection-start-column="8" selection-end-line="80" selection-end-column="8" />
               <folding>
                 <element signature="e#23#34#0" expanded="true" />
@@ -82,11 +78,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/mysql.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1003">
-              <caret line="59" column="82" selection-start-line="59" selection-start-column="64" selection-end-line="59" selection-end-column="82" />
+            <state relative-caret-position="85">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
@@ -277,18 +273,6 @@
             <path>
               <item name="vip" type="b2602c69:ProjectViewProjectNode" />
               <item name="vip" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="db" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="vip" type="b2602c69:ProjectViewProjectNode" />
-              <item name="vip" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="vip" type="b2602c69:ProjectViewProjectNode" />
-              <item name="vip" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -319,18 +303,18 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\vip\app" />
+      <recent name="E:\vip\top\api\rest" />
+      <recent name="E:\vip\static\img" />
+      <recent name="E:\vip\static\css" />
+      <recent name="E:\vip\static\js" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\vip" />
       <recent name="E:\vip\templates\layout" />
       <recent name="E:\vip\templates" />
       <recent name="E:\vip\templates\tv" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\vip\top\api\rest" />
-      <recent name="E:\vip\app" />
-      <recent name="E:\vip\static\img" />
-      <recent name="E:\vip\static\css" />
-      <recent name="E:\vip\static\js" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -513,7 +497,7 @@
       <workItem from="1564279540446" duration="7489000" />
       <workItem from="1564291558128" duration="1816000" />
       <workItem from="1564294682522" duration="707000" />
-      <workItem from="1564301060268" duration="1162000" />
+      <workItem from="1564301060268" duration="2208000" />
     </task>
     <task id="LOCAL-00001" summary="vfed init">
       <created>1561623671818</created>
@@ -704,21 +688,30 @@
       <option name="project" value="LOCAL" />
       <updated>1564294757048</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="添加淘宝商品功能">
+      <created>1564302280243</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1564302280243</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="139214000" />
+    <option name="totallyTimeSpent" value="140260000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21450152" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21450152" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32279533" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32279533" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -764,13 +757,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="添加淘宝商品功能" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vipuwsgi.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/tv/tv_more.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1562">
@@ -970,16 +956,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/appserver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="80" column="8" selection-start-line="80" selection-start-column="8" selection-end-line="80" selection-end-column="8" />
-          <folding>
-            <element signature="e#23#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/db/mysql_dao.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="333">
@@ -997,9 +973,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/util/filters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="258">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/tv/tv_detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-108">
+        <state relative-caret-position="-1067">
           <caret line="59" column="21" lean-forward="true" selection-start-line="59" selection-start-column="21" selection-end-line="59" selection-end-column="21" />
         </state>
       </provider>
@@ -1014,10 +997,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/util/filters.py">
+    <entry file="file://$PROJECT_DIR$/app/appserver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="61" column="245" selection-start-line="61" selection-start-column="245" selection-end-line="61" selection-end-column="245" />
+        <state relative-caret-position="312">
+          <caret line="80" column="8" selection-start-line="80" selection-start-column="8" selection-end-line="80" selection-end-column="8" />
+          <folding>
+            <element signature="e#23#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/mysql.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>
