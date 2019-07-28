@@ -30,6 +30,14 @@
             autoplay: true,//可选选项，自动滑动
         });
 
+        let myAdsSwiper = new Swiper('.ads-swip-container', {
+            slidesPerView: 2,
+            spaceBetween: 20,
+            wrapperClass: 'ads-swip-wrapper',
+            slideClass: 'ads-swip-slide',
+            autoplay: true,//可选选项，自动滑动
+        });
+
         //设置页面顶端的导航选中状态
         let h = window.location.href.split('//')[1].replace('/', '');
         if(h == window.location.host){

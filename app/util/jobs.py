@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import json
 import redis
+from app.taobao import TBApi
 from app.config import Config
 if Config.RUN_PLATFORM == 'mysql':
     from app.db.mysql_dao import DB
@@ -32,6 +33,8 @@ class MyJobs:
         dm_top = json.dumps(DB.index_tops('dm')[0:6], ensure_ascii=False)
         # 今日更新和总视频数量
         today, total = DB.today_total(None)
+        # 淘宝广告
+        ads = json.dumps(TBApi.get_tb_goods(), ensure_ascii=False)
         cls.r.set('news', news)
         cls.r.set('mvs', mvs)
         cls.r.set('dsjs', dsjs)
@@ -43,6 +46,7 @@ class MyJobs:
         cls.r.set('dm_top', dm_top)
         cls.r.set('today', today)
         cls.r.set('total', total)
-        del news, mvs, dsjs, dms, zys, mv_top, dsj_top, zy_top, dm_top
+        cls.r.set('ads', ads)
+        del news, mvs, dsjs, dms, zys, mv_top, dsj_top, zy_top, dm_top, ads
         print(f'{time.time() - s}')
 

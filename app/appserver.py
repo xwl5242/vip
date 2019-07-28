@@ -93,8 +93,9 @@ class AppServer:
                    'dm': json.loads(MyJobs.r.get('dm_top')), 'zy': json.loads(MyJobs.r.get('zy_top'))}
         tv_types = {'mv': Config.TV_KV.get('mv'), 'dsj': Config.TV_KV.get('dsj'),
                     'dm': Config.TV_KV.get('dm'), 'zy': Config.TV_KV.get('zy')}
+        ads = json.loads(MyJobs.r.get('ads'))
         return render_template(html, to_page=to_page, tv_tops=tv_tops, tv_types=tv_types,
-                               tv=Config.TV, tv_years=Config.YEARS, **kwargs)
+                               tv=Config.TV, tv_years=Config.YEARS, ads=ads, **kwargs)
 
     @staticmethod
     def ti_page_render(req, condition, args, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
