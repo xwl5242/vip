@@ -241,5 +241,5 @@ def tv_play_html(tv_id, tv_index, tv_source, tv_url):
 
 if __name__ == '__main__':
     # 添加自定义过滤器
-    app_server.run(debug=True)
+    app_server.run(debug=False)
 

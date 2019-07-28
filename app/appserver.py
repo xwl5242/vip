@@ -39,6 +39,7 @@ class AppServer:
         :return:
         """
         self._server_app.add_template_filter(ft.split_strings, 'str_split')
+        self._server_app.add_template_filter(ft.get_tuple, 'get_tuple')
         self._server_app.add_template_filter(ft.get_list, 'get_list')
         self._server_app.add_template_filter(ft.get_sub_list, 'get_sub_list')
         self._server_app.add_template_filter(ft.b64encode, 'b64encode')

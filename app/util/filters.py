@@ -13,6 +13,12 @@ def split_strings(s, sep=','):
     return str(s).split(sep)
 
 
+def get_tuple(t, index):
+    if not isinstance(t, tuple):
+        t = tuple(t)
+    return t[index] if t and len(t) > 0 else ()
+
+
 def get_list(l, index):
     """
     get list an specified element
