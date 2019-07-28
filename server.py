@@ -11,9 +11,9 @@ if Config.RUN_PLATFORM == 'mysql':
 else:
     from app.db.mongo_dao import DB
 
-
 app_server = AppServer()
 app = app_server.server_app
+MyJobs.app_index_job()
 
 
 @app.route('/')

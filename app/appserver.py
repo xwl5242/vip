@@ -78,7 +78,6 @@ class AppServer:
         :param kwargs: 其他flask app run的参数，如 debug=False
         :return:
         """
-        MyJobs.app_index_job()
         self._server_app.run(host=host, port=port, **kwargs)
 
     @staticmethod
