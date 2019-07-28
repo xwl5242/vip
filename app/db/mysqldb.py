@@ -17,6 +17,8 @@ def app_db(func):
         try:
             return func(cursor, *args, **kwargs)
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             print(repr(e))
             conn.rollback()
         finally:

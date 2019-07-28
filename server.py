@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-import re
 import os
 import json
 import random
@@ -66,20 +65,24 @@ def err_seek_msg():
 @app.route('/t-choose/tt=<tv_type>/ti=<tv_item>/ta=<tv_area>/ty=<tv_year>')
 def tv_choose_html(tv_type, tv_item, tv_area, tv_year):
     _tv_type = tv_type
-    where = []
+    where, args = [], []
     if tv_item != 'all':
         tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
         tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
-        where.append({'tv_type': tv_type})
+        args.append(tv_type)
+        where.append(' tv_type=%s ')
     if tv_area != 'all':
-        where.append({'tv_area': tv_area})
+        args.append(tv_area)
+        where.append(' tv_area=%s ')
     if tv_year != 'all':
         year = [y for y in Config.YEARS if str(y).startswith(tv_year + ':')]
         year = str(year).split(':')[1]
         year = str(year).split('@')
-        where.append({'tv_year': {'$gte': year[0]}})
-        where.append({'tv_year': {'$lte': year[1]}})
-    return app_server.ti_page_render(request, {'$and': where}, is_choose=True, tv_type=_tv_type,
+        args.append(year[0])
+        args.append(year[1])
+        where.append(' tv_year>=%s ')
+        where.append(' tv_year<=%s ')
+    return app_server.ti_page_render(request, 'and'.join(where), args, is_choose=True, tv_type=_tv_type,
                                      tv_item=tv_item, tv_area=tv_area, tv_year=tv_year)
 
 
@@ -119,7 +122,7 @@ def index_news_more_html():
     首页最近更新视频的"更多"链接
     :return:
     """
-    return app_server.ti_page_render(request, {})
+    return app_server.ti_page_render(request, '', ())
 
 
 @app_server.on_dispatch('tv_type_item_html')
@@ -146,7 +149,7 @@ def tv_type_4_actors_html(tv_actors):
     :param tv_actors: 演员名字
     :return:
     """
-    return app_server.ti_page_render(request, {'tv_actors': re.compile(tv_actors)})
+    return app_server.ti_page_render(request, ' tv_actors=%s ', (tv_actors,))
 
 
 @app_server.on_dispatch('tv_type_4_director_html')
@@ -156,7 +159,7 @@ def tv_type_4_director_html(tv_director):
     :param tv_director: 导演名称
     :return:
     """
-    return app_server.ti_page_render(request, {'tv_director': re.compile(tv_director)})
+    return app_server.ti_page_render(request, ' tv_director=%s ', (tv_director,))
 
 
 @app_server.on_dispatch('tv_type_4_area_html')
@@ -167,10 +170,12 @@ def tv_type_4_area_html(tv_area):
     :return:
     """
     if tv_area == 'other':
-        where = {'$and': [{'tv_area': re.compile('其他')}, {'tv_area': re.compile('其它')}]}
+        args = []
+        where = ' (tv_area="其他" or tv_area="其它") '
     else:
-        where = {'tv_area': re.compile(tv_area)}
-    return app_server.ti_page_render(request, where)
+        args = [tv_area]
+        where = ' tv_area=%s '
+    return app_server.ti_page_render(request, where, tuple(args))
 
 
 @app_server.on_dispatch('tv_type_4_year_html')
@@ -180,7 +185,7 @@ def tv_type_4_year_html(tv_year):
     :param tv_year: 指定的年份
     :return:
     """
-    return app_server.ti_page_render(request, {'tv_year': tv_year})
+    return app_server.ti_page_render(request, ' tv_year=%s ', (tv_year,))
 
 
 @app_server.on_dispatch('tv_type_4_between_year_html')
@@ -195,8 +200,8 @@ def tv_type_4_between_year_html(cur_type, year):
     year = str(year).split(':')[1]
     year = str(year).split('@')
     tv_type = "','".join(Config.TV_KV_LIST.get(cur_type))
-    where = {'$and': [{'tv_type': tv_type}, {'tv_year': {'$gte': year[0]}}, {'tv_year': {'$lte': year[1]}}]}
-    return app_server.ti_page_render(request, where)
+    where = " tv_type in (%s) and tv_year>=%s and tv_year<=%s "
+    return app_server.ti_page_render(request, where, (tv_type, year[0], year[1],))
 
 
 @app_server.on_dispatch('tv_type_html')
@@ -212,7 +217,8 @@ def tv_type_html(tv_type, tv_item):
     tv_type = [(k, v) for (k, v) in Config.TV_KV.get(tv_type) if int(k) == int(tv_item)]
     tv_type = tv_type[0][1] if tv_type and len(tv_type) != 0 else None
     # 查询分页数据
-    return app_server.ti_page_render(request, {'tv_type': tv_type}, is_choose=True, tv_type=_tv_type, tv_item=tv_item)
+    return app_server.ti_page_render(request, ' tv_type=%s ', (tv_type,),
+                                     is_choose=True, tv_type=_tv_type, tv_item=tv_item)
 
 
 @app_server.on_dispatch('tv_play_html')
@@ -235,5 +241,5 @@ def tv_play_html(tv_id, tv_index, tv_source, tv_url):
 
 if __name__ == '__main__':
     # 添加自定义过滤器
-    app_server.run()
+    app_server.run(debug=True)
 

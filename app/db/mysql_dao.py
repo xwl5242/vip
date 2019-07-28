@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import re
 import time
 from app.config import Config
 from app.db.mysqldb import Base
@@ -34,13 +35,13 @@ class DB(Base):
         :return:
         """
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
-        types = ",".join(['%s' for i in tv_type]) if tv_type else None
-        where_str = f" and  tv_type in ({types})" if tv_type else ''
+        tv_type = "','".join(tv_type) if tv_type else None
+        where_str = f" and  tv_type in ('{tv_type}')" if tv_type else ''
         today_sql = f"select count(1) total from t_tv_all where 1=1 {where_str} and " \
                     f"date_format(update_time,'%Y-%m-%d')=date_format(now(),'%Y-%m-%d') "
         total_sql = f"select count(1) total from t_tv_all where 1=1 {where_str}"
-        today = DB.get(today_sql, tv_type)
-        total = DB.get(total_sql, tv_type)
+        today = DB.get(today_sql, None)
+        total = DB.get(total_sql, None)
         today = today['total'] if today and today['total'] else 0
         total = total['total'] if total and total['total'] else 0
         return today, total
@@ -100,9 +101,9 @@ class DB(Base):
         """
         d_sql = DB.gen_sql(f"tv_id=%s", 0, 0)
 
-        u_sql_1 = f"select tv_url,replace(replace(substr(tv_url,1,instr(tv_url,'$')-1),'第',''),'集','') seq, " \
+        u_sql_1 = f"select tv_url,substr(tv_url,1,instr(tv_url,'$')-1) seq , " \
             f"'{Config.TV_SOURCE_MAIN}' as tv_source from t_tv_urls where tv_id=%s"
-        u_sql_2 = f"select tv_url,replace(replace(substr(tv_url,1,instr(tv_url,'$')-1),'第',''),'集','') seq, " \
+        u_sql_2 = f"select tv_url,substr(tv_url,1,instr(tv_url,'$')-1) seq , " \
             f"'{Config.TV_SOURCE_3PART}' as tv_source from t_tv_urls_3part where tv_id=%s"
         detail = DB.get(d_sql, (tv_id, ))
         tv_sources = []
@@ -114,11 +115,13 @@ class DB(Base):
                     urls1 = DB.query_list(u_sql_1, (tid, ))
                     urls2 = DB.query_list(u_sql_2, (tid, ))
                     if urls1 and len(urls1) > 0:
-                        urls1.sort(key=lambda x: int(x['seq']))
+                        urls1.sort(key=lambda x: int(0 if len(re.findall(r'(\d+)', x['seq'])) == 0
+                                                     else re.findall(r'(\d+)', x['seq'])[0]))
                         urls.extend(urls1)
                         tv_sources.append(Config.TV_SOURCE_MAIN)
                     else:
-                        urls2.sort(key=lambda x: int(x['seq']))
+                        urls2.sort(key=lambda x: int(0 if len(re.findall(r'(\d+)', x['seq'])) == 0
+                                                     else re.findall(r'(\d+)', x['seq'])[0]))
                         urls.extend(urls2)
                         tv_sources.append(Config.TV_SOURCE_3PART)
             urls = [(su['tv_source'], su['tv_url']) for su in urls]
@@ -145,7 +148,10 @@ class DB(Base):
         tv_type = Config.TV_KV_LIST.get(tv_type) if tv_type else None
         types = ",".join(['%s' for i in tv_type]) if tv_type else None
         where = f" tv_type in({types}) " if types else ' 1=1 '
-        area_sql = f"select group_concat(distinct tv_area) areas from t_tv_all where {where} "
+        area_sql = f"SELECT GROUP_CONCAT(A.area) AS areas FROM ( SELECT DISTINCT " \
+            f"replace(CASE  WHEN instr(tv_area, '/') >= 1 THEN substr(tv_area, 1, instr(tv_area, '/') - 1) " \
+            f"ELSE tv_area END, ' ', '') AS area FROM t_tv_all WHERE ({where} AND instr(tv_area, ':') < 1 " \
+            f"AND instr(tv_area, '：') < 1 AND instr(tv_area, '中国大陆') < 1) LIMIT 15 ) A"
         tv_areas = DB.get(area_sql, tv_type)['areas']
         tv_areas = [aa for aa in str(tv_areas).split(',') if '其' not in aa]
         return tv_areas
@@ -175,7 +181,7 @@ class DB(Base):
         """
         where_str = ' 1=1 ' if not where_str else where_str
         args = [] if not args else args
-        return DB.query_page(DB.gen_sql(where_str, 0, 0), args)
+        return DB.query_page(DB.gen_sql(where_str, 0, 0), tuple(args))
 
     @staticmethod
     def query_friend_urls():
@@ -196,6 +202,6 @@ class DB(Base):
 
 
 if __name__ == '__main__':
-    print(DB.tv_page('tv_type=%s', ['动作片', int(0)]))
+    print()
 
 

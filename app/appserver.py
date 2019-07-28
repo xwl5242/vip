@@ -77,7 +77,7 @@ class AppServer:
         :param kwargs: 其他flask app run的参数，如 debug=False
         :return:
         """
-        # MyJobs.app_index_job()
+        MyJobs.app_index_job()
         self._server_app.run(host=host, port=port, **kwargs)
 
     @staticmethod
@@ -97,11 +97,12 @@ class AppServer:
                                tv=Config.TV, tv_years=Config.YEARS, **kwargs)
 
     @staticmethod
-    def ti_page_render(req, condition, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
+    def ti_page_render(req, condition, args, is_choose=False, tv_type=None, tv_item=None, tv_area='all', tv_year='all'):
         """
         render template for pagination
         :param req: 请求 request
         :param condition: where 查询条件
+        :param args: where 查询条件中对应的值
         :param is_choose: 要渲染的页面是否需要筛选功能展示
         :param tv_type: is_choose为True时必填 tv的大类
         :param tv_item: is_choose为True时必填 tv的小类
@@ -111,7 +112,9 @@ class AppServer:
         """
         page_no = req.args.get('p')
         page_no = int(page_no) if page_no else 1
-        items, total = DB.tv_page(condition, page_no)
+        args = list(args)
+        args.append(page_no)
+        items, total = DB.tv_page(condition, tuple(args))
         tv_choose = {}
         if is_choose and tv_type and tv_item:
             tv_choose['tvs'] = Config.TV
