@@ -1,17 +1,11 @@
-###开启定时任务
-set GLOBAL event_scheduler=1;
+###docker启动mysql
+docker run -d --name tv_mysql -e MYSQL_ROOT_PASSWORD=@xwl082933048. -p 3306:3306 mysql:5.7
 
-###查看定时任务
-SELECT @@event_scheduler;
+###设置sql_mode
+SET @@GLOBAL.sql_mode=(SELECT REPLACE(@@GLOBAL.sql_mode,'ONLY_FULL_GROUP_BY',''));
 
-###开启renwu
-alter event event_name(fetch_tv_all) ON COMPLETION PRESERVE ENABLE; 
-
-###创建定时任务
-CREATE EVENT IF NOT EXISTS fetch_tv_all ON SCHEDULE EVERY 3 MINUTE
-ON COMPLETION PRESERVE
-DO
+###定时任务，定时抓取视频信息到t_tv_all表
 insert into t_tv_all(tv_id,tv_ids,tv_name,tv_actors,tv_director,tv_type,tv_area,tv_lang,tv_year,tv_img,tv_intro,update_time,img_save)
 select B.tv_id,B.tv_ids,B.tv_name,B.tv_actors,B.tv_director,B.tv_type,B.tv_area,B.tv_lang,B.tv_year,B.tv_img,B.tv_intro,B.update_time,'0' as img_save from
 (select A.tv_id,group_concat(A.tv_id) tv_ids,A.tv_name,A.tv_img,A.tv_actors,A.tv_director,A.tv_type,A.tv_area,A.tv_lang,A.tv_year,A.tv_intro,A.update_time from
-(select * from t_tv union select * from t_tv_3part) A group by A.tv_name) B where not EXISTS (select tv_id from t_tv_all where tv_id=B.tv_id);
+(select * from t_tv union select * from t_tv_3part) A group by A.tv_name) B on duplicate key update update_time=B.update_time
