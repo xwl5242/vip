@@ -1,4 +1,4 @@
-<div class="ads-swip-container fed-swip-container fed-part-rows swiper-container-horizontal"
+﻿<div class="ads-swip-container fed-swip-container fed-part-rows swiper-container-horizontal"
     style="height: 250px;">
     <ul class="ads-swip-wrapper fed-swip-wrapper fed-font-size"
         style="transform: translate3d(-2340px, 0px, 0px); transition-duration: 0ms;height: 250px;">
@@ -6,10 +6,16 @@
         <li class="ads-swip-slide fed-swip-slide fed-marg-top swiper-slide-duplicate" style="width: 1170px;height: 250px;">
             <a class="fed-list-pics fed-part-5by2 fed-swip-lazy swiper-lazy-loaded"
                href="{{ ads.click_url }}" target="_blank"
-               style="background-image: url({{ ads.pict_url }});height: 250px;">
+               style="background-image: url({{ ads.pict_url }});height: 250px;background-size: cover;">
                 <div class="fed-swip-title fed-text-white fed-part-eone">
-                    <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ ads.title }}</span>
-                    <span class="fed-part-eone fed-font-xii">{{ ads.nick }}</span>
+                    <span class="fed-part-eone fed-font-xviii">{{ ads.title }}</span>
+                    <span class="fed-part-eone fed-font-xviii" style="text-decoration: line-through;">
+                        原价：{{ ads.reserve_price|string }}
+                    </span>
+                    <span class="fed-part-eone fed-font-xviii" style="margin-bottom: 10px;">
+                        折扣价：{{ ads.zk_final_price }}
+                    </span>
+{#                    <span class="fed-part-eone fed-font-xii">{{ ads.nick }}</span>#}
                 </div>
             </a>
         </li>
