@@ -34,5 +34,6 @@ class TBApi:
             print(repr(e))
 
 
-
+if __name__ == '__main__':
+    print(TBApi.get_tb_goods())
 

@@ -5,7 +5,7 @@
         {% for ads in ads %}
         <li class="ads-swip-slide fed-swip-slide fed-marg-top swiper-slide-duplicate" style="width: 1170px;height: 250px;">
             <a class="fed-list-pics fed-part-5by2 fed-swip-lazy swiper-lazy-loaded"
-               href="{{ ads.item_url }}"
+               href="{{ ads.click_url }}" target="_blank"
                style="background-image: url({{ ads.pict_url }});height: 250px;">
                 <div class="fed-swip-title fed-text-white fed-part-eone">
                     <span class="fed-part-eone fed-font-xviii fed-swip-head">{{ ads.title }}</span>

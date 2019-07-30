@@ -8,7 +8,7 @@ class TbkUatmFavoritesItemGetRequest(RestApi):
         self.page_size = 20
         self.fields = "num_iid,title,pict_url,small_images,reserve_price,zk_final_price," \
                       "user_type,provcity,item_url,seller_id,volume,nick,shop_title,zk_final_price_wap," \
-                      "tk_rate,status,type"
+                      "tk_rate,status,type,click_url"
         self.adzone_id = adzone_id
 
     def getapiname(self):
